@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TDM_Project</string>
+    <string name="welcome">مرحبا</string>
+    <string name="chang_lang"> تغيير اللغة </string>
+    <string name="welcome_user">أهلا بعودتك أنسة فاطمة.</string>
+    <string name="topic">مواضيع اليوم</string>
+    <string name="search_title">البحث عن موضوع</string>
+    <string name="title_activity_article_reading">قراءة المقال</string>
+    <string name="share" > شارك عن طريق </string>
+    <string name="politics">سياسة</string>
+    <string name="tech">تكنولوجيا</string>
+    <string name="art"> فن </string>
+    <string name="science"> علوم </string>
+    <string name="sport"> رياضة</string>
+    <string name="economics">اقتصاد</string>
+    <string name="culture">ثقافة</string>
+    <string name="mode"> الوضع </string>
+    <string name="dark_mode">  وضع مظلم  </string>
+    <string name="profile"> البروفيل </string>
+    <string name="chang_pic"> تغيير صورةالبروفيل  </string>
+    <string name="chang_pseu"> تغيير اسم البروفيل </string>
+    <string name="laguages"> اللغات </string>
+    <string name="topics"> المواضيع </string>
+    <string name="save">حفظ </string>
+    <string name="share_social">مشاركة</string>
+    <string name="share_profile">مشاركة على البروفيل</string>
+    <string name="param">اعدادات</string>
+    <string name="prendre_photo">  أخذ صورة  </string>
+    <string name="confirmer">تأكيد</string>
+    <string name="choisir_photo">اختيار صورة</string>
+    <string name="all">الكل</string>
+    <string name="home"> الأساسية </string>
+    <string name="saved"> المسجلات </string>
+    <string name="cancel">إلغاء</string>
+</resources>

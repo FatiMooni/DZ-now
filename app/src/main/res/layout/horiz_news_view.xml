@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data class="ArticleBinding">
+    <variable
+            name="item"
+            type="com.example.tdm_project.viewmodel.ArticleViewModel" />
+    </data>
+<RelativeLayout android:layout_height="wrap_content"
+                android:layout_width="220dp"
+               >
+<androidx.cardview.widget.CardView
+        android:layout_width="220dp"
+        android:layout_height="350dp"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        app:contentPaddingLeft="4dp"
+        app:cardElevation="1dp"
+        android:requiresFadingEdge="horizontal"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/card_holder_horizontal"
+        app:cardBackgroundColor="?attr/card_background"
+>
+<RelativeLayout android:layout_width="match_parent"
+               android:layout_height="match_parent"
+ >
+
+    <ImageView
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:layout_below="@id/news_writer"
+            android:adjustViewBounds="true"
+            android:id="@+id/news_image"
+            android:elevation="@dimen/cardview_default_elevation"
+    />
+   <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_more_vert_black_24dp"
+                android:id="@+id/menu_button"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp"
+                android:layout_height="wrap_content"/>
+
+     <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:id="@+id/news_title"
+             android:layout_below="@id/news_image"
+             android:textColor="?attr/primary_text_color"
+             android:textSize="18sp"
+             app:fontFamily="serif"
+             android:text="@{item.title}"
+     />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news_descrp"
+            android:layout_below="@id/news_title"
+            android:textColor="?attr/primary_text_color"
+            android:textSize="14sp"
+            android:text="@{item.resume}"
+    />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/news_date"
+            android:textColor="?attr/secondary_text_color"
+            android:textSize="12sp"
+            android:text="@{item.date}"
+    />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news_writer"
+            android:layout_below="@+id/news_date"
+            android:text="@{item.author}"
+            android:layout_marginBottom="12dp"
+            android:textSize="12sp"
+            app:fontFamily="serif"
+            android:textColor="?attr/secondary_text_color"
+            android:textStyle="italic|bold"
+    />
+
+
+</RelativeLayout>
+</androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+</layout>

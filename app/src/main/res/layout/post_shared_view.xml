@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools" android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="?attr/card_background"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileInfo"
+    >
+
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/profile_image"
+                android:src="@drawable/ic_person_black_24dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+        />
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/profile_name"
+                android:textColor="?attr/primary_text_color"
+                android:textSize="15sp"
+                app:fontFamily="serif"
+                android:text="Madjda Zerrouk"
+                app:layout_constraintTop_toTopOf="@id/profile_image"
+                app:layout_constraintStart_toEndOf="@id/profile_image"
+                android:layout_marginStart="48dp" android:layout_marginTop="16dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/post_time"
+                android:textColor="?attr/primary_text_color"
+                android:textSize="14sp"
+                android:text="6h ago"
+                app:layout_constraintTop_toBottomOf="@id/profile_image"
+                app:layout_constraintStart_toEndOf="@id/profile_image"
+        />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:padding="10dp"
+            app:contentPaddingTop="15dp"
+            app:contentPaddingLeft="4dp"
+            app:cardElevation="5dp"
+            android:requiresFadingEdge="horizontal"
+            app:cardCornerRadius="5dp"
+            android:id="@+id/card_holder_horizontal"
+            android:layout_below="@+id/profileInfo"
+            app:cardBackgroundColor="?attr/link_background"
+            android:layout_marginHorizontal="7dp"
+            android:layout_marginTop="1dp" android:layout_marginBottom="5dp">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:layout_height="match_parent" android:layout_alignEnd="@+id/card_holder_horizontal">
+
+            <RelativeLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="90"
+            >
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/news_title"
+                        android:layout_below="@id/news_writer"
+                        android:textColor="?attr/primary_text_color"
+                        android:textSize="18sp"
+                        app:fontFamily="serif"
+                        android:text="this is a text title"
+                />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/news_descrp"
+                        android:layout_below="@id/news_title"
+                        android:textColor="?attr/primary_text_color"
+                        android:textSize="14sp"
+                        android:text="this is a casual text description, that needs to be added "
+                />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/news_date"
+                        android:textColor="?attr/secondary_text_color"
+                        android:textSize="12sp"
+                        android:text="this a date"
+                />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/news_writer"
+                        android:layout_below="@id/news_date"
+                        android:text="cetain writer"
+                        app:fontFamily="serif"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="12dp"
+                        android:textColor="?attr/secondary_text_color"
+                        android:textStyle="italic|bold"
+                />
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:layout_weight="10"
+            >
+                <ImageView
+                        android:layout_width="170dp"
+                        android:layout_height="150dp"
+                        android:id="@+id/news_image"
+
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:elevation="@dimen/cardview_default_elevation"
+                />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/card_interaction"
+            android:layout_below="@id/card_holder_horizontal"
+           >
+
+        <ImageButton
+                android:src="@drawable/ic_thumb_up_black_24dp"
+                android:id="@+id/btn_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_comment"
+        />
+        <ImageButton
+                android:src="@drawable/ic_mode_comment_black_24dp"
+                android:id="@+id/btn_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_like"
+                app:layout_constraintEnd_toStartOf="@id/btn_save"
+        />
+        <ImageButton
+                android:src="@drawable/ic_bookmark_black_24dp"
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_comment"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<View   android:background="?attr/background_color"
+        android:layout_width="match_parent"
+        android:layout_height="9dp"
+        android:layout_below="@+id/card_interaction"/>
+</RelativeLayout>

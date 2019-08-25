@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:id="@+id/root_layout"
+        android:padding="15dp"
+        android:background="?attr/background_color"
+        tools:context=".ParameterActivity"
+>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/param"
+            android:textColor="?attr/primary_text_color"
+            android:textSize="25sp"
+            android:padding="10dp"
+    />
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            app:cardBackgroundColor="?attr/card_background"
+            android:padding="5dp"
+    >
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="?attr/card_background"
+        >
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mode"
+            android:textColor="?attr/primary_text_color"
+            android:textSize="22sp"
+            android:padding="10dp"
+    />
+            <Switch
+                    android:id="@+id/mode_switcher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primary_text_color"
+                    android:layout_margin="7dp"
+                    android:text="@string/dark_mode"
+                    android:buttonTint="?attr/tint_color"
+                    android:drawableStart="@drawable/ic_nightmode"
+                    android:drawableTint="?attr/icon_color"
+            />
+
+</LinearLayout>
+
+</androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+            android:padding="5dp"
+            android:background="?attr/card_background"            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="?attr/card_background"
+
+        >
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile"
+                    android:textColor="?attr/primary_text_color"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+            />
+          <Button android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:id="@+id/btn_edit_pic"
+                  android:text="@string/chang_pic"
+                  android:drawableLeft="@drawable/ic_picture"
+                  android:drawableTint="?attr/icon_color"
+                  android:textColor="?attr/primary_text_color"
+                  android:background="?attr/card_background"
+                  />
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btn_edit_pseudo"
+                    android:text="@string/chang_pseu"
+                    android:drawableTint="?attr/icon_color"
+                    android:textColor="?attr/primary_text_color"
+                    android:drawableLeft="@drawable/ic_edit_black_24dp"
+                    android:background="?attr/card_background"
+
+          />
+
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+            android:padding="5dp"
+
+            android:background="?attr/card_background"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="?attr/card_background"
+        >
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/laguages"
+                    android:textColor="?attr/primary_text_color"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+            />
+            <Button
+                    android:id="@+id/btn_changeLang"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_welcome"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chang_lang"
+                    android:background="?attr/card_background"
+                    android:drawableTint="?attr/icon_color"
+                    android:textColor="?attr/primary_text_color"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    android:drawableLeft="@drawable/ic_language"
+            />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+            android:padding="5dp"
+
+            android:background="?attr/background_color"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:background="?attr/card_background"
+        >
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/topics"
+                    android:textColor="?attr/primary_text_color"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+            />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+                                           android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:background="?attr/card_background"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/topics_choice_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/card_background"
+                android:orientation="vertical"/>
+
+    </androidx.cardview.widget.CardView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>
