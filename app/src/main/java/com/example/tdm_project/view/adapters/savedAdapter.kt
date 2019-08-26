@@ -1,19 +1,15 @@
-package com.example.tdm_project.adapters
+package com.example.tdm_project.view.adapters
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.recyclerview.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.tdm_project.ArticleReadingActivity
 import com.example.tdm_project.R
-import com.example.tdm_project.data.SharedSavedNews
-import com.example.tdm_project.data.news
+import com.example.tdm_project.model.data.SharedSavedNews
+import com.example.tdm_project.model.data.news
 import com.squareup.picasso.Picasso
 
 

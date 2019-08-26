@@ -1,9 +1,8 @@
-package com.example.tdm_project.data
+package com.example.tdm_project.model.data
 
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.example.tdm_project.ArticleReadingActivity
 import com.example.tdm_project.R
 import com.example.tdm_project.sharedPreferences.WebBrowserActivity
 

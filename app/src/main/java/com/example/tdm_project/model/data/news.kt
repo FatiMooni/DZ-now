@@ -1,4 +1,4 @@
-package com.example.tdm_project.data
+package com.example.tdm_project.model.data
 
 import android.os.Parcel
 import android.os.Parcelable

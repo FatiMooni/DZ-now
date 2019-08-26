@@ -6,14 +6,12 @@
             name="item"
             type="com.example.tdm_project.viewmodel.ArticleViewModel" />
     </data>
-<RelativeLayout android:layout_height="wrap_content"
-                android:layout_width="220dp"
-               >
+
 <androidx.cardview.widget.CardView
-        android:layout_width="220dp"
+        android:layout_width="250dp"
         android:layout_height="350dp"
         android:layout_margin="5dp"
-        android:padding="5dp"
+        android:padding="10dp"
         app:contentPaddingLeft="4dp"
         app:cardElevation="1dp"
         android:requiresFadingEdge="horizontal"
@@ -26,13 +24,14 @@
  >
 
     <ImageView
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
             android:layout_height="150dp"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:layout_below="@id/news_writer"
             android:adjustViewBounds="true"
+            android:src="@drawable/chicanery"
             android:id="@+id/news_image"
-            android:elevation="@dimen/cardview_default_elevation"
     />
    <androidx.appcompat.widget.AppCompatImageButton
                 android:layout_width="wrap_content"
@@ -49,8 +48,12 @@
              android:id="@+id/news_title"
              android:layout_below="@id/news_image"
              android:textColor="?attr/primary_text_color"
-             android:textSize="18sp"
+             android:textSize="16sp"
              app:fontFamily="serif"
+             android:textStyle="bold"
+             android:maxLines="1"
+             android:layout_marginBottom="7dp"
+             android:ellipsize="end"
              android:text="@{item.title}"
      />
 
@@ -61,6 +64,8 @@
             android:layout_below="@id/news_title"
             android:textColor="?attr/primary_text_color"
             android:textSize="14sp"
+            android:maxLines="5"
+            android:ellipsize="end"
             android:text="@{item.resume}"
     />
     <TextView
@@ -90,5 +95,4 @@
 </RelativeLayout>
 </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
 </layout>

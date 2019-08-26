@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.widget.Toast
 import com.example.tdm_project.R
-import com.example.tdm_project.data.news
+import com.example.tdm_project.model.data.news
 
 
 class WebBrowserActivity : AppCompatActivity() {

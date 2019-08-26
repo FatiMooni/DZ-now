@@ -1,13 +1,11 @@
-package com.example.tdm_project
+package com.example.tdm_project.view
 import android.content.Context
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.fragment.app.Fragment
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.AppCompatDelegate
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
+import com.example.tdm_project.R
 
 import com.example.tdm_project.sharedPreferences.CustomBaseActivity
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
@@ -31,7 +29,7 @@ class MainActivity : CustomBaseActivity() {
         stringImageUri = intent.getStringExtra("PHOTO")
         if (stringImageUri != null) Log.i("URI_MAIN",stringImageUri)
         else Log.i("URI_MAIN","NULLLL")
-        fragProfile = ProfileFragment.newInstance(newPseudo,stringImageUri)
+        fragProfile = ProfileFragment.newInstance(newPseudo, stringImageUri)
 
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,7 +47,7 @@ class MainActivity : CustomBaseActivity() {
             when (it.itemId) {
                 R.id.nav_home -> fragment = HomeFragment()
                 R.id.nav_profile -> fragment = fragProfile
-                R.id.nav_saved-> fragment = SavedFragment()
+                R.id.nav_saved -> fragment = SavedFragment()
                 else -> fragment = HomeFragment()
             }
             replaceFragment(fragment)

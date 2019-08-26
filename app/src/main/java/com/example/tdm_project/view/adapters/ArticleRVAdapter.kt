@@ -1,32 +1,30 @@
-package com.example.tdm_project.adapters
+package com.example.tdm_project.view.adapters
 
 import android.content.Context
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.example.tdm_project.R
-import com.example.tdm_project.data.SharedSavedNews
-import com.example.tdm_project.data.news
 import com.example.tdm_project.databinding.ArticleBinding
-import com.example.tdm_project.model.Article
 import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.horiz_news_view.view.*
 
 
-class HorizCardAdapter(val context: Context, val news : ArrayList<ArticleViewModel>) : RecyclerView.Adapter<HorizCardAdapter.ViewHolder> (){
+class ArticleRVAdapter(val context: Context, val news : ArrayList<ArticleViewModel>, val type : Int) : RecyclerView.Adapter<ArticleRVAdapter.ViewHolder> (){
 
-
+    companion object {
+        const val LAYOUT_HORIZ = 0
+        const val LAYOUT_VERT = 1
+    }
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ArticleBinding>(inflater,R.layout.horiz_news_view,parent,false)
-        return ViewHolder(binding)
+        val binding: ArticleBinding = when(type) {
+            LAYOUT_HORIZ -> DataBindingUtil.inflate(inflater, R.layout.horiz_news_view, parent, false)
+            LAYOUT_VERT -> DataBindingUtil.inflate(inflater, R.layout.vert_news_view, parent, false)
+            else -> throw IllegalArgumentException("this type doesn't exist")
+        }
+            return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -44,11 +42,16 @@ class HorizCardAdapter(val context: Context, val news : ArrayList<ArticleViewMod
     }
 
     inner class ViewHolder (var viewBinder : ArticleBinding) : RecyclerView.ViewHolder(viewBinder.root){
-        lateinit var btnMenu : AppCompatImageButton
 
           fun bind(item : ArticleViewModel){
               this.viewBinder.item = item
               viewBinder.executePendingBindings()
+              if(item.img.isNotBlank() && item.img.isNotEmpty())
+              { Picasso
+                  .get() // give it the context
+                  .load(item.img)
+                  .into(viewBinder.newsImage)}
+
           }
           /**    with(objet){
                   news_title.text = item.title
@@ -87,10 +90,7 @@ class HorizCardAdapter(val context: Context, val news : ArrayList<ArticleViewMod
         }
 
 
-
-
-
-**/
+          */
     }
 
 

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data class="ArticleVBinding">
+        <variable
+                name="item"
+                type="com.example.tdm_project.viewmodel.ArticleViewModel" />
+    </data>
 <RelativeLayout android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto">
+                android:layout_width="match_parent">
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -34,9 +39,12 @@
                     android:id="@+id/news_title"
                     android:layout_below="@id/news_writer"
                     android:textColor="?attr/primary_text_color"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:fontFamily="serif"
-                    android:text="this is a text title"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@{item.title}"
             />
 
             <TextView
@@ -45,8 +53,10 @@
                     android:id="@+id/news_descrp"
                     android:layout_below="@id/news_title"
                     android:textColor="?attr/primary_text_color"
+                    android:maxLines="5"
+                    android:ellipsize="end"
                     android:textSize="14sp"
-                    android:text="this is a casual text description, that needs to be added "
+                    android:text="@{item.resume}"
             />
             <TextView
                     android:layout_width="wrap_content"
@@ -55,14 +65,14 @@
                     android:textColor="?attr/secondary_text_color"
                     android:textSize="12sp"
                     android:layout_marginTop="5dp"
-                    android:text="this a date"
+                    android:text="@{item.date}"
             />
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/news_writer"
                     android:layout_below="@id/news_date"
-                    android:text="cetain writer"
+                    android:text="@{item.author}"
                     app:fontFamily="serif"
                     android:textSize="12sp"
                     android:layout_marginBottom="12dp"
@@ -82,8 +92,9 @@
                     android:layout_width="180dp"
                     android:layout_height="150dp"
                     android:id="@+id/news_image"
-                    android:scaleType="fitXY"
+                    android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:src="@drawable/chicanery"
                     android:layout_below="@+id/menu_button"
                     android:elevation="@dimen/cardview_default_elevation"
             />
@@ -106,3 +117,4 @@
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
+</layout>

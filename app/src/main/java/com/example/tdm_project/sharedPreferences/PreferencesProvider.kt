@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.example.tdm_project.data.Topic
-import com.example.tdm_project.data.getTopics
+import com.example.tdm_project.model.Topic
+import com.example.tdm_project.model.getTopics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

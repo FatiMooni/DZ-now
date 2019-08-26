@@ -1,12 +1,12 @@
-package com.example.tdm_project.adapters
+package com.example.tdm_project.view.adapters
 
 
 import android.content.Context
 import androidx.appcompat.widget.PopupMenu
 import android.view.MenuItem
 import com.example.tdm_project.R
-import com.example.tdm_project.data.SharedSavedNews
-import com.example.tdm_project.data.news
+import com.example.tdm_project.model.data.SharedSavedNews
+import com.example.tdm_project.model.data.news
 
 
 class CustomMenuItem (private val it : news, private val cont : Context) : PopupMenu.OnMenuItemClickListener {

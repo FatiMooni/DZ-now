@@ -28,11 +28,11 @@
         <activity android:name=".sharedPreferences.WebBrowserActivity">
         </activity>
         <activity
-                android:name=".ArticleReadingActivity"
+                android:name=".view.ArticleReadingActivity"
                 android:label="@string/title_activity_article_reading"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ParameterActivity"
+                android:name=".view.ParameterActivity"
                 android:windowSoftInputMode="adjustResize"/>
 
         <provider

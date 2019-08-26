@@ -1,14 +1,10 @@
-package com.example.tdm_project
+package com.example.tdm_project.view
 
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,13 +20,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import com.example.tdm_project.data.Topic
-import com.example.tdm_project.data.getTopics
+import com.example.tdm_project.R
+import com.example.tdm_project.model.Topic
+import com.example.tdm_project.model.getTopics
 import com.example.tdm_project.sharedPreferences.CustomBaseActivity
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import kotlinx.android.synthetic.main.parameters.*
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -206,7 +202,7 @@ class ParameterActivity : CustomBaseActivity() {
                 popupWindow.dismiss()
                 pseudo= newPseudo.text.toString()
                 Toast.makeText(this,pseudo,Toast.LENGTH_SHORT).show()
-                val pseudoIntent = Intent (this,MainActivity ::class.java)
+                val pseudoIntent = Intent (this, MainActivity::class.java)
                 pseudoIntent.putExtra("PSEUDO",pseudo)
                 startActivity(pseudoIntent)
             }
@@ -268,13 +264,13 @@ class ParameterActivity : CustomBaseActivity() {
 
             if (i==0) {
                 pref.setLoginCount("fr")
-                startActivity(Intent(this,MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
             else
             {
                 pref.setLoginCount("ar")
-                startActivity(Intent(this,MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
 
@@ -329,7 +325,7 @@ class ParameterActivity : CustomBaseActivity() {
 
 
         var stringUri = uri.toString()
-        val pictureIntent = Intent (this,MainActivity ::class.java)
+        val pictureIntent = Intent (this, MainActivity::class.java)
         pictureIntent.putExtra("PHOTO",stringUri)
         startActivity(pictureIntent)
 

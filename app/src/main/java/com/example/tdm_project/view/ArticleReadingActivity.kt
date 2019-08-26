@@ -1,22 +1,19 @@
-package com.example.tdm_project
+package com.example.tdm_project.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-
-import android.content.Intent
-import android.net.Uri
 
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import android.view.View
-import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.Toast
+import com.example.tdm_project.R
 import com.example.tdm_project.R.string.publish_date
-import com.example.tdm_project.data.SharedSavedNews
-import com.example.tdm_project.data.news
+import com.example.tdm_project.model.data.SharedSavedNews
+import com.example.tdm_project.model.data.news
 import com.example.tdm_project.sharedPreferences.CustomBaseActivity
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider

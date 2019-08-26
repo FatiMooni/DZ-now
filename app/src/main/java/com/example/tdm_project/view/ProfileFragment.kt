@@ -1,24 +1,19 @@
 
-package com.example.tdm_project
+package com.example.tdm_project.view
 
 import android.content.Intent
-import android.content.res.Resources
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.tdm_project.adapters.sharedPostsAdapter
-import com.example.tdm_project.adapters.vertCardAdapter
-import com.example.tdm_project.data.SharedSavedNews
-import com.example.tdm_project.data.news
+import com.example.tdm_project.R
+import com.example.tdm_project.view.adapters.sharedPostsAdapter
+import com.example.tdm_project.model.data.SharedSavedNews
+import com.example.tdm_project.model.data.news
 
 
 class ProfileFragment : Fragment() {
@@ -49,7 +44,8 @@ class ProfileFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-         rootView = inflater.inflate(R.layout.profile_fragment,
+         rootView = inflater.inflate(
+             R.layout.profile_fragment,
                        container, false)
         var pseudoText = rootView.findViewById<TextView>(R.id.profile_pseudo)
         var profileView = rootView.findViewById<ImageView>(R.id.profile_photo)
