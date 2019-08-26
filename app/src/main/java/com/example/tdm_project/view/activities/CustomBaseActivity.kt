@@ -1,8 +1,9 @@
-package com.example.tdm_project.sharedPreferences
+package com.example.tdm_project.view.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tdm_project.R
+import com.example.tdm_project.sharedPreferences.PreferencesProvider
 
 open class CustomBaseActivity : AppCompatActivity() {
 

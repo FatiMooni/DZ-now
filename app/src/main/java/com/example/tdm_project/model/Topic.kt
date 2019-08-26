@@ -21,7 +21,7 @@ fun getTopics() : ArrayList<Topic>{
     )
     topicsList.add(Topic(R.string.tech, "tech", IconLink = R.drawable.tech_icon))
     topicsList.add(Topic(R.string.art, "art", R.drawable.art_icon))
-    topicsList.add(Topic(R.string.art, "social", R.drawable.art_icon))
+    topicsList.add(Topic(R.string.social, "social", R.drawable.art_icon))
     topicsList.add(Topic(R.string.science, "science", R.drawable.art_icon))
     topicsList.add(Topic(R.string.sport, "sport", R.drawable.art_icon))
     topicsList.add(Topic(R.string.economics, "economics", R.drawable.art_icon))

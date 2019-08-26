@@ -1,6 +1,8 @@
-package com.example.tdm_project.view
+package com.example.tdm_project.view.fragments
 
+import com.example.tdm_project.view.adapters.CustomMenuItem
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,13 +22,17 @@ import com.example.tdm_project.R
 import com.example.tdm_project.view.adapters.ArticleRVAdapter
 import com.example.tdm_project.model.Topic
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
+import com.example.tdm_project.view.activities.WebBrowserActivity
+import com.example.tdm_project.view.adapters.ArticleVAdapter
+import com.example.tdm_project.view.interfaces.ItemClicksListener
 import com.example.tdm_project.viewmodel.ArticleViewModel
+import kotlinx.android.synthetic.main.horiz_news_view.view.*
 
 
 class HomeFragment : Fragment() {
 
     lateinit var rootView: View
-    lateinit var articleAdapter: ArticleRVAdapter
+    lateinit var articleAdapter: RecyclerView.Adapter<*>
     lateinit var rv: RecyclerView
     lateinit var pref: PreferencesProvider
     //viewmodel
@@ -61,7 +68,8 @@ class HomeFragment : Fragment() {
         vmodel.getArticles().observe(this, Observer {
 
             newsList = it
-            articleAdapter.swapData(it)
+            if(verticallayout) (articleAdapter as ArticleVAdapter).swapData(it)
+            else (articleAdapter as ArticleRVAdapter).swapData(it)
         })
 
         vmodel.getData()
@@ -87,7 +95,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-
         return rootView
     }
 
@@ -98,11 +105,53 @@ class HomeFragment : Fragment() {
         layout.orientation = orientation
         rv.layoutManager = layout
         when (orientation) {
-            LinearLayoutManager.HORIZONTAL -> articleAdapter =
-                ArticleRVAdapter(rootView.context, newsList, ArticleRVAdapter.LAYOUT_HORIZ)
-            LinearLayoutManager.VERTICAL -> articleAdapter =
-                ArticleRVAdapter(rootView.context, newsList, ArticleRVAdapter.LAYOUT_VERT)
+            LinearLayoutManager.HORIZONTAL ->  {
+                articleAdapter =
+                    ArticleRVAdapter(rootView.context, newsList)
+                (articleAdapter as ArticleRVAdapter).setOnItemListener(object :ItemClicksListener{
+                    override fun onPopupRequested(view: View , article: ArticleViewModel, position: Int) {
+
+                        val popup = PopupMenu(view.context, view.menu_button)
+                        val inflater = popup.menuInflater
+                        inflater.inflate(R.menu.card_menu, popup.menu)
+                        popup.setOnMenuItemClickListener(
+                            CustomMenuItem(article,view.context))
+                        popup.show()
+                    }
+
+                    override fun onItemClick(article: ArticleViewModel, position: Int) {
+                        val intent = Intent(context, WebBrowserActivity::class.java)
+                        intent.putExtra(WebBrowserActivity.EXTRA_URI,article.uri)
+                        context!!.startActivity(intent)
+                    }
+
+                })
+            }
+            LinearLayoutManager.VERTICAL -> {
+                articleAdapter =
+                    ArticleVAdapter(rootView.context, newsList)
+                (articleAdapter as ArticleVAdapter).setOnItemListener(object :ItemClicksListener{
+                    override fun onPopupRequested(view: View , article: ArticleViewModel, position: Int) {
+
+                        val popup = PopupMenu(view.context, view.menu_button)
+                        val inflater = popup.menuInflater
+                        inflater.inflate(R.menu.card_menu, popup.menu)
+                        popup.setOnMenuItemClickListener(
+                            CustomMenuItem(article,view.context))
+                        popup.show()
+                    }
+
+                    override fun onItemClick(article: ArticleViewModel, position: Int) {
+                        val intent = Intent(context, WebBrowserActivity::class.java)
+                        intent.putExtra(WebBrowserActivity.EXTRA_URI,article.uri)
+                        context!!.startActivity(intent)
+                    }
+
+                })
+
+            }
         }
+
         rv.adapter = articleAdapter
     }
 
@@ -155,7 +204,8 @@ class HomeFragment : Fragment() {
         newsList.forEach {
             if (it.theme == titre) selectedList.add(it)
         }
-        articleAdapter.swapData(selectedList)
+        if(verticallayout) (articleAdapter as ArticleVAdapter).swapData(selectedList)
+        else (articleAdapter as ArticleRVAdapter).swapData(selectedList)
     }
 
 }

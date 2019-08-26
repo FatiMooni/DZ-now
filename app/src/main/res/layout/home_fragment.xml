@@ -3,8 +3,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
-    <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
-                                           android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                            xmlns:tools="http://schemas.android.com/tools"
                                                            xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -77,10 +76,16 @@
             android:tint="?attr/icon_color"
             android:layout_height="wrap_content"/>
 
-
+            <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+                                                   app:layout_constraintEnd_toEndOf="parent"
+                                                   app:layout_constraintStart_toStartOf="parent"
+                                                   android:scrollbars="horizontal"
+                                                   app:layout_constraintBottom_toBottomOf="parent"
+                                                   app:layout_constraintTop_toBottomOf="@id/btn_horizt_display"
+                                                   android:layout_height="0dp">
             <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_vert_display"
                     android:orientation="vertical">
@@ -89,12 +94,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/recyler_view_news"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/vert_news_view"
                 >
 
                 </androidx.recyclerview.widget.RecyclerView>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
+            </androidx.core.widget.NestedScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
 </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>

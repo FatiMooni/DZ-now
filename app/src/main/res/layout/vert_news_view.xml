@@ -10,10 +10,10 @@
                 android:layout_width="match_parent">
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="220dp"
             android:layout_margin="5dp"
             android:padding="10dp"
-            app:contentPaddingTop="15dp"
+            app:contentPaddingTop="10dp"
             app:contentPaddingLeft="4dp"
             app:cardElevation="5dp"
             android:requiresFadingEdge="horizontal"
@@ -25,13 +25,14 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:weightSum="100"
+            android:paddingStart="7dp"
             android:layout_height="match_parent">
 
         <RelativeLayout
                 android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="90"
+                android:layout_weight="60"
         >
             <TextView
                     android:layout_width="match_parent"
@@ -42,7 +43,8 @@
                     android:textSize="16sp"
                     app:fontFamily="serif"
                     android:textStyle="bold"
-                    android:maxLines="1"
+                    android:maxLines="2"
+                    android:layout_marginBottom="7dp"
                     android:ellipsize="end"
                     android:text="@{item.title}"
             />
@@ -52,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/news_descrp"
                     android:layout_below="@id/news_title"
-                    android:textColor="?attr/primary_text_color"
+                    android:textColor="?attr/secondary_text_color"
                     android:maxLines="5"
                     android:ellipsize="end"
                     android:textSize="14sp"
@@ -83,14 +85,15 @@
 
         </RelativeLayout>
         <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="7dp"
-                android:layout_weight="10"
+                android:layout_weight="40"
         >
             <ImageView
-                    android:layout_width="180dp"
-                    android:layout_height="150dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="180dp"
                     android:id="@+id/news_image"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"

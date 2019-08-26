@@ -3,28 +3,26 @@ package com.example.tdm_project.view.adapters
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import com.example.tdm_project.R
 import com.example.tdm_project.databinding.ArticleBinding
+import com.example.tdm_project.model.Article
+import com.example.tdm_project.view.interfaces.ItemClicksListener
 import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.squareup.picasso.Picasso
 
 
-class ArticleRVAdapter(val context: Context, val news : ArrayList<ArticleViewModel>, val type : Int) : RecyclerView.Adapter<ArticleRVAdapter.ViewHolder> (){
+class ArticleRVAdapter(val context: Context, val news : ArrayList<ArticleViewModel>) : RecyclerView.Adapter<ArticleRVAdapter.ViewHolder> (){
 
-    companion object {
-        const val LAYOUT_HORIZ = 0
-        const val LAYOUT_VERT = 1
-    }
+    private var itemListener : ItemClicksListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: ArticleBinding = when(type) {
-            LAYOUT_HORIZ -> DataBindingUtil.inflate(inflater, R.layout.horiz_news_view, parent, false)
-            LAYOUT_VERT -> DataBindingUtil.inflate(inflater, R.layout.vert_news_view, parent, false)
-            else -> throw IllegalArgumentException("this type doesn't exist")
-        }
-            return ViewHolder(binding)
+        val binding: ArticleBinding =  DataBindingUtil.inflate(inflater, R.layout.horiz_news_view, parent, false)
+
+            return ViewHolder(binding,itemListener!!)
     }
 
     override fun getItemCount(): Int {
@@ -41,7 +39,10 @@ class ArticleRVAdapter(val context: Context, val news : ArrayList<ArticleViewMod
         this.notifyDataSetChanged()
     }
 
-    inner class ViewHolder (var viewBinder : ArticleBinding) : RecyclerView.ViewHolder(viewBinder.root){
+
+    inner class ViewHolder (var viewBinder : ArticleBinding , var listener: ItemClicksListener) : RecyclerView.ViewHolder(viewBinder.root){
+
+
 
           fun bind(item : ArticleViewModel){
               this.viewBinder.item = item
@@ -52,46 +53,23 @@ class ArticleRVAdapter(val context: Context, val news : ArrayList<ArticleViewMod
                   .load(item.img)
                   .into(viewBinder.newsImage)}
 
-          }
-          /**    with(objet){
-                  news_title.text = item.title
-                  news_date.text = item.date.plus(", ")
-                  news_descrp.text = item.resume
-                  news_writer.text = item.author
-                  Picasso
-                      .get() // give it the context
-                      .load(item.img)
-                      .into(news_image)
+              viewBinder.root.setOnClickListener {
+                  listener.onItemClick(item , adapterPosition)
               }
 
-
-              btnMenu = objet.findViewById(R.id.menu_button)
-              btnMenu.setOnClickListener {
-                  showPopupMenu(btnMenu,item,context)
+              viewBinder.menuButton.setOnClickListener {
+                  listener.onPopupRequested(viewBinder.root,item, adapterPosition)
               }
-
-
-
-
-           /*  objet.setOnClickListener {
-                  SharedSavedNews.readArticle(item,context)
-              }
-*/
-
 
           }
-        fun showPopupMenu(view: View, item: Article , context: Context) {
-            // inflate menu
-            val popup = PopupMenu(view.context, view)
-            val inflater = popup.menuInflater
-            inflater.inflate(R.menu.card_menu, popup.menu)
-            //popup.setOnMenuItemClickListener(CustomMenuItem(item,context))
-            popup.show()
-        }
 
 
-          */
+
+
+
     }
 
-
+    fun setOnItemListener(listener: ItemClicksListener){
+        this.itemListener = listener
+    }
 }

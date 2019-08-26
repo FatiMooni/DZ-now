@@ -1,4 +1,4 @@
-package com.example.tdm_project.view
+package com.example.tdm_project.view.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,11 +12,11 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.tdm_project.R
 import com.example.tdm_project.R.string.publish_date
+import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.data.SharedSavedNews
-import com.example.tdm_project.model.data.news
-import com.example.tdm_project.sharedPreferences.CustomBaseActivity
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
+import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.squareup.picasso.Picasso
 
 import kotlinx.android.synthetic.main.activity_article_reading.*
@@ -28,7 +28,7 @@ class ArticleReadingActivity : CustomBaseActivity() {
     lateinit var layoutFabSave : LinearLayout
     lateinit var layoutFabShare : LinearLayout
     lateinit var layoutFabSharePrl :  LinearLayout
-    lateinit var article : news
+    lateinit var article :  Article
 
 
     var fabExpanded = true
@@ -46,18 +46,18 @@ class ArticleReadingActivity : CustomBaseActivity() {
         }
 
        intent?.let {
-           article = intent.extras.getParcelable("article") as news
-           Toast.makeText(this,article.Title + "" + article.Writer,Toast.LENGTH_LONG).show()
+           article = intent.extras.getParcelable("article") as Article
+           Toast.makeText(this,article.title + "" + article.author,Toast.LENGTH_LONG).show()
        }
 
-        findViewById<AppCompatTextView>(R.id.title_input).text =  article.Title
-        findViewById<AppCompatTextView>(R.id.date_input).text = getString(publish_date) + " " +article.Date
-        findViewById<AppCompatTextView>(R.id.writer_input).text = article.Writer
-        findViewById<AppCompatTextView>(R.id.article_text).text = article.url
+        findViewById<AppCompatTextView>(R.id.title_input).text =  article.title
+        findViewById<AppCompatTextView>(R.id.date_input).text = getString(publish_date) + " " +article.date
+        findViewById<AppCompatTextView>(R.id.writer_input).text = article.author
+        findViewById<AppCompatTextView>(R.id.article_text).text = article.uri
        val img= findViewById<AppCompatImageView>(R.id.article_image)
         Picasso
             .get() // give it the context
-            .load(article.Image)
+            .load(article.img)
             .into(img)
 
 
@@ -79,15 +79,15 @@ class ArticleReadingActivity : CustomBaseActivity() {
         }
 
         layoutFabSave.setOnClickListener {
-            SharedSavedNews.savePost(article,this)
+            SharedSavedNews.savePost(ArticleViewModel( article),this)
         }
 
         layoutFabShare.setOnClickListener {
-          SharedSavedNews.sharePost(article,this)
+          SharedSavedNews.sharePost(ArticleViewModel(article),this)
         }
 
         layoutFabSharePrl.setOnClickListener {
-            SharedSavedNews.shareProfilePost(article,this)
+            SharedSavedNews.shareProfilePost(ArticleViewModel(article),this)
         }
 
         //Only main FAB is visible in the beginning

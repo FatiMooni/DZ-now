@@ -21,12 +21,15 @@
 >
 <RelativeLayout android:layout_width="match_parent"
                android:layout_height="match_parent"
+                android:padding="10dp"
  >
 
     <ImageView
             android:layout_width="match_parent"
             android:layout_margin="2dp"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
+            android:minHeight="120dp"
+            android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:layout_below="@id/news_writer"
             android:adjustViewBounds="true"
@@ -64,7 +67,7 @@
             android:layout_below="@id/news_title"
             android:textColor="?attr/primary_text_color"
             android:textSize="14sp"
-            android:maxLines="5"
+            android:maxLines="4"
             android:ellipsize="end"
             android:text="@{item.resume}"
     />

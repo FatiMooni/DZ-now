@@ -1,4 +1,4 @@
-package com.example.tdm_project.view
+package com.example.tdm_project.view.activities
 
 
 import android.app.Activity
@@ -23,7 +23,6 @@ import android.widget.*
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Topic
 import com.example.tdm_project.model.getTopics
-import com.example.tdm_project.sharedPreferences.CustomBaseActivity
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import kotlinx.android.synthetic.main.parameters.*

@@ -25,14 +25,14 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".sharedPreferences.WebBrowserActivity">
+        <activity android:name=".view.activities.WebBrowserActivity">
         </activity>
         <activity
-                android:name=".view.ArticleReadingActivity"
+                android:name=".view.activities.ArticleReadingActivity"
                 android:label="@string/title_activity_article_reading"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".view.ParameterActivity"
+                android:name=".view.activities.ParameterActivity"
                 android:windowSoftInputMode="adjustResize"/>
 
         <provider

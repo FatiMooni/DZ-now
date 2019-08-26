@@ -8,7 +8,7 @@
         android:background="?attr/background_color"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_article_reading"
-        tools:context=".view.ArticleReadingActivity">
+        tools:context=".view.activities.ArticleReadingActivity">
    <androidx.appcompat.widget.AppCompatTextView
            android:layout_width="wrap_content"
            app:layout_constraintStart_toStartOf="parent"

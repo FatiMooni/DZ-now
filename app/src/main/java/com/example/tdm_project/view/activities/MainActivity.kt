@@ -1,4 +1,4 @@
-package com.example.tdm_project.view
+package com.example.tdm_project.view.activities
 import android.content.Context
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,10 +7,11 @@ import android.util.Log
 import android.view.Menu
 import com.example.tdm_project.R
 
-import com.example.tdm_project.sharedPreferences.CustomBaseActivity
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
-
+import com.example.tdm_project.view.fragments.HomeFragment
+import com.example.tdm_project.view.fragments.ProfileFragment
+import com.example.tdm_project.view.fragments.SavedFragment
 
 
 class MainActivity : CustomBaseActivity() {
