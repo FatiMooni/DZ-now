@@ -12,8 +12,7 @@ import com.google.gson.reflect.TypeToken
 
 class PreferencesProvider (context: Context){
 //**language**/
-    val PREFERENCE_NAME = "SharedPreferenceExample"
-    val PREFERENCE_LANGUAGE = "Language"
+
 
 
     internal var mySharedPref : SharedPreferences = context.getSharedPreferences("filename",Context.MODE_PRIVATE)
@@ -25,6 +24,9 @@ class PreferencesProvider (context: Context){
 
     //Create keys to manage the shared preferences
     companion object {
+        const val PREFERENCE_NAME = "SharedPreferenceExample"
+        const val PREFERENCE_LANGUAGE = "Language"
+        const val FIRST_TIME_USED = "SharedPref.firstUseApp"
         const val DEVELOP_MODE = false
         private const val DEVICE_TOKEN = "data.source.prefs.DEVICE_TOKEN"
     }
@@ -74,6 +76,17 @@ class PreferencesProvider (context: Context){
 
         else getTopics()
     }
+    //first time to use
+    fun isFirstUse() : Boolean {
+        return mySharedPref.getBoolean(FIRST_TIME_USED, true)
+    }
+
+    //change value of first to use
+    fun setNotFirstUse() = run {
+        editor = mySharedPref.edit()
+        editor.putBoolean(FIRST_TIME_USED,false)
+        editor.apply()
+    }
 
     //create a variable to access to the shared preferences
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -91,7 +104,7 @@ class PreferencesProvider (context: Context){
     val preference = context.getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
 
     fun getLoginCount() : String{
-        return preference.getString(PREFERENCE_LANGUAGE,"fr")
+        return preference.getString(PREFERENCE_LANGUAGE,"fr")!!
     }
 
     fun setLoginCount(Language:String){

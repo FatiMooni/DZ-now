@@ -277,9 +277,8 @@ class ParameterActivity : CustomBaseActivity() {
 
         }
 
-        mBuilder.setNeutralButton(this.getString(R.string.cancel)) { dialog, which: Int ->
+        mBuilder.setNeutralButton(this.getString(R.string.cancel)) { dialog, _: Int ->
             dialog.dismiss()
-
 
         }
 

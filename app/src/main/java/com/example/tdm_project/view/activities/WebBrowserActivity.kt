@@ -22,7 +22,7 @@ class WebBrowserActivity : AppCompatActivity() {
         val webView = findViewById<WebView>(R.id.webview)
         if (intent.hasExtra("article"))
         intent?.let {
-            article = intent.extras.getParcelable("article") as Article
+            article = intent.extras!!.getParcelable("article") as Article
             Toast.makeText(this,article.title + "" + article.author, Toast.LENGTH_LONG).show()
             //Specify the URL you want to display//
             webView.loadUrl(article.uri)

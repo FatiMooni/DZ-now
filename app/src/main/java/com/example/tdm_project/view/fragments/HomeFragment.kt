@@ -1,10 +1,10 @@
 package com.example.tdm_project.view.fragments
 
-import com.example.tdm_project.view.adapters.CustomMenuItem
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,14 +19,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tdm_project.R
-import com.example.tdm_project.view.adapters.ArticleRVAdapter
 import com.example.tdm_project.model.Topic
+import com.example.tdm_project.services.FetchArticlesService
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.activities.WebBrowserActivity
+import com.example.tdm_project.view.adapters.ArticleRVAdapter
 import com.example.tdm_project.view.adapters.ArticleVAdapter
+import com.example.tdm_project.view.adapters.CustomMenuItem
 import com.example.tdm_project.view.interfaces.ItemClicksListener
 import com.example.tdm_project.viewmodel.ArticleViewModel
+import com.example.tdm_project.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.horiz_news_view.view.*
+import org.jetbrains.anko.doAsync
 
 
 class HomeFragment : Fragment() {
@@ -68,11 +72,30 @@ class HomeFragment : Fragment() {
         vmodel.getArticles().observe(this, Observer {
 
             newsList = it
-            if(verticallayout) (articleAdapter as ArticleVAdapter).swapData(it)
+            if (verticallayout) (articleAdapter as ArticleVAdapter).swapData(it)
             else (articleAdapter as ArticleRVAdapter).swapData(it)
         })
 
         vmodel.getData()
+
+        var catVModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
+
+        catVModel.getCategories().observe(this, Observer {
+            if (it.isNotEmpty() && it != null) it.forEach { category ->
+
+                Log.i("link", category.feeds.toString())
+
+                context?.startService(
+                    Intent(context, FetchArticlesService::class.java)
+                        .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
+                        .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, category)
+                )
+            }
+
+        })
+        doAsync {
+            catVModel.getData()
+        }
 
         val btnHoriz = rootView.findViewById<ImageButton>(R.id.btn_horizt_display)
         btnHoriz.setOnClickListener {
@@ -105,23 +128,24 @@ class HomeFragment : Fragment() {
         layout.orientation = orientation
         rv.layoutManager = layout
         when (orientation) {
-            LinearLayoutManager.HORIZONTAL ->  {
+            LinearLayoutManager.HORIZONTAL -> {
                 articleAdapter =
                     ArticleRVAdapter(rootView.context, newsList)
-                (articleAdapter as ArticleRVAdapter).setOnItemListener(object :ItemClicksListener{
-                    override fun onPopupRequested(view: View , article: ArticleViewModel, position: Int) {
+                (articleAdapter as ArticleRVAdapter).setOnItemListener(object : ItemClicksListener {
+                    override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
 
                         val popup = PopupMenu(view.context, view.menu_button)
                         val inflater = popup.menuInflater
                         inflater.inflate(R.menu.card_menu, popup.menu)
                         popup.setOnMenuItemClickListener(
-                            CustomMenuItem(article,view.context))
+                            CustomMenuItem(article, view.context)
+                        )
                         popup.show()
                     }
 
                     override fun onItemClick(article: ArticleViewModel, position: Int) {
                         val intent = Intent(context, WebBrowserActivity::class.java)
-                        intent.putExtra(WebBrowserActivity.EXTRA_URI,article.uri)
+                        intent.putExtra(WebBrowserActivity.EXTRA_URI, article.uri)
                         context!!.startActivity(intent)
                     }
 
@@ -130,20 +154,21 @@ class HomeFragment : Fragment() {
             LinearLayoutManager.VERTICAL -> {
                 articleAdapter =
                     ArticleVAdapter(rootView.context, newsList)
-                (articleAdapter as ArticleVAdapter).setOnItemListener(object :ItemClicksListener{
-                    override fun onPopupRequested(view: View , article: ArticleViewModel, position: Int) {
+                (articleAdapter as ArticleVAdapter).setOnItemListener(object : ItemClicksListener {
+                    override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
 
                         val popup = PopupMenu(view.context, view.menu_button)
                         val inflater = popup.menuInflater
                         inflater.inflate(R.menu.card_menu, popup.menu)
                         popup.setOnMenuItemClickListener(
-                            CustomMenuItem(article,view.context))
+                            CustomMenuItem(article, view.context)
+                        )
                         popup.show()
                     }
 
                     override fun onItemClick(article: ArticleViewModel, position: Int) {
                         val intent = Intent(context, WebBrowserActivity::class.java)
-                        intent.putExtra(WebBrowserActivity.EXTRA_URI,article.uri)
+                        intent.putExtra(WebBrowserActivity.EXTRA_URI, article.uri)
                         context!!.startActivity(intent)
                     }
 
@@ -204,7 +229,7 @@ class HomeFragment : Fragment() {
         newsList.forEach {
             if (it.theme == titre) selectedList.add(it)
         }
-        if(verticallayout) (articleAdapter as ArticleVAdapter).swapData(selectedList)
+        if (verticallayout) (articleAdapter as ArticleVAdapter).swapData(selectedList)
         else (articleAdapter as ArticleRVAdapter).swapData(selectedList)
     }
 
