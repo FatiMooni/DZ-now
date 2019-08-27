@@ -4,15 +4,8 @@
 
 
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/btn_logOut"
+        android:icon="@drawable/ic_logout"
         android:title="logout"
-        android:iconTint="@color/white"
         app:showAsAction="ifRoom"/>
-
-    <item android:id="@+id/search"
-          android:title="@string/search_title"
-          android:icon="@drawable/ic_search"
-          android:iconTint="@color/white"
-          app:showAsAction="collapseActionView|ifRoom"
-          app:actionViewClass="android.widget.SearchView" />
 </menu>

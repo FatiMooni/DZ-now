@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import com.example.tdm_project.view.activities.WebBrowserActivity
 import com.example.tdm_project.view.adapters.ArticleVAdapter
 import com.example.tdm_project.view.interfaces.ItemClicksListener
 import com.example.tdm_project.viewmodel.ArticleViewModel
+import com.facebook.Profile
 import kotlinx.android.synthetic.main.horiz_news_view.view.*
 
 
@@ -95,6 +97,13 @@ class HomeFragment : Fragment() {
             }
         }
 
+        //Set the current User
+        val userGreeting =  rootView.findViewById<AppCompatTextView>(R.id.user_greeting)
+        val profile= Profile.getCurrentProfile()
+        if (profile != null) {
+            var greeting = userGreeting.text.toString()
+            userGreeting.text = greeting + "" + profile.name.toString()
+        }
         return rootView
     }
 

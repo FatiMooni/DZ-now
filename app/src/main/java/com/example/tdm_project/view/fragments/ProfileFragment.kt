@@ -18,6 +18,8 @@ import com.example.tdm_project.model.data.SharedSavedNews
 import com.example.tdm_project.view.activities.ParameterActivity
 import com.example.tdm_project.view.adapters.sharedPostsAdapter
 import com.example.tdm_project.viewmodel.ArticleViewModel
+import com.facebook.Profile
+import com.facebook.login.LoginManager
 
 
 class ProfileFragment : Fragment() {
@@ -54,6 +56,13 @@ class ProfileFragment : Fragment() {
         )
         val pseudoText = rootView.findViewById<TextView>(R.id.profile_pseudo)
         val profileView = rootView.findViewById<ImageView>(R.id.profile_photo)
+
+        val profile= Profile.getCurrentProfile()
+       var pictureUri= profile.getProfilePictureUri(127,127)
+        Log.i("URIFACEBOOK",pictureUri.toString())
+
+        profileView.setImageURI(pictureUri)
+        pseudoText.text  = profile.name.toString()
         newsList = SharedSavedNews.getListSharedPosts()
         intialiserVertically()
 

@@ -83,7 +83,7 @@
                   android:drawableLeft="@drawable/ic_picture"
                   android:drawableTint="?attr/icon_color"
                   android:textColor="?attr/primary_text_color"
-                  android:background="?attr/card_background"
+                  android:background="@null"
                   />
             <Button android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -92,7 +92,7 @@
                     android:drawableTint="?attr/icon_color"
                     android:textColor="?attr/primary_text_color"
                     android:drawableLeft="@drawable/ic_edit_black_24dp"
-                    android:background="?attr/card_background"
+                    android:background="@null"
 
           />
 
@@ -127,12 +127,10 @@
                     android:id="@+id/btn_changeLang"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_welcome"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/chang_lang"
-                    android:background="?attr/card_background"
+                    android:background="@null"
                     android:drawableTint="?attr/icon_color"
                     android:textColor="?attr/primary_text_color"
                     app:layout_constraintHorizontal_bias="1.0"
