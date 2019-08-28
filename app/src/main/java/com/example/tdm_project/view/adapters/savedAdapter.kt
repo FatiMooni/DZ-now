@@ -43,7 +43,7 @@ class savedAdapter(val context: Context, val news : ArrayList<ArticleViewModel>)
         }
         fun bind(item : ArticleViewModel){
             objet.findViewById<TextView>(R.id.news_title).text = item.title
-            objet.findViewById<TextView>(R.id.news_date).text = item.date + " By"
+            objet.findViewById<TextView>(R.id.news_date).text = item.publicationDate.toString() + " By"
             objet.findViewById<TextView>(R.id.news_descrp).text = item.resume
             objet.findViewById<TextView>(R.id.news_writer).text = item.author
             val img =objet.findViewById<ImageView>(R.id.news_image)

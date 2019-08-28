@@ -11,6 +11,10 @@ interface CategoryDao {
     fun getAllCategories(): List<Category>
 
 
+    //retrive all categories
+    @Query("Select * from categories where _id==:id")
+    fun getCategory(id :String): Category
+
     //insert a Category
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg category: Category)

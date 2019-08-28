@@ -10,9 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.annotation.RequiresApi
-import androidx.core.content.FileProvider
-import androidx.appcompat.widget.LinearLayoutCompat
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.util.Log
@@ -20,12 +17,18 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.FileProvider
 import com.example.tdm_project.R
+import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.Topic
-import com.example.tdm_project.model.getTopics
+import com.example.tdm_project.model.Topic.Companion.getTopics
+import com.example.tdm_project.services.App
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import kotlinx.android.synthetic.main.parameters.*
+import org.jetbrains.anko.doAsync
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -217,15 +220,20 @@ class ParameterActivity : CustomBaseActivity() {
             )
         }
 
-        //set topics list
-        topics = pref.loadTopicsList()
-        initializeTopicsList()
+        var categoryList : List<Category>? = null
+        doAsync {
+            categoryList = App.db.categoryDao().getAllCategories()
+            //set topics list
+            topics = pref.loadTopicsList(categoryList!!)
+            initializeTopicsList(categoryList!!)
+        }
+
 
 
     }
 
-  private fun initializeTopicsList(){
-      val list = getTopics()
+  private fun initializeTopicsList(categoryList : List<Category>?){
+      val list = getTopics(categoryList!!)
       var layout = findViewById<LinearLayoutCompat>(R.id.topics_choice_holder)
       Toast.makeText(this,layout.toString(),Toast.LENGTH_LONG).show()
      list.forEach {

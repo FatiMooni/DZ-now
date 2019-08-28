@@ -51,7 +51,7 @@ class ArticleReadingActivity : CustomBaseActivity() {
        }
 
         findViewById<AppCompatTextView>(R.id.title_input).text =  article.title
-        findViewById<AppCompatTextView>(R.id.date_input).text = getString(publish_date) + " " +article.date
+        findViewById<AppCompatTextView>(R.id.date_input).text = getString(publish_date) + " " +article.publicationDate
         findViewById<AppCompatTextView>(R.id.writer_input).text = article.author
         findViewById<AppCompatTextView>(R.id.article_text).text = article.uri
        val img= findViewById<AppCompatImageView>(R.id.article_image)

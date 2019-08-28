@@ -4,7 +4,7 @@
     <data class="ArticleBinding">
     <variable
             name="item"
-            type="com.example.tdm_project.viewmodel.ArticleViewModel" />
+            type="com.example.tdm_project.model.Article" />
     </data>
 
 <androidx.cardview.widget.CardView
@@ -79,7 +79,7 @@
             android:id="@+id/news_date"
             android:textColor="?attr/secondary_text_color"
             android:textSize="12sp"
-            android:text="@{item.date}"
+            android:text="@{item.publicationDate.toString()}"
     />
     <TextView
             android:layout_width="wrap_content"

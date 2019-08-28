@@ -43,7 +43,7 @@ class ArticleVAdapter(val context: Context, val news : ArrayList<ArticleViewMode
         fun bind(item : ArticleViewModel){
             this.viewBinder.item = item
             viewBinder.executePendingBindings()
-            if(item.img.isNotBlank() && item.img.isNotEmpty())
+            if(item.img!!.isNotBlank() && item.img!!.isNotEmpty())
             { Picasso
                 .get() // give it the context
                 .load(item.img)

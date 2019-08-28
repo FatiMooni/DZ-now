@@ -5,10 +5,10 @@ import android.app.IntentService
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
+import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.Category
-import com.example.tdm_project.model.data.Entry
 import com.example.tdm_project.model.data.Feed
-import com.example.tdm_project.model.data.toDbFormat
+import com.example.tdm_project.model.toDbFormat
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.activities.CustomBaseActivity.Companion.isOnline
 import com.rometools.rome.io.SyndFeedInput
@@ -34,9 +34,15 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
 
     companion object : AnkoLogger {
         //constants
-        const val ACTION_REFRESH_FEEDS = "tdm_project.services.FetchArticlesService.refreshAction"
+
+        /* if i want to refresh the feeds links/infos for one or more categories */
+        const val ACTION_REFRESH_FEEDS = "tdm_project.services.FetchArticlesService.refreshFeedsAction"
+        /* if i want to refresh the list of categories from backend categories */
+        const val ACTION_REFRESH_CATEGORIES = "tdm_project.services.FetchArticlesService.refreshFeedsAction"
+
         const val FROM_AUTO_REFRESH = "tdm_project.services.FetchArticlesService.FROM_AUTO_REFRESH"
         const val EXTRA_CATEGORY_ID = "tdm_project.services.FetchArticlesService.EXTRA_CATEGORY_ID"
+        const val EXTRA_CATEGORY = "tdm_project.services.FetchArticlesService.EXTRA_CATEGORY"
 
 
         //cookies manager
@@ -86,7 +92,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                             Log.i("feed ${attrs.key}", feed.title + feed.categories)
 
                             /** second : create the feed entity to save**/
-                            val feedToSave = Feed(link = feed.link, title = feed.title, categoryId = category._id)
+                            val feedToSave = Feed(link = attrs.value, title = feed.title, categoryId = category._id)
 
                             /** third : save the feed **/
                             App.db.feedDao().insert(feedToSave)
@@ -94,19 +100,18 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                         } else {
                             val feed = Feed(link = attrs.value, fetchError = true, categoryId = category._id)
                             App.db.feedDao().insert(feed)
-                            Log.e("feed ${attrs.key}", feed.title , throw NetworkErrorException("couldnt find this"))
+                            Log.e("feed ${attrs.key}", attrs.value )
                         }
-
 
                     }
 
                 }
 
-                sharedPref.setNotFirstUse()
             }
 
             /*** When the user decide to refresh the feeds of the category **/
-            (App.isOnline && ACTION_REFRESH_FEEDS == action) -> {
+            //TODO("when refresh categories is demanded")
+           /* (App.isOnline && ACTION_REFRESH_FEEDS == action) -> {
                 //update the category in the local database in case of any added or deleted feed
                 App.db.categoryDao().update(category)
 
@@ -142,35 +147,117 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                     if(!category.feeds.containsValue(it.link)) App.db.feedDao().delete(it)
                 }
             }
-
+*/
             /** Else we will just fetch the feeds from the localDataBase **/
         }
     }
 
-    //get articles for this feed / link
-    private fun refreshFeed(feed: Feed, acceptMinDate: Long): Int {
-        val entries = mutableListOf<Entry>()
-        /*val entriesToInsert = mutableListOf<Entry>()
-        val imgUrlsToDownload = mutableMapOf<String, List<String>>()
-
-        val previousFeedState = feed.copy()*/
-        try {
-            createCall(feed.link).execute().use { response ->
-                val input = SyndFeedInput()
-                val romeFeed = input.build(XmlReader(response.body()!!.byteStream()))
-                entries.addAll(romeFeed.entries.asSequence().filter { it.publishedDate?.time ?: Long.MAX_VALUE > acceptMinDate }.map {
-                    it.toDbFormat(
-                        feed
-                    )
-                })
-                Log.i("fetching entries", entries[1].toString())
-                //category.update(romeFeed)
-            }
-        } catch (t: Throwable) {
-            feed.fetchError = true
+    private fun getBaseUrl(link: String): String {
+        var baseUrl = link
+        val index = link.indexOf('/', 8) // this also covers https://
+        if (index > -1) {
+            baseUrl = link.substring(0, index)
         }
 
-        return 0
+        return baseUrl
+    }
+
+    //we only refresh articles if we are online
+    //get articles for this feed / link
+    private fun refreshArticles(category: Category, acceptMinDate: Long): Int {
+
+        //the list we gonna fetch
+        val articles = mutableListOf<Article>()
+        // the list we gonna save later
+        val articlesToInsert = mutableListOf<Article>()
+
+        //first we get list of saved feed
+        val feeds = App.db.feedDao().getCategoryFeeds(category._id)
+
+        feeds.forEach {feed ->
+            val previousFeedState = feed.copy()
+            articles.clear()
+            articlesToInsert.clear()
+
+            try {
+                //save instance of articles that belongs to this feed
+                createCall(feed.link).execute().use { response ->
+                    val input = SyndFeedInput()
+                    val romeFeed = input.build(XmlReader(response.body()!!.byteStream()))
+                    articles.addAll(romeFeed.entries.asSequence().filter { it.publishedDate?.time ?: Long.MAX_VALUE > acceptMinDate }.map {
+                        it.toDbFormat(
+                            feed , category
+                        )
+                    })
+                    feed.update(romeFeed)
+                    Log.i("fetching entries", articles[1].toString())
+
+                }
+            } catch (t: Throwable) {
+                feed.fetchError = true
+                Log.e("fetching entries", "link : ${feed.link}" , t)
+
+            }
+
+            if(previousFeedState != feed){
+                App.db.feedDao().update(feed)
+            }
+
+            /** first step we remove articles that have been added in the db before **/
+            val existingIds = App.db.articleDao().getIdsOfArticles(category._id , feed.id)
+            articles.removeAll { it._id in existingIds }
+            Log.i("first step","removed all exised articles for $feed")
+
+            /** second step : TODO(do we need any other optimisation)**/
+
+            var foundExisting = false
+
+            /** third step we insert **/
+            for (article in articles) {
+                if (existingIds.contains(article._id)) {
+                    foundExisting = true
+                }
+
+                if (!foundExisting) {
+
+                    // we will try to insert only new articles
+                    if (!existingIds.contains(article._id)) {
+                        articlesToInsert.add(article)
+
+                        //we try to improve the HTML representation
+                        article.title = article.title.replace("\n", " ").trim()
+                        article.resume?.let { desc ->
+                            // Improve the resume of the article or the description
+                            val improvedContent = HtmlOptimizer.improveHtmlContent(desc, feed.link)
+
+                            // Get images
+                                val imagesList = HtmlOptimizer.getImageURLs(improvedContent)
+                                if (imagesList.isNotEmpty()) {
+                                    if (article.img == null) {
+                                        article.img = HtmlOptimizer.getMainImageURL(imagesList)
+                                    }
+                                    //imgUrlsToDownload[entry.id] = imagesList
+                                }
+
+                            article.resume = improvedContent
+
+                        }
+
+                    }
+                    else {
+                        foundExisting = true
+                    }
+                }
+
+                Log.i("article :  ${article.title}" , "${article.publicationDate} ${article.uri} ${article.fetchDate}")
+
+            }
+
+            // Insert everything
+            App.db.articleDao().insert(*(articlesToInsert.toTypedArray()))
+
+        }
+        return articles.size
     }
 
 
@@ -191,8 +278,16 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
             return
         }
 
-        val category = intent.getParcelableExtra<Category>(EXTRA_CATEGORY_ID)
-        refreshCategory(category, intent.action!!)
+        if (intent.hasExtra(EXTRA_CATEGORY_ID)){
+            val categoryId = intent.getStringExtra(EXTRA_CATEGORY_ID)
+            val category = App.db.categoryDao().getCategory(categoryId)
+            refreshArticles(category, 88400000L)
+        }
+        if (intent.hasExtra(EXTRA_CATEGORY)) {
+
+            val category = intent.getParcelableExtra<Category>(EXTRA_CATEGORY)
+            refreshCategory(category, intent.action!!)
+        }
         //refreshFeed(category,6000)
         // fetch(this, isFromAutoRefresh, intent.action!!, intent.getLongExtra(EXTRA_FEED_ID, 0L))
     }

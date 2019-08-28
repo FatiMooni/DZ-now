@@ -10,6 +10,8 @@ import com.example.tdm_project.services.ServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ArticleViewModel : ViewModel {
 
@@ -18,14 +20,19 @@ class ArticleViewModel : ViewModel {
     private var articleInnerList = ArrayList<ArticleViewModel>()
 
     //parameteres
-    var _id : String = ""
+    var _id : String? = ""
     var title: String = ""
     var resume : String? = ""
-    var theme : String = ""
     var author : String = ""
-    var date : String = ""
-    var uri : String = ""
-    var img: String = ""
+    var uri : String? = ""
+    var img: String? = ""
+    var categoryId: String = ""
+    var categoryOrigin : String = "Default"
+    var fetchDate: Date = Date()
+    var publicationDate: Date = fetchDate
+    var mobilizedContent: String? = null //in case i want to save my article
+    var isRead: Boolean = false //TODO(do i need to handle this)
+    var isSavedOffline : Boolean = false
 
     constructor(
      article: Article
@@ -33,11 +40,14 @@ class ArticleViewModel : ViewModel {
         this._id = article._id
         this.title = article.title
         this.resume = article.resume
-        this.theme = article.theme
+        this.categoryOrigin = article.categoryOrigin
         this.author = article.author
-        this.date = article.date
+        this.fetchDate = article.fetchDate
         this.uri = article.uri
         this.img = article.img
+        this.isRead = article.isRead
+        this.isSavedOffline = article.isSavedOffline
+        categoryId = article.categoryId
     }
 
     constructor() : super()

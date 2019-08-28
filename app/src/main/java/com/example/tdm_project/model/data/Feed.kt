@@ -3,6 +3,7 @@ package com.example.tdm_project.model.data
 import android.os.Parcelable
 import androidx.room.*
 import com.example.tdm_project.model.Category
+import com.rometools.rome.feed.synd.SyndFeed
 import kotlinx.android.parcel.Parcelize
 
 @Entity(
@@ -36,3 +37,13 @@ data class Feed(
 ) : Parcelable
 
 
+{
+    fun update(feed: SyndFeed) {
+        if (title == null) {
+            title = feed.title
+        }
+
+        // no error anymore since we just got a feedWithCount
+        fetchError = false
+    }
+}

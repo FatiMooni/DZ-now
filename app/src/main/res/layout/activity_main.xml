@@ -4,9 +4,29 @@
         android:background="?attr/background_color"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:layout_height="match_parent"
+        tools:context=".view.activities.MainActivity"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/action_bar_frame"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+    >
+        <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/background_color"
+                app:title="Dz Now"
+                android:id="@+id/toolbar"
+                app:titleTextColor="?attr/primary_text_color"
+                app:popupTheme="@style/Platform.MaterialComponents.Light"
+        />
+
+    </FrameLayout>
 
     <FrameLayout
             android:id="@+id/fragment_container"
@@ -18,7 +38,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/action_bar_frame" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

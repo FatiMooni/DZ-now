@@ -13,13 +13,21 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tdm_project.R
+import com.example.tdm_project.model.Article
+import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.Topic
+import com.example.tdm_project.services.App
 import com.example.tdm_project.services.FetchArticlesService
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.activities.WebBrowserActivity
@@ -31,14 +39,19 @@ import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.example.tdm_project.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.horiz_news_view.view.*
 import org.jetbrains.anko.doAsync
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
 
     lateinit var rootView: View
-    lateinit var articleAdapter: RecyclerView.Adapter<*>
+    lateinit var articleAdapter: PagedListAdapter<Article,*>
+    lateinit var articleVAdapter: ArticleVAdapter
     lateinit var rv: RecyclerView
     lateinit var pref: PreferencesProvider
+    private var articlesLiveData: LiveData<PagedList<Article>>? = null
+
     //viewmodel
     private lateinit var vmodel: ArticleViewModel
 
@@ -48,7 +61,28 @@ class HomeFragment : Fragment() {
 
     companion object {
         var verticallayout: Boolean = false
+        var ACTION_REFRESH_CATEGORIES_FROM_BACK : Boolean = false
+        var CATEGORY_ARG = "category arg"
+
+        fun getHomeFragment(categoryId : String) : HomeFragment
+        {
+            return HomeFragment().apply{
+                categoryId.let {
+                    arguments = bundleOf(CATEGORY_ARG to categoryId )
+                }
+            }
+        }
+
+
+
+
     }
+
+    var categoryId : String? = null
+        set(value) {
+            field = value
+            InitDataObservers()
+        }
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -58,8 +92,7 @@ class HomeFragment : Fragment() {
         rootView = inflater.inflate(R.layout.home_fragment, container, false)
         pref = PreferencesProvider(rootView.context)
 
-        //prepare the topics on the top of the fragment
-        getTopics()
+
 
 
         //set list of news
@@ -73,26 +106,34 @@ class HomeFragment : Fragment() {
 
             newsList = it
             if (verticallayout) (articleAdapter as ArticleVAdapter).swapData(it)
-            else (articleAdapter as ArticleRVAdapter).swapData(it)
+            else (articleAdapter as ArticleRVAdapter)
         })
 
         vmodel.getData()
 
+
+
         var catVModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
 
         catVModel.getCategories().observe(this, Observer {
-            if (it.isNotEmpty() && it != null) it.forEach { category ->
+            if (it.isNotEmpty() && it != null) {
+                it.forEach { category ->
+                    Log.i("link", category.feeds.toString())
 
-                Log.i("link", category.feeds.toString())
+                    context?.startService(
+                        Intent(context, FetchArticlesService::class.java)
+                            .setAction(FetchArticlesService.ACTION_REFRESH_CATEGORIES)
+                            .putExtra(FetchArticlesService.EXTRA_CATEGORY, category)
+                    )
 
-                context?.startService(
-                    Intent(context, FetchArticlesService::class.java)
-                        .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
-                        .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, category)
-                )
+                }
+
+                //prepare the topics on the top of the fragment
+                getTopics(it)
             }
 
         })
+
         doAsync {
             catVModel.getData()
         }
@@ -130,7 +171,7 @@ class HomeFragment : Fragment() {
         when (orientation) {
             LinearLayoutManager.HORIZONTAL -> {
                 articleAdapter =
-                    ArticleRVAdapter(rootView.context, newsList)
+                    ArticleRVAdapter(rootView.context)
                 (articleAdapter as ArticleRVAdapter).setOnItemListener(object : ItemClicksListener {
                     override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
 
@@ -152,7 +193,7 @@ class HomeFragment : Fragment() {
                 })
             }
             LinearLayoutManager.VERTICAL -> {
-                articleAdapter =
+                articleVAdapter =
                     ArticleVAdapter(rootView.context, newsList)
                 (articleAdapter as ArticleVAdapter).setOnItemListener(object : ItemClicksListener {
                     override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
@@ -180,15 +221,27 @@ class HomeFragment : Fragment() {
         rv.adapter = articleAdapter
     }
 
+    private fun InitDataObservers(){
+        articlesLiveData = LivePagedListBuilder(when{
+            categoryId != null && categoryId!!.isNotBlank() -> App.db.articleDao().getArticlesOfCategory(categoryId!!, Date().time)
+            else -> App.db.articleDao().getAllArticles(Date().time)
+        },30).build()
+
+        articlesLiveData!!.observe(this , Observer { pagedList ->
+            articleAdapter.submitList(pagedList)
+            Log.i("articles in main " , "ma list $pagedList")
+        })
+    }
 
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun getTopics() {
+    private fun getTopics(fetchedCategories: List<Category>) {
         var layout = rootView.findViewById<LinearLayoutCompat>(R.id.Topics_buttom_holder)
+        layout.weightSum = 100F
         var style = 0
         var num = 0
 
-        topicsList = pref.loadTopicsList()
+        topicsList = pref.loadTopicsList(fetchedCategories)
         topicsList.forEach {
 
             var btn = AppCompatButton(rootView.context)
@@ -197,10 +250,11 @@ class HomeFragment : Fragment() {
             btn.setCompoundDrawablesWithIntrinsicBounds(draw, null, null, null)
             btn.setPadding(45, 0, 45, 0)
             btn.compoundDrawablePadding = 20
-            btn.maxWidth = 450
+            btn.maxWidth = 700
             btn.minWidth = 350
             btn.minHeight = 200
             val cat = it.title
+            val id = it.categoryId
             val titre = rootView.context.resources.getString(it.displayedTitle)
             btn.text = titre
             btn.setTextColor(rootView.resources.getColor(R.color.white, null))
@@ -217,6 +271,18 @@ class HomeFragment : Fragment() {
 
             btn.setOnClickListener {
                 chargeNews(cat)
+                Log.i("the articles of $cat", "the category with $id")
+               if(App.hasNetwork()!!)
+                context?.startService(
+                    Intent(context, FetchArticlesService::class.java)
+                        .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
+                        .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, id)
+                )
+                else {
+                        categoryId = id
+                       InitDataObservers()
+               }
+
             }
 
             layout.addView(btn)
@@ -227,10 +293,10 @@ class HomeFragment : Fragment() {
         val selectedList = ArrayList<ArticleViewModel>()
 
         newsList.forEach {
-            if (it.theme == titre) selectedList.add(it)
+            if (it.categoryOrigin == titre) selectedList.add(it)
         }
         if (verticallayout) (articleAdapter as ArticleVAdapter).swapData(selectedList)
-        else (articleAdapter as ArticleRVAdapter).swapData(selectedList)
+        else (articleAdapter as ArticleRVAdapter)
     }
 
 }

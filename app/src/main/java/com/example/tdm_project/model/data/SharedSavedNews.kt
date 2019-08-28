@@ -7,17 +7,13 @@ import com.example.tdm_project.R
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.view.activities.WebBrowserActivity
 import com.example.tdm_project.viewmodel.ArticleViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SharedSavedNews {
 
     companion object {
-       val a = Article ("5748","Le calendrier 2019/2020 de Premier League dévoilé - Foot Mercato",
-           "Footmercato.net","2019-12-04","sport",
-           "Sacré champion d’Angleterre pour la deuxième fois consécutive, Manchester City est prêt à repartir à la bataille." +
-                   " La Premier League vient de dévoiler le calendrier pour la saison 2019/2020. Et voici les dates principales" +
-                   ".\nLes 20 clubs de Premier League (...)",
-           "http://www.footmercato.net/premier-league/le-calemier-league-devoile_256383",
-           "http://www.footmercato.net/images/a/jurgen-klopp-et-pep-guardiola-lors-de-la-saison-2018-201ndrier-2019-2020-de-pre9_256383.jpg")
+       val a = Article ()
         var sharedPosts = arrayListOf<ArticleViewModel>( ArticleViewModel(a))
         fun getListSharedPosts() : ArrayList<ArticleViewModel> {
             return  sharedPosts

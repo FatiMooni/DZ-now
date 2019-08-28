@@ -110,5 +110,9 @@ dependencies {
     //
     implementation 'androidx.core:core-ktx:1.0.2'
 
+    //for paged adapter
+    implementation 'androidx.paging:paging-runtime:2.1.0'
+
+
 
 }

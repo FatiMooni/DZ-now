@@ -34,4 +34,9 @@
     <string name="saved">Sauvegardes</string>
     <string name="cancel">Annuler</string>
     <string name="social">social</string>
+    <string name="actualité">Actualité</string>
+    <string name="femme">Pour Elle</string>
+    <string name="international">International</string>
+    <string name="nat">national</string>
+    <string name="health">Santé</string>
 </resources>

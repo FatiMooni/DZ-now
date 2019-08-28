@@ -1,12 +1,12 @@
 package com.example.tdm_project.view.adapters
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tdm_project.R
 import com.example.tdm_project.databinding.ArticleBinding
 import com.example.tdm_project.model.Article
@@ -15,61 +15,69 @@ import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.squareup.picasso.Picasso
 
 
-class ArticleRVAdapter(val context: Context, val news : ArrayList<ArticleViewModel>) : RecyclerView.Adapter<ArticleRVAdapter.ViewHolder> (){
+class ArticleRVAdapter(val context: Context) :
+    PagedListAdapter<Article, ArticleRVAdapter.ViewHolder>(DIFF_CALLBACK) {
 
-    private var itemListener : ItemClicksListener? = null
+    private var itemListener: ItemClicksListener? = null
+
+    companion object {
+
+        @JvmField
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Article>() {
+
+            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =
+                oldItem._id == newItem._id
+
+            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean =
+                oldItem._id == newItem._id &&
+                        oldItem.isSavedOffline == newItem.isSavedOffline
+            // TODO(do we need to check other elements !! )
+        }
+
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: ArticleBinding =  DataBindingUtil.inflate(inflater, R.layout.horiz_news_view, parent, false)
+        val binding: ArticleBinding = DataBindingUtil.inflate(inflater, R.layout.horiz_news_view, parent, false)
 
-            return ViewHolder(binding,itemListener!!)
+        return ViewHolder(binding, itemListener!!)
     }
 
-    override fun getItemCount(): Int {
-        return  news.size
-    }
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        val newsContent = news[p1]
+        val newsContent = getItem(p1)!!
         p0.bind(newsContent)
     }
-    fun swapData(newlist: List<ArticleViewModel>) {
-        news.clear()
-        news.addAll(newlist)
-        this.notifyDataSetChanged()
-    }
 
 
-    inner class ViewHolder (var viewBinder : ArticleBinding , var listener: ItemClicksListener) : RecyclerView.ViewHolder(viewBinder.root){
+    inner class ViewHolder(var viewBinder: ArticleBinding, var listener: ItemClicksListener) :
+        RecyclerView.ViewHolder(viewBinder.root) {
 
 
+        fun bind(item: Article) {
+            this.viewBinder.item = item
+            viewBinder.executePendingBindings()
+            /*if (item.img!!.isNotBlank() && item.img!!.isNotEmpty()) {
+                Picasso
+                    .get() // give it the context
+                    .load(item.img)
+                    .into(viewBinder.newsImage)
+            }*/
 
-          fun bind(item : ArticleViewModel){
-              this.viewBinder.item = item
-              viewBinder.executePendingBindings()
-              if(item.img.isNotBlank() && item.img.isNotEmpty())
-              { Picasso
-                  .get() // give it the context
-                  .load(item.img)
-                  .into(viewBinder.newsImage)}
+            viewBinder.root.setOnClickListener {
+                listener.onItemClick(ArticleViewModel(item), adapterPosition)
+            }
 
-              viewBinder.root.setOnClickListener {
-                  listener.onItemClick(item , adapterPosition)
-              }
+            viewBinder.menuButton.setOnClickListener {
+                listener.onPopupRequested(viewBinder.root, ArticleViewModel(item), adapterPosition)
+            }
 
-              viewBinder.menuButton.setOnClickListener {
-                  listener.onPopupRequested(viewBinder.root,item, adapterPosition)
-              }
-
-          }
-
-
-
+        }
 
 
     }
 
-    fun setOnItemListener(listener: ItemClicksListener){
+    fun setOnItemListener(listener: ItemClicksListener) {
         this.itemListener = listener
     }
 }

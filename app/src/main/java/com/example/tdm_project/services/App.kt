@@ -24,6 +24,16 @@ class App : Application() {
             @JvmStatic
              var isOnline : Boolean = false
                  private set
+
+            fun hasNetwork(): Boolean? {
+                var isConnected: Boolean? = false // Initial Value
+                val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+                if (activeNetwork != null && activeNetwork.isConnected)
+                    isConnected = true
+                return isConnected
+            }
+
         }
 
         override fun onCreate() {
@@ -35,12 +45,5 @@ class App : Application() {
 
         }
 
-    private fun hasNetwork(): Boolean? {
-        var isConnected: Boolean? = false // Initial Value
-        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        if (activeNetwork != null && activeNetwork.isConnected)
-            isConnected = true
-        return isConnected
-    }
+
     }

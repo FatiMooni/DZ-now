@@ -34,4 +34,9 @@
     <string name="saved"> المسجلات </string>
     <string name="cancel">إلغاء</string>
     <string name="social">المجتمع</string>
+    <string name="actualité">آخر الأخبار</string>
+    <string name="femme">سيدات</string>
+    <string name="health">الصحة</string>
+    <string name="international">أخبار عالمية</string>
+    <string name="nat">أخبار وطنية</string>
 </resources>
