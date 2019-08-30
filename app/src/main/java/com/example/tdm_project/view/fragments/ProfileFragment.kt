@@ -60,7 +60,6 @@ class ProfileFragment : Fragment() {
         )
         val pseudoText = rootView.findViewById<TextView>(R.id.profile_pseudo)
         val profileView = rootView.findViewById<ImageView>(R.id.profile_photo)
-
         val profile= Profile.getCurrentProfile()
        var pictureUri= profile.getProfilePictureUri(127,127)
         Log.i("URIFACEBOOK",pictureUri.toString())
