@@ -228,14 +228,12 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                 if (!foundExisting) {
                     // we will try to insert only new articles
                     if (!existingIds.contains(article._id)) {
-                        articlesToInsert.add(article)
 
                         //we try to improve the HTML representation
                         article.title = article.title.replace("\n", " ").trim()
                         article.resume?.let { desc ->
                             // Improve the resume of the article or the description
                             val improvedContent = HtmlOptimizer.improveHtmlContent(desc, feed.link)
-
                             // Get images
                                 val imagesList = HtmlOptimizer.getImageURLs(improvedContent)
                                  Log.i("images", "$imagesList")
@@ -248,8 +246,8 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                                     article.img = HtmlOptimizer.getMainImageURL(improvedContent)
                                 }
 
-                            article.resume = improvedContent
-
+                            //article.resume = improvedContent
+                            articlesToInsert.add(article)
                         }
 
                     }

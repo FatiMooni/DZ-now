@@ -24,6 +24,7 @@ class WebBrowserActivity : AppCompatActivity() {
         intent?.let {
             article = intent.extras!!.getParcelable("article") as Article
             Toast.makeText(this,article.title + "" + article.author, Toast.LENGTH_LONG).show()
+
             //Specify the URL you want to display//
             webView.loadUrl(article.uri)
         }

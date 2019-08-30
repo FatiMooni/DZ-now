@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -193,7 +194,9 @@ class HomeFragment : Fragment() {
                     override fun onItemClick(article: ArticleViewModel, position: Int) {
                         val intent = Intent(context, WebBrowserActivity::class.java)
                         intent.putExtra(WebBrowserActivity.EXTRA_URI, article.uri)
+                        Toast.makeText(context,article.resume,Toast.LENGTH_LONG).show()
                         context!!.startActivity(intent)
+
                     }
 
                 })

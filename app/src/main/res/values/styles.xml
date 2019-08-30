@@ -20,7 +20,7 @@
     <style name="DarkAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">#0F0F11</item>
         <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">#1976D2</item>
+        <item name="colorAccent">#FB8C00</item>
         <item name="background_color">#000000</item>
         <item name="card_background">#424242</item>
         <item name="link_background">#757575</item>

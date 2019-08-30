@@ -2,6 +2,7 @@ package com.example.tdm_project.services
 
 import android.content.Intent
 import android.text.TextUtils
+import com.example.tdm_project.model.Article
 import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
@@ -137,4 +138,14 @@ object HtmlOptimizer {
 
         return false
     }
+
+   /* private fun getClearContent(article : Article?) : String? {
+        if (article != null){
+            //we will have the mobilized content if we have saved it
+            var contentToDisplay = article.mobilizedContent?: article.resume.orEmpty()
+            contentToDisplay.replace()
+        }
+
+        return null
+    }*/
 }
