@@ -31,8 +31,9 @@
             android:minHeight="120dp"
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
-            android:layout_below="@id/news_writer"
+            android:layout_below="@id/news_category"
             android:adjustViewBounds="true"
+            app:imageUrl="@{item.img}"
             android:src="@drawable/chicanery"
             android:id="@+id/news_image"
     />
@@ -54,7 +55,7 @@
              android:textSize="16sp"
              app:fontFamily="serif"
              android:textStyle="bold"
-             android:maxLines="1"
+             android:maxLines="2"
              android:layout_marginBottom="7dp"
              android:ellipsize="end"
              android:text="@{item.title}"
@@ -66,7 +67,7 @@
             android:id="@+id/news_descrp"
             android:layout_below="@id/news_title"
             android:textColor="?attr/primary_text_color"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:maxLines="4"
             android:ellipsize="end"
             android:text="@{item.resume}"
@@ -79,6 +80,9 @@
             android:id="@+id/news_date"
             android:textColor="?attr/secondary_text_color"
             android:textSize="12sp"
+            android:layout_toLeftOf="@id/menu_button"
+            android:singleLine="true"
+            android:ellipsize="middle"
             android:text="@{item.publicationDate.toString()}"
     />
     <TextView
@@ -87,10 +91,22 @@
             android:id="@+id/news_writer"
             android:layout_below="@+id/news_date"
             android:text="@{item.author}"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="3dp"
             android:textSize="12sp"
             app:fontFamily="serif"
             android:textColor="?attr/secondary_text_color"
+            android:textStyle="italic|bold"
+    />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news_category"
+            android:layout_below="@+id/news_writer"
+            android:text="@{item.categoryOrigin}"
+            android:layout_marginBottom="12dp"
+            android:textSize="13sp"
+            app:fontFamily="serif"
+            android:textColor="?attr/colorAccent"
             android:textStyle="italic|bold"
     />
 

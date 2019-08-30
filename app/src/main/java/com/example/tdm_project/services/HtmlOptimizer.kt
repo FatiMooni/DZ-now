@@ -70,6 +70,7 @@ object HtmlOptimizer {
         if (!TextUtils.isEmpty(content)) {
             val matcher = IMG_PATTERN.matcher(content)
 
+
             while (matcher.find()) {
                 images.add(matcher.group(1).replace(" ", URL_SPACE))
             }

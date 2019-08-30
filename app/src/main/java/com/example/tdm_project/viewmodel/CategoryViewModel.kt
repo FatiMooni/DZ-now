@@ -51,7 +51,7 @@ class CategoryViewModel : ViewModel {
         //Typically when am online and either it is my first use
         // of the app or my user wants to refresh the categories
 
-        if (App.isOnline ) {
+        if (App.hasNetwork()!! && (pref.isFirstUse() || HomeFragment.ACTION_REFRESH_CATEGORIES_FROM_BACK) ) {
             val service = ServiceBuilder.buildService(CategoryService::class.java)
             val request = service.getAllAvailbleCategoris()
 
@@ -68,6 +68,9 @@ class CategoryViewModel : ViewModel {
                         }
 
                         categoryMList.value = categoryInnerList
+
+                        if(HomeFragment.ACTION_REFRESH_CATEGORIES_FROM_BACK)
+                            HomeFragment.ACTION_REFRESH_CATEGORIES_FROM_BACK = false
                     }
                 }
 
@@ -78,7 +81,6 @@ class CategoryViewModel : ViewModel {
         else {
             categoryInnerList.addAll(App.db.categoryDao().getAllCategories())
             categoryMList.postValue(categoryInnerList)
-
             //now what if I requested a refresh action or it was my first use but i was offline
             // ==> handle on main fragment .. here just for data !
         }

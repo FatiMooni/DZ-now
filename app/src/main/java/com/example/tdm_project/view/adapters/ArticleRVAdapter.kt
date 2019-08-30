@@ -15,6 +15,7 @@ import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.squareup.picasso.Picasso
 
 
+
 class ArticleRVAdapter(val context: Context) :
     PagedListAdapter<Article, ArticleRVAdapter.ViewHolder>(DIFF_CALLBACK) {
 
@@ -55,15 +56,19 @@ class ArticleRVAdapter(val context: Context) :
 
 
         fun bind(item: Article) {
+
             this.viewBinder.item = item
-            viewBinder.executePendingBindings()
-            /*if (item.img!!.isNotBlank() && item.img!!.isNotEmpty()) {
+           /* if (item.img!!.isNotBlank() && item.img!!.isNotEmpty() && item.img != null) {
                 Picasso
                     .get() // give it the context
                     .load(item.img)
                     .into(viewBinder.newsImage)
             }*/
+            viewBinder.executePendingBindings()
 
+
+            /** i
+**/
             viewBinder.root.setOnClickListener {
                 listener.onItemClick(ArticleViewModel(item), adapterPosition)
             }

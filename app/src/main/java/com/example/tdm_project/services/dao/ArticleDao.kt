@@ -13,13 +13,18 @@ interface ArticleDao {
     @Query("Select * from articles where fetchDate <= :maxDate order by publicationDate DESC ")
     fun getAllArticles(maxDate :Long): DataSource.Factory<Int,Article>
 
+    //retrive all articles of a certain category
     @Query("Select * from articles where categoryId==:themeId AND fetchDate <= :maxDate order by publicationDate DESC ")
     fun getArticlesOfCategory(themeId : String , maxDate :Long): DataSource.Factory<Int,Article>
 
-
+    //retrive all ids of articles thaat belong to  a certain category
     @Query("Select _id from articles where categoryId==:idcat and feedId ==:idFeed")
     fun getIdsOfArticles(idcat : String , idFeed : Long) : List<String>
 
+
+    //delete all articles that have been fetched 24hr ago
+    @Query("Delete from articles where fetchDate <= :maxDate")
+    fun deleteAllArticles(maxDate: Long)
 
     //insert a Category
     @Insert(onConflict = OnConflictStrategy.REPLACE)

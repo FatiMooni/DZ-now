@@ -20,6 +20,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import java.net.CookieManager
 import java.net.CookiePolicy
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -43,6 +44,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
         const val FROM_AUTO_REFRESH = "tdm_project.services.FetchArticlesService.FROM_AUTO_REFRESH"
         const val EXTRA_CATEGORY_ID = "tdm_project.services.FetchArticlesService.EXTRA_CATEGORY_ID"
         const val EXTRA_CATEGORY = "tdm_project.services.FetchArticlesService.EXTRA_CATEGORY"
+        const val EXTRA_CATEGORIES = "tdm_project.services.FetchArticlesService.EXTRA_CATEGORIES"
 
 
         //cookies manager
@@ -72,6 +74,12 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
 
     }
 
+    private  fun refreshCategories(list : List<Category> , action: String){
+        for (category in list){
+            //refresh categories
+            refreshCategory(category , action)
+        }
+    }
     /** this function is used to refresh one category **/
     private fun refreshCategory(category: Category, action : String = "") {
         when {
@@ -111,7 +119,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
 
             /*** When the user decide to refresh the feeds of the category **/
             //TODO("when refresh categories is demanded")
-           /* (App.isOnline && ACTION_REFRESH_FEEDS == action) -> {
+           (App.isOnline && ACTION_REFRESH_FEEDS == action) -> {
                 //update the category in the local database in case of any added or deleted feed
                 App.db.categoryDao().update(category)
 
@@ -147,7 +155,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                     if(!category.feeds.containsValue(it.link)) App.db.feedDao().delete(it)
                 }
             }
-*/
+
             /** Else we will just fetch the feeds from the localDataBase **/
         }
     }
@@ -190,7 +198,6 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                         )
                     })
                     feed.update(romeFeed)
-                    Log.i("fetching entries", articles[1].toString())
 
                 }
             } catch (t: Throwable) {
@@ -219,7 +226,6 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                 }
 
                 if (!foundExisting) {
-
                     // we will try to insert only new articles
                     if (!existingIds.contains(article._id)) {
                         articlesToInsert.add(article)
@@ -232,11 +238,14 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
 
                             // Get images
                                 val imagesList = HtmlOptimizer.getImageURLs(improvedContent)
+                                 Log.i("images", "$imagesList")
                                 if (imagesList.isNotEmpty()) {
                                     if (article.img == null) {
                                         article.img = HtmlOptimizer.getMainImageURL(imagesList)
                                     }
                                     //imgUrlsToDownload[entry.id] = imagesList
+                                }else if (article.img == null) {
+                                    article.img = HtmlOptimizer.getMainImageURL(improvedContent)
                                 }
 
                             article.resume = improvedContent
@@ -249,7 +258,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                     }
                 }
 
-                Log.i("article :  ${article.title}" , "${article.publicationDate} ${article.uri} ${article.fetchDate}")
+                Log.i("article :  ${article.title}" , "${article.publicationDate} ${article.uri} ${article.fetchDate} ${article.img}")
 
             }
 
@@ -260,6 +269,27 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
         return articles.size
     }
 
+    /** to get previous day **/
+    fun getDaysAgo(daysAgo: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -daysAgo)
+
+        return calendar.time
+    }
+
+
+    /** to get previous day **/
+    fun getHoursAgo(hoursAgo: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.HOUR_OF_DAY, -hoursAgo)
+
+        return calendar.time
+    }
+
+    /** delete articles that have been fetched before certain  number of days ago **/
+    fun deleteAllArticles(daysAgo : Int){
+        App.db.articleDao().deleteAllArticles(getDaysAgo(daysAgo).time)
+    }
 
     private val handler = Handler()
     public override fun onHandleIntent(intent: Intent?) {
@@ -270,7 +300,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
         val isFromAutoRefresh = intent.getBooleanExtra(FROM_AUTO_REFRESH, false)
 
         // Connectivity issue, we quit
-        if (!isOnline) {
+        if (!App.hasNetwork()!!) {
             if (ACTION_REFRESH_FEEDS == intent.action && !isFromAutoRefresh) {
                 // Display a toast in that case
                 handler.post { toast("error of network").show() }
@@ -278,16 +308,30 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
             return
         }
 
+        //refresh articles for a given category
         if (intent.hasExtra(EXTRA_CATEGORY_ID)){
             val categoryId = intent.getStringExtra(EXTRA_CATEGORY_ID)
             val category = App.db.categoryDao().getCategory(categoryId)
-            refreshArticles(category, 88400000L)
+
+            //so get articles from now ?? or lets say from 36hours ago
+            refreshArticles(category,getHoursAgo(36).time )
+            Log.i("time" , getHoursAgo(36).toString())
         }
-        if (intent.hasExtra(EXTRA_CATEGORY)) {
+
+        //refresh one category
+        if (intent.hasExtra(EXTRA_CATEGORY) && ACTION_REFRESH_FEEDS == intent.action!!) {
 
             val category = intent.getParcelableExtra<Category>(EXTRA_CATEGORY)
             refreshCategory(category, intent.action!!)
         }
+
+        //refresh all categories
+        if (intent.hasExtra(EXTRA_CATEGORIES) && ACTION_REFRESH_FEEDS == intent.action!!) {
+
+            val category = intent.getParcelableArrayListExtra<Category>(EXTRA_CATEGORIES)
+            refreshCategories(category, intent.action!!)
+        }
+
         //refreshFeed(category,6000)
         // fetch(this, isFromAutoRefresh, intent.action!!, intent.getLongExtra(EXTRA_FEED_ID, 0L))
     }

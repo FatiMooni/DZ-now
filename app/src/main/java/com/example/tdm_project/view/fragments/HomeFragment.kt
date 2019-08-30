@@ -1,6 +1,7 @@
 package com.example.tdm_project.view.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -39,49 +40,48 @@ import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.example.tdm_project.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.horiz_news_view.view.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.support.v4.toast
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
 
-    lateinit var rootView: View
-    lateinit var articleAdapter: PagedListAdapter<Article,*>
-    lateinit var articleVAdapter: ArticleVAdapter
-    lateinit var rv: RecyclerView
-    lateinit var pref: PreferencesProvider
+    private lateinit var rootView: View
+    private lateinit var articleAdapter: PagedListAdapter<Article, *>
+    private lateinit var articleVAdapter: ArticleVAdapter
+    private lateinit var rv: RecyclerView
+    private lateinit var pref: PreferencesProvider
     private var articlesLiveData: LiveData<PagedList<Article>>? = null
 
     //viewmodel
     private lateinit var vmodel: ArticleViewModel
 
-    var newsList = ArrayList<ArticleViewModel>()
-    var topicsList = ArrayList<Topic>()
+    private var newsList = ArrayList<ArticleViewModel>()
+    private var topicsList = ArrayList<Topic>()
 
 
     companion object {
         var verticallayout: Boolean = false
-        var ACTION_REFRESH_CATEGORIES_FROM_BACK : Boolean = false
-        var CATEGORY_ARG = "category arg"
+        var ACTION_REFRESH_CATEGORIES_FROM_BACK: Boolean = false
+        private const val CATEGORY_ARG = "category arg"
 
-        fun getHomeFragment(categoryId : String) : HomeFragment
-        {
-            return HomeFragment().apply{
+        @JvmStatic
+        fun getHomeFragment(categoryId: String): HomeFragment {
+            return HomeFragment().apply {
                 categoryId.let {
-                    arguments = bundleOf(CATEGORY_ARG to categoryId )
+                    arguments = bundleOf(CATEGORY_ARG to categoryId)
                 }
             }
         }
 
 
-
-
     }
 
-    var categoryId : String? = null
+    var categoryId: String? = null
         set(value) {
             field = value
-            InitDataObservers()
+            initDataObservers()
         }
 
 
@@ -93,11 +93,14 @@ class HomeFragment : Fragment() {
         pref = PreferencesProvider(rootView.context)
 
 
-
-
+        /**first step fetch all existed articles from room**/
         //set list of news
-        if (!verticallayout) rvInitialiser(LinearLayoutManager.HORIZONTAL)
-        else rvInitialiser(LinearLayoutManager.VERTICAL)
+        if (!verticallayout) {
+            rvInitializer(LinearLayoutManager.HORIZONTAL)
+            categoryId = null
+            initDataObservers()
+        }
+        else rvInitializer(LinearLayoutManager.VERTICAL)
 
 
         vmodel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
@@ -105,65 +108,68 @@ class HomeFragment : Fragment() {
         vmodel.getArticles().observe(this, Observer {
 
             newsList = it
-            if (verticallayout) (articleAdapter as ArticleVAdapter).swapData(it)
+            if (verticallayout) (articleVAdapter).swapData(it)
             else (articleAdapter as ArticleRVAdapter)
         })
 
         vmodel.getData()
 
 
-
-        var catVModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
+        val catVModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
 
         catVModel.getCategories().observe(this, Observer {
             if (it.isNotEmpty() && it != null) {
                 it.forEach { category ->
-                    Log.i("link", category.feeds.toString())
+                    Log.i("link", category.feeds.toString())}
 
-                    context?.startService(
-                        Intent(context, FetchArticlesService::class.java)
-                            .setAction(FetchArticlesService.ACTION_REFRESH_CATEGORIES)
-                            .putExtra(FetchArticlesService.EXTRA_CATEGORY, category)
-                    )
-
-                }
+                    if(pref.isFirstUse() || ACTION_REFRESH_CATEGORIES_FROM_BACK){
+                        context?.startService(
+                            Intent(context, FetchArticlesService::class.java)
+                                .setAction(FetchArticlesService.EXTRA_CATEGORIES)
+                                .putParcelableArrayListExtra(FetchArticlesService.EXTRA_CATEGORY, it))
+                    }
 
                 //prepare the topics on the top of the fragment
                 getTopics(it)
             }
-
         })
-
+        //get the categories == les != themes
+        // if it was online and its first time or it was requested -> from back end
+        // else from room database
         doAsync {
             catVModel.getData()
         }
 
-        val btnHoriz = rootView.findViewById<ImageButton>(R.id.btn_horizt_display)
+        /** val btnHoriz = rootView.findViewById<ImageButton>(R.id.btn_horizt_display)
         btnHoriz.setOnClickListener {
-            rvInitialiser(LinearLayoutManager.HORIZONTAL)
+            rvInitializer(LinearLayoutManager.HORIZONTAL)
             verticallayout = false
         }
 
         val btnVert = rootView.findViewById<ImageButton>(R.id.btn_vert_display)
         btnVert.setOnClickListener {
-            rvInitialiser(LinearLayoutManager.VERTICAL)
+            rvInitializer(LinearLayoutManager.VERTICAL)
             verticallayout = true
-        }
+        }**/
 
         val btnAll = rootView.findViewById<AppCompatButton>(R.id.all_topics_btn)
         btnAll.setOnClickListener {
-            when (verticallayout) {
-                true -> rvInitialiser(LinearLayoutManager.VERTICAL)
-                false -> rvInitialiser(LinearLayoutManager.HORIZONTAL)
-
-            }
+            categoryId = null
+            initDataObservers()
         }
 
         return rootView
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-    private fun rvInitialiser(orientation: Int) {
+        if(savedInstanceState != null){
+            toast("i have been saved")
+        }
+    }
+    /** to initialize the recyclerview **/
+    private fun rvInitializer(orientation: Int) {
         rv = rootView.findViewById(R.id.recyler_view_news)
         val layout = LinearLayoutManager(rootView.context)
         layout.orientation = orientation
@@ -195,7 +201,7 @@ class HomeFragment : Fragment() {
             LinearLayoutManager.VERTICAL -> {
                 articleVAdapter =
                     ArticleVAdapter(rootView.context, newsList)
-                (articleAdapter as ArticleVAdapter).setOnItemListener(object : ItemClicksListener {
+                (articleVAdapter).setOnItemListener(object : ItemClicksListener {
                     override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
 
                         val popup = PopupMenu(view.context, view.menu_button)
@@ -221,22 +227,31 @@ class HomeFragment : Fragment() {
         rv.adapter = articleAdapter
     }
 
-    private fun InitDataObservers(){
-        articlesLiveData = LivePagedListBuilder(when{
-            categoryId != null && categoryId!!.isNotBlank() -> App.db.articleDao().getArticlesOfCategory(categoryId!!, Date().time)
-            else -> App.db.articleDao().getAllArticles(Date().time)
-        },30).build()
+    /** to retrive the data in the pagedlist adapter**/
+    //TODO(check when to call this)
+    private fun initDataObservers() {
+        articlesLiveData = LivePagedListBuilder(
+            when {
+                categoryId != null && categoryId!!.isNotBlank() -> App.db.articleDao().getArticlesOfCategory(
+                    categoryId!!,
+                    Date().time
+                )
+                else -> App.db.articleDao().getAllArticles(Date().time)
+            }, 20
+        ).build()
 
-        articlesLiveData!!.observe(this , Observer { pagedList ->
+        articlesLiveData!!.observe(this, Observer { pagedList ->
             articleAdapter.submitList(pagedList)
-            Log.i("articles in main " , "ma list $pagedList")
+            Log.i("articles in main ", "ma list ${pagedList.size}")
         })
     }
 
+
+    /** to set the list of topics in the top of home fragments**/
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun getTopics(fetchedCategories: List<Category>) {
-        var layout = rootView.findViewById<LinearLayoutCompat>(R.id.Topics_buttom_holder)
+        val layout = rootView.findViewById<LinearLayoutCompat>(R.id.Topics_buttom_holder)
         layout.weightSum = 100F
         var style = 0
         var num = 0
@@ -244,7 +259,7 @@ class HomeFragment : Fragment() {
         topicsList = pref.loadTopicsList(fetchedCategories)
         topicsList.forEach {
 
-            var btn = AppCompatButton(rootView.context)
+            val btn = AppCompatButton(rootView.context)
             val draw = rootView.resources.getDrawable(it.IconLink, null)
 
             btn.setCompoundDrawablesWithIntrinsicBounds(draw, null, null, null)
@@ -270,34 +285,23 @@ class HomeFragment : Fragment() {
             btn.background = rootView.resources.getDrawable(style, null)
 
             btn.setOnClickListener {
-                chargeNews(cat)
-                Log.i("the articles of $cat", "the category with $id")
-               if(App.hasNetwork()!!)
-                context?.startService(
-                    Intent(context, FetchArticlesService::class.java)
-                        .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
-                        .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, id)
-                )
-                else {
-                        categoryId = id
-                       InitDataObservers()
-               }
-
+                //chargeNews(cat)
+                Log.i("the articles of $cat $id", "the category with $id")
+                if (App.hasNetwork()!!)
+                    doAsync {
+                        context?.startService(
+                        Intent(context, FetchArticlesService::class.java)
+                            .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
+                            .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, id)
+                          )
+                    }
+                    categoryId = id
+                    initDataObservers()
             }
-
             layout.addView(btn)
         }
     }
 
-    private fun chargeNews(titre: String?) {
-        val selectedList = ArrayList<ArticleViewModel>()
-
-        newsList.forEach {
-            if (it.categoryOrigin == titre) selectedList.add(it)
-        }
-        if (verticallayout) (articleAdapter as ArticleVAdapter).swapData(selectedList)
-        else (articleAdapter as ArticleRVAdapter)
-    }
 
 }
 

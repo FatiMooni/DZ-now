@@ -5,19 +5,28 @@ import android.os.Parcelable
 import android.text.Html
 import android.text.format.DateFormat
 import android.text.format.DateUtils
+import android.util.Log
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.room.*
 import com.example.tdm_project.model.data.Feed
-import com.example.tdm_project.services.App
 import com.rometools.rome.feed.synd.SyndEntry
+import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 import java.util.*
+import com.example.tdm_project.R
 
-@Entity(tableName = "articles",
+
+@Entity(
+    tableName = "articles",
     indices = [(Index(value = ["categoryId"])), (Index(value = ["uri"], unique = true))],
-    foreignKeys = [(ForeignKey(entity = Category::class,
+    foreignKeys = [(ForeignKey(
+        entity = Category::class,
         parentColumns = ["_id"],
         childColumns = ["categoryId"],
-        onDelete = ForeignKey.CASCADE))])
+        onDelete = ForeignKey.CASCADE
+    ))]
+)
 
 @Parcelize
 data class Article(
@@ -31,13 +40,13 @@ data class Article(
     var uri: String? = null,   //link from feed
     var categoryId: String = "",
     var feedId: Long = 0L,
-    var categoryOrigin : String = "Default",
+    var categoryOrigin: String = "Default",
     var fetchDate: Date = Date(),
     var publicationDate: Date = fetchDate,
     var img: String? = null,
     var mobilizedContent: String? = null, //in case i want to save my article
     var isRead: Boolean = false, //TODO(do i need to handle this)
-    var isSavedOffline : Boolean = false //in case i wanted it to be readible offline
+    var isSavedOffline: Boolean = false //in case i wanted it to be readible offline
 ) : Parcelable, Comparable<Article> {
     override fun compareTo(other: Article): Int {
         return if (other._id == _id) 0
@@ -51,10 +60,21 @@ data class Article(
             DateFormat.getMediumDateFormat(context).format(publicationDate) + ' ' +
                     DateFormat.getTimeFormat(context).format(publicationDate)
         }
-
+     companion object {
+         @JvmStatic
+         @BindingAdapter("app:imageUrl")
+         fun loadImage(view: ImageView, imageUrl: String?) {
+             if (imageUrl != null && imageUrl.isNotBlank() && imageUrl.isNotEmpty())
+                 Picasso.get()
+                     .load(imageUrl)
+                     .error(R.drawable.chicanery)
+                     .into(view)
+             Log.i("picasso", "$imageUrl")
+         }
+     }
 }
 
-fun SyndEntry.toDbFormat(feed: Feed , category: Category): Article {
+fun SyndEntry.toDbFormat(feed: Feed, category: Category): Article {
     val item = Article()
     item._id = (feed.id.toString() + "_" + (link ?: uri ?: title
     ?: UUID.randomUUID().toString()))
