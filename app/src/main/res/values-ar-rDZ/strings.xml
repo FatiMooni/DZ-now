@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="server_client_id">135694411826-qvj353ee5232b5jgph44a9flmeetdr5u.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">1395073864007325</string> <string name="fb_login_protocol_scheme">fb1395073864007325</string>
     <string name="app_name">TDM_Project</string>
     <string name="welcome">مرحبا</string>
     <string name="chang_lang"> تغيير اللغة </string>

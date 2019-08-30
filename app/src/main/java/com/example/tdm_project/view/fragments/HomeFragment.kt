@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
@@ -39,6 +40,7 @@ import com.example.tdm_project.view.adapters.CustomMenuItem
 import com.example.tdm_project.view.interfaces.ItemClicksListener
 import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.example.tdm_project.viewmodel.CategoryViewModel
+import com.facebook.Profile
 import kotlinx.android.synthetic.main.horiz_news_view.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.support.v4.toast
@@ -160,6 +162,13 @@ class HomeFragment : Fragment() {
             initDataObservers()
         }
 
+        //Set the current User
+        val userGreeting =  rootView.findViewById<AppCompatTextView>(R.id.user_greeting)
+        val profile= Profile.getCurrentProfile()
+        if (profile != null) {
+            var greeting = userGreeting.text.toString()
+            userGreeting.text = greeting + "" + profile.name.toString()
+        }
         return rootView
     }
 

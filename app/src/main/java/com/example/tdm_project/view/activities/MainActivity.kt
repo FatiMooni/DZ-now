@@ -1,16 +1,19 @@
 package com.example.tdm_project.view.activities
+
 import android.content.Context
+
 import android.os.Build
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.CheckBox
 import android.widget.RadioButton
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.tdm_project.R
-
+import com.example.tdm_project.authentication.LogInActivity
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.fragments.HomeFragment
@@ -18,6 +21,11 @@ import com.example.tdm_project.view.fragments.ProfileFragment
 import com.example.tdm_project.view.fragments.SavedFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.find
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
+import com.facebook.HttpMethod
+import com.facebook.login.LoginManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : CustomBaseActivity() {
@@ -38,10 +46,15 @@ class MainActivity : CustomBaseActivity() {
         if (stringImageUri != null) Log.i("URI_MAIN",stringImageUri)
         else Log.i("URI_MAIN","NULLLL")
         fragProfile = ProfileFragment.newInstance(newPseudo, stringImageUri)
+        val topBar= findViewById<androidx.appcompat.widget.Toolbar>(R.id.TopToolbar)
+       setSupportActionBar(topBar)
+
+
 
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // ajouter le menu au top de l'activité
+
         menuInflater.inflate(R.menu.menu_top_toolbar, menu)
         return true
     }
@@ -53,6 +66,12 @@ class MainActivity : CustomBaseActivity() {
             R.id.vert_disp -> HomeFragment.verticallayout = true
             R.id.hori_disp -> HomeFragment.verticallayout = false
             R.id.refresh_categorie -> HomeFragment.ACTION_REFRESH_CATEGORIES_FROM_BACK = true
+            R.id.action_logout -> {
+                signOut()
+                Toast.makeText(this, "Sign out", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@MainActivity, LogInActivity::class.java))
+                return super.onOptionsItemSelected(item)
+            }
         }
         return true
     }
@@ -90,4 +109,16 @@ class MainActivity : CustomBaseActivity() {
         super.attachBaseContext(MyContextWrapper.wrap(newBase,lang))
     }
 
+
+    private fun signOut() {
+        if (AccessToken.getCurrentAccessToken() != null) {
+            GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, GraphRequest.Callback {
+                AccessToken.setCurrentAccessToken(null)
+                LoginManager.getInstance().logOut()
+
+                finish()
+            }).executeAsync()
+        }
+
+    }
 }

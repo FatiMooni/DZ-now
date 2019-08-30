@@ -19,14 +19,19 @@ object ServiceBuilder {
     // the Base adresse
     private const val URL = "https://dznews-heroku.herokuapp.com"
     val cacheSize = (5 * 1024 * 1024).toLong()
-    val myCache = Cache(CustomBaseActivity.cache!!, cacheSize)
+//    val myCache = Cache(CustomBaseActivity.cache!!, cacheSize)
 
     val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     //Create Okhttp Client
     private val okHttp: OkHttpClient = OkHttpClient.Builder()
-        .cache(myCache)
-        .addInterceptor{
+        .addInterceptor(interceptor)
+        .readTimeout(5, TimeUnit.MINUTES)
+        .writeTimeout(5, TimeUnit.MINUTES)
+        .build()
+
+    //.cache(myCache)
+        /*.addInterceptor{
                 chain : Interceptor.Chain ->
 
             // Get the request from the chain.
@@ -58,10 +63,7 @@ object ServiceBuilder {
 
             // Add the modified request to the chain.
             chain.proceed(request)
-        }
-        .readTimeout(5, TimeUnit.MINUTES)
-        .writeTimeout(5, TimeUnit.MINUTES)
-        .build()
+        } */
 
     // Create Retrofit Builder
     private val builder: Retrofit.Builder = Retrofit.Builder()

@@ -12,12 +12,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.request.RequestOptions
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.data.SharedSavedNews
 import com.example.tdm_project.view.activities.ParameterActivity
 import com.example.tdm_project.view.adapters.sharedPostsAdapter
 import com.example.tdm_project.viewmodel.ArticleViewModel
+import com.facebook.Profile
+import com.facebook.login.LoginManager
 
 
 class ProfileFragment : Fragment() {
@@ -54,6 +60,20 @@ class ProfileFragment : Fragment() {
         )
         val pseudoText = rootView.findViewById<TextView>(R.id.profile_pseudo)
         val profileView = rootView.findViewById<ImageView>(R.id.profile_photo)
+        val profile= Profile.getCurrentProfile()
+       var pictureUri= profile.getProfilePictureUri(127,127)
+        Log.i("URIFACEBOOK",pictureUri.toString())
+        val imageUrl = GlideUrl(pictureUri.toString(), LazyHeaders.Builder()
+            .build())
+        Glide.with(this@ProfileFragment).load(imageUrl).into(profileView)
+
+       /* Glide.with(this)
+            .load(pictureUri)
+            .thumbnail(Glide.with(this).load(R.drawable.loader))
+            .apply(RequestOptions.circleCropTransform())
+            .into(profileView )*/
+       // profileView.setImageURI(pictureUri)
+        pseudoText.text  = profile.name.toString()
         newsList = SharedSavedNews.getListSharedPosts()
         intialiserVertically()
 
