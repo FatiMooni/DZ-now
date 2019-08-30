@@ -79,6 +79,8 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
             //refresh categories
             refreshCategory(category , action)
         }
+
+        sharedPref.setNotFirstUse()
     }
     /** this function is used to refresh one category **/
     private fun refreshCategory(category: Category, action : String = "") {

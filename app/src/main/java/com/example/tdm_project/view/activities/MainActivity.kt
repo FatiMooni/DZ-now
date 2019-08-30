@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.CheckBox
+import android.widget.RadioButton
 import com.example.tdm_project.R
 
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
@@ -15,6 +17,7 @@ import com.example.tdm_project.view.fragments.HomeFragment
 import com.example.tdm_project.view.fragments.ProfileFragment
 import com.example.tdm_project.view.fragments.SavedFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.find
 
 
 class MainActivity : CustomBaseActivity() {
@@ -44,6 +47,8 @@ class MainActivity : CustomBaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(HomeFragment.verticallayout) find<RadioButton>(R.id.vert_disp).isChecked = true
+        else find<RadioButton>(R.id.hori_disp).isChecked = true
         when(item!!.itemId){
             R.id.vert_disp -> HomeFragment.verticallayout = true
             R.id.hori_disp -> HomeFragment.verticallayout = false

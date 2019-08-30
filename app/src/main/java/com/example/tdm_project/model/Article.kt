@@ -1,13 +1,18 @@
 package com.example.tdm_project.model
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import android.text.Html
 import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.DrawableUtils
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.ViewModel
 import androidx.room.*
 import com.example.tdm_project.model.data.Feed
 import com.rometools.rome.feed.synd.SyndEntry
@@ -15,6 +20,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 import com.example.tdm_project.R
+
+
 
 
 @Entity(
@@ -47,7 +54,7 @@ data class Article(
     var mobilizedContent: String? = null, //in case i want to save my article
     var isRead: Boolean = false, //TODO(do i need to handle this)
     var isSavedOffline: Boolean = false //in case i wanted it to be readible offline
-) : Parcelable, Comparable<Article> {
+) : Parcelable, Comparable<Article>, ViewModel() {
     override fun compareTo(other: Article): Int {
         return if (other._id == _id) 0
         else -1
@@ -71,10 +78,17 @@ data class Article(
                      .into(view)
              Log.i("picasso", "$imageUrl")
          }
+
      }
 }
 
 fun SyndEntry.toDbFormat(feed: Feed, category: Category): Article {
+
+    //we will create our article based on 3 elements :
+    // first -> the syndicte entry == near to be an article item
+    // second -> the feed that we got from database
+    // third -> category in order to save it later
+
     val item = Article()
     item._id = (feed.id.toString() + "_" + (link ?: uri ?: title
     ?: UUID.randomUUID().toString()))

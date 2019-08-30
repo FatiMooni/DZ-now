@@ -9,7 +9,7 @@
           app:showAsAction="collapseActionView|ifRoom"
           app:actionViewClass="android.widget.SearchView" />
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/action_logout"
         android:title="Log Out"
         android:icon="@drawable/log_out"
         android:iconTint="?attr/primary_text_color"

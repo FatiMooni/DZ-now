@@ -109,7 +109,7 @@ class HomeFragment : Fragment() {
         vmodel.getArticles().observe(this, Observer {
 
             newsList = it
-            if (verticallayout) (articleVAdapter).swapData(it)
+            if (verticallayout) (articleVAdapter)
             else (articleAdapter as ArticleRVAdapter)
         })
 
@@ -123,11 +123,12 @@ class HomeFragment : Fragment() {
                 it.forEach { category ->
                     Log.i("link", category.feeds.toString())}
 
-                    if(pref.isFirstUse() || ACTION_REFRESH_CATEGORIES_FROM_BACK){
+                    if(pref.isFirstUse()){
+                        Log.i("first use" , "am gonna fetch feeds")
                         context?.startService(
                             Intent(context, FetchArticlesService::class.java)
-                                .setAction(FetchArticlesService.EXTRA_CATEGORIES)
-                                .putParcelableArrayListExtra(FetchArticlesService.EXTRA_CATEGORY, it))
+                                .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
+                                .putParcelableArrayListExtra(FetchArticlesService.EXTRA_CATEGORIES, it))
                     }
 
                 //prepare the topics on the top of the fragment
@@ -180,6 +181,19 @@ class HomeFragment : Fragment() {
                 articleAdapter =
                     ArticleRVAdapter(rootView.context)
                 (articleAdapter as ArticleRVAdapter).setOnItemListener(object : ItemClicksListener {
+                    override fun onSaveArticleClick(article: Article, position: Int) {
+                        article.isSavedOffline = !article.isSavedOffline
+                        doAsync {
+                              if(article.isSavedOffline){
+                                  App.db.articleDao().markArticleAsSaved(article._id)
+                              } else {
+                                  App.db.articleDao().markArticleAsUnsaved(article._id)
+
+                              }
+
+                        }
+                    }
+
                     override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
 
                         val popup = PopupMenu(view.context, view.menu_button)
@@ -203,8 +217,12 @@ class HomeFragment : Fragment() {
             }
             LinearLayoutManager.VERTICAL -> {
                 articleVAdapter =
-                    ArticleVAdapter(rootView.context, newsList)
+                    ArticleVAdapter(rootView.context)
                 (articleVAdapter).setOnItemListener(object : ItemClicksListener {
+                    override fun onSaveArticleClick(article: Article, position: Int) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
                     override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
 
                         val popup = PopupMenu(view.context, view.menu_button)

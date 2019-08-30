@@ -4,7 +4,7 @@
     <data class="ArticleVBinding">
         <variable
                 name="item"
-                type="com.example.tdm_project.viewmodel.ArticleViewModel" />
+                type="com.example.tdm_project.model.Article" />
     </data>
 <RelativeLayout android:layout_height="wrap_content"
                 android:layout_width="match_parent">
@@ -105,12 +105,23 @@
                     android:id="@+id/menu_button"
                     android:layout_gravity="end|top"
                     android:tint="?attr/icon_color"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:padding="5dp"
                     android:layout_alignRight="@id/news_image"
                     android:background="@android:color/transparent"
                     android:layout_width="wrap_content"
                     android:src="@drawable/ic_more_vert_black_24dp"
+                    android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/save_button"
+                    android:layout_gravity="end|top"
+                    android:tint="?attr/icon_color"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:src="@{item.savedOffline? @drawable/unsave_article : @drawable/save_article }"
+                    android:layout_toStartOf="@id/menu_button"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
 

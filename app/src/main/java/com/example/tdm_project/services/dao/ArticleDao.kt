@@ -26,6 +26,18 @@ interface ArticleDao {
     @Query("Delete from articles where fetchDate <= :maxDate")
     fun deleteAllArticles(maxDate: Long)
 
+    //get the articles that have been saved offline
+    @Query("Select * from articles where isSavedOffline = 1 order by publicationDate DESC ")
+    fun getSavedArticles(): DataSource.Factory<Int,Article>
+
+    //update to saved
+    @Query("Update articles set isSavedOffline = 1 where _id is :articleId ")
+    fun markArticleAsSaved(articleId : String)
+
+    //update to unsaved
+    @Query("Update articles set isSavedOffline = 0 where _id is :articleId ")
+    fun markArticleAsUnsaved(articleId : String)
+
     //insert a Category
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg articleViewModel: Article)

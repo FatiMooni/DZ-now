@@ -1,6 +1,7 @@
 package com.example.tdm_project.view.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -46,7 +47,7 @@ class ArticleRVAdapter(val context: Context) :
 
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        val newsContent = getItem(p1)!!
+        val newsContent = getItem(p1)
         p0.bind(newsContent)
     }
 
@@ -55,26 +56,23 @@ class ArticleRVAdapter(val context: Context) :
         RecyclerView.ViewHolder(viewBinder.root) {
 
 
-        fun bind(item: Article) {
+        fun bind(item: Article?) {
 
             this.viewBinder.item = item
-           /* if (item.img!!.isNotBlank() && item.img!!.isNotEmpty() && item.img != null) {
-                Picasso
-                    .get() // give it the context
-                    .load(item.img)
-                    .into(viewBinder.newsImage)
-            }*/
             viewBinder.executePendingBindings()
 
 
-            /** i
-**/
             viewBinder.root.setOnClickListener {
-                listener.onItemClick(ArticleViewModel(item), adapterPosition)
+                listener.onItemClick(ArticleViewModel(item!!), adapterPosition)
             }
 
             viewBinder.menuButton.setOnClickListener {
-                listener.onPopupRequested(viewBinder.root, ArticleViewModel(item), adapterPosition)
+                listener.onPopupRequested(viewBinder.root, ArticleViewModel(item!!), adapterPosition)
+            }
+
+            viewBinder.saveButton.setOnClickListener {
+                Log.i("saving", "u clicked on me , i am ${item!!.isSavedOffline}")
+                listener.onSaveArticleClick(item,adapterPosition)
             }
 
         }
