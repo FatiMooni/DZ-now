@@ -46,9 +46,6 @@ class MainActivity : CustomBaseActivity() {
         if (stringImageUri != null) Log.i("URI_MAIN",stringImageUri)
         else Log.i("URI_MAIN","NULLLL")
         fragProfile = ProfileFragment.newInstance(newPseudo, stringImageUri)
-        val topBar= findViewById<androidx.appcompat.widget.Toolbar>(R.id.TopToolbar)
-       setSupportActionBar(topBar)
-
 
 
     }

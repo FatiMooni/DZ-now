@@ -2,6 +2,7 @@ package com.example.tdm_project.services
 
 import android.accounts.NetworkErrorException
 import android.app.IntentService
+import android.app.NotificationManager
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
@@ -22,6 +23,11 @@ import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.core.app.NotificationCompat
+import com.example.tdm_project.R
 
 
 /*
@@ -293,7 +299,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
 
     private val handler = Handler()
     public override fun onHandleIntent(intent: Intent?) {
-        if (intent == null) { // No intent, we quit
+       if (intent == null) { // No intent, we quit
             return
         }
 
@@ -334,7 +340,10 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
 
         //refreshFeed(category,6000)
         // fetch(this, isFromAutoRefresh, intent.action!!, intent.getLongExtra(EXTRA_FEED_ID, 0L))
+
+
     }
+
 
 
 }

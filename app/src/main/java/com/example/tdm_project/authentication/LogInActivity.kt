@@ -8,16 +8,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tdm_project.R
 import com.example.tdm_project.model.data.UserPost
 import com.example.tdm_project.services.ArticleService
 import com.example.tdm_project.services.ServiceBuilder
 import com.example.tdm_project.view.activities.MainActivity
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.Profile
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -48,10 +46,18 @@ class LogInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
+        val packageName = this.getApplicationContext().getPackageName()
 
+        val info : PackageInfo = getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+        for ( signature in info.signatures) {
+            var md = MessageDigest.getInstance("SHA")
+            md.update(signature.toByteArray())
+            val hashKey = android.util.Base64.encodeToString(md.digest(), 0)
+            Log.i(TAG,"HADHKEEEY"+hashKey)
+        }
+        Log.i(TAG,"NAAAMEE"+packageName)
 
         facebookSignInButton = findViewById(R.id.login_button)
-
 
         facebookSignInButton.setOnClickListener(View.OnClickListener {
             // Login
@@ -112,8 +118,8 @@ class LogInActivity : AppCompatActivity() {
         })
 
     }
-
-    /* private fun handleFacebookAccessToken(token: AccessToken) {
+/**
+    private fun handleFacebookAccessToken(token: AccessToken) {
          Log.d(TAG, "handleFacebookAccessToken:" + token)
          val accessToken = AccessToken.getCurrentAccessToken()
          val isLoggedIn = accessToken != null && !accessToken.isExpired
@@ -129,9 +135,9 @@ class LogInActivity : AppCompatActivity() {
                      Toast.makeText(this@LogInActivity, "Authentication failed.",
                          Toast.LENGTH_SHORT).show()
                  }
-             }*/
+             }
 
-
+**/
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
        callbackManager!!.onActivityResult(requestCode, resultCode, data)
        super.onActivityResult(requestCode, resultCode, data)
@@ -142,19 +148,9 @@ class LogInActivity : AppCompatActivity() {
 
    }
 
-    /*  For the HaShKey
+/*
 
-         val packageName = this.getApplicationContext().getPackageName()
-
-           val info : PackageInfo = getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
-           for ( signature in info.signatures) {
-               var md = MessageDigest.getInstance("SHA")
-               md.update(signature.toByteArray())
-               val hashKey = android.util.Base64.encodeToString(md.digest(), 0)
-               Log.i(TAG,"HADHKEEEY"+hashKey)
-           }
-           Log.i(TAG,"NAAAMEE"+packageName) */
-
+*/
 
     }
 
