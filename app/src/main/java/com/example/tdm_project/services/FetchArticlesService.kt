@@ -26,8 +26,13 @@ import java.util.concurrent.TimeUnit
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.text.Html
 import androidx.core.app.NotificationCompat
 import com.example.tdm_project.R
+import com.example.tdm_project.viewmodel.ArticleViewModel
+import net.dankito.readability4j.extended.Readability4JExtended
+import org.jetbrains.anko.error
+import org.jsoup.Jsoup
 
 
 /*
@@ -46,7 +51,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
         const val ACTION_REFRESH_FEEDS = "tdm_project.services.FetchArticlesService.refreshFeedsAction"
         /* if i want to refresh the list of categories from backend categories */
         const val ACTION_REFRESH_CATEGORIES = "tdm_project.services.FetchArticlesService.refreshFeedsAction"
-
+        const val ACTION_ARTICLE = "smth"
         const val FROM_AUTO_REFRESH = "tdm_project.services.FetchArticlesService.FROM_AUTO_REFRESH"
         const val EXTRA_CATEGORY_ID = "tdm_project.services.FetchArticlesService.EXTRA_CATEGORY_ID"
         const val EXTRA_CATEGORY = "tdm_project.services.FetchArticlesService.EXTRA_CATEGORY"
@@ -275,6 +280,43 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
         return articles.size
     }
 
+
+    //get improved content for offline articles
+    private fun makeArticleOffline(article: Article) {
+
+
+        article.uri?.let { link ->
+                    try {
+                        createCall(link).execute().use { response ->
+                            response.body()?.byteStream()?.let { input ->
+                                Readability4JExtended(link, Jsoup.parse(input, null, link)).parse().articleContent?.html()?.let {
+                                    val mobilizedHtml = HtmlOptimizer.improveHtmlContent(it, getBaseUrl(link))
+
+                                    @Suppress("DEPRECATION")
+                                    if (article.resume == null ||
+                                        Html.fromHtml(mobilizedHtml).length > Html.fromHtml(article.resume).length) {
+                                        // If the retrieved text is smaller than the original one,
+                                        // then we certainly failed...
+                                        if (article.img == null) {
+                                            article.img =
+                                                HtmlOptimizer.getMainImageURL(mobilizedHtml)
+                                        }
+                                    }
+
+                                    article.mobilizedContent = mobilizedHtml
+                                    App.db.articleDao().markArticleOffline(articleId = article._id , content = mobilizedHtml)
+                                    Log.i("new content" , article.mobilizedContent)
+                                }
+                            }
+                        }
+                    } catch (t: Throwable) {
+                        error("Can't mobilize feedWithCount ${article.uri}", t)
+                    }
+                }
+            }
+
+
+
     /** to get previous day **/
     fun getDaysAgo(daysAgo: Int): Date {
         val calendar = Calendar.getInstance()
@@ -314,6 +356,10 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
             return
         }
 
+        if (intent.hasExtra("article") && ACTION_ARTICLE == intent.action!!){
+            val category = intent.getParcelableExtra<Article>("article")
+            makeArticleOffline(category)
+        }
         //refresh articles for a given category
         if (intent.hasExtra(EXTRA_CATEGORY_ID)){
             val categoryId = intent.getStringExtra(EXTRA_CATEGORY_ID)
@@ -337,6 +383,7 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
             val category = intent.getParcelableArrayListExtra<Category>(EXTRA_CATEGORIES)
             refreshCategories(category, intent.action!!)
         }
+
 
         //refreshFeed(category,6000)
         // fetch(this, isFromAutoRefresh, intent.action!!, intent.getLongExtra(EXTRA_FEED_ID, 0L))

@@ -41,4 +41,5 @@
     <string name="health">الصحة</string>
     <string name="international">أخبار عالمية</string>
     <string name="nat">أخبار وطنية</string>
+    <string name="signer"> حفظ</string>
 </resources>

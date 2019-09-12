@@ -41,4 +41,5 @@
     <string name="international">International</string>
     <string name="nat">national</string>
     <string name="health">Santé</string>
+    <string name="signer">Ajouter signet</string>
 </resources>

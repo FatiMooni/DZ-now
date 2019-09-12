@@ -29,7 +29,7 @@ import com.facebook.login.LoginManager
 class ProfileFragment : Fragment() {
     lateinit var rootView: View
     lateinit var sharedAdapter: sharedPostsAdapter
-    lateinit var rv: RecyclerView
+    //lateinit var rv: RecyclerView
     var newsList = ArrayList<ArticleViewModel>()
 
     companion object {
@@ -67,15 +67,9 @@ class ProfileFragment : Fragment() {
             .build())
         Glide.with(this@ProfileFragment).load(imageUrl).into(profileView)
 
-       /* Glide.with(this)
-            .load(pictureUri)
-            .thumbnail(Glide.with(this).load(R.drawable.loader))
-            .apply(RequestOptions.circleCropTransform())
-            .into(profileView )*/
-       // profileView.setImageURI(pictureUri)
         pseudoText.text  = profile.name.toString()
         newsList = SharedSavedNews.getListSharedPosts()
-        intialiserVertically()
+        // not used for now intialiserVertically()
 
         rootView.findViewById<Button>(R.id.param).setOnClickListener {
             // preparé l'activité d'ajout
@@ -101,14 +95,16 @@ class ProfileFragment : Fragment() {
     }
 
 
-    private fun intialiserVertically() {
+   /** Not used for now  **/
+   /*private fun intialiserVertically() {
         rv = rootView.findViewById(R.id.recyler_view_sahred_post)
         val layout = androidx.recyclerview.widget.LinearLayoutManager(rootView.context)
         layout.orientation = RecyclerView.VERTICAL
         rv.layoutManager = layout
         sharedAdapter = sharedPostsAdapter(rootView.context,newsList)
         rv.adapter = sharedAdapter
-    }
+    }*/
+
 
 
 }

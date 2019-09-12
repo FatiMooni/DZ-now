@@ -16,25 +16,19 @@ import com.example.tdm_project.services.dao.CategoryDao
 import com.example.tdm_project.services.dao.FeedDao
 
 @TypeConverters(Converters::class)
-@Database(entities = [Feed::class, Article::class, Category::class], version = 1)
+@Database(entities = [Feed::class, Article::class, Category::class], version = 2 , exportSchema = false)
 abstract class LocalDataBase : RoomDatabase() {
 
 
     companion object {
         private var INSTANCE: LocalDataBase? = null
 
-        private val MIGRATION_4_5: Migration = object : Migration(4, 5) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.run {
-                    execSQL("DROP TABLE articles")
-                }
-            }
-        }
+
         fun getInstance(context: Context): LocalDataBase? {
             if (INSTANCE == null) {
                 synchronized(LocalDataBase::class) {
                     INSTANCE = Room.databaseBuilder(
-                        context.getApplicationContext(),
+                        context.applicationContext,
                         LocalDataBase::class.java, "dznow.db"
                     )
                         .build()

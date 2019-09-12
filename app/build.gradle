@@ -121,4 +121,8 @@ dependencies {
     //GoogleSignIn
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
+    //to extract data
+    implementation 'net.dankito.readability4j:readability4j:1.0.3'
+
+
 }

@@ -18,7 +18,7 @@ interface ArticleService {
     fun saveUser(@Body user : UserPost) : Call<UserPost>
 
     //Save Article by UserId
-    @POST("/articles/save/{userId}")
+    @POST("/users/{userID}/articles")
     fun saveArticle(@Path( "userID" ) userID: String , @Body article : ArticlePost) : Call<ArticlePost>
 
     //Unsave Article

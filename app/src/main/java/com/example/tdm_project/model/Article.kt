@@ -20,8 +20,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 import com.example.tdm_project.R
-
-
+import okio.ByteString
 
 
 @Entity(
@@ -51,8 +50,9 @@ data class Article(
     var fetchDate: Date = Date(),
     var publicationDate: Date = fetchDate,
     var img: String? = null,
-    var mobilizedContent: String? = null, //in case i want to save my article
-    var isRead: Boolean = false, //TODO(do i need to handle this)
+    @ColumnInfo(name = "mobilizedContent")
+    var mobilizedContent: String = "", //in case i want to save my article
+    var isRead: Boolean = false,
     var isSavedOffline: Boolean = false //in case i wanted it to be readible offline
 ) : Parcelable, Comparable<Article>, ViewModel() {
     override fun compareTo(other: Article): Int {
@@ -91,7 +91,7 @@ fun SyndEntry.toDbFormat(feed: Feed, category: Category): Article {
 
     val item = Article()
     item._id = (feed.id.toString() + "_" + (link ?: uri ?: title
-    ?: UUID.randomUUID().toString()))
+    ?: UUID.randomUUID().toString())).sh1()
     item.categoryId = category._id
     item.feedId = feed.id
     @Suppress("DEPRECATION")
@@ -106,3 +106,5 @@ fun SyndEntry.toDbFormat(feed: Feed, category: Category): Article {
 
     return item
 }
+
+fun String.sh1(): String = ByteString.of(*this.toByteArray()).sha1().hex()

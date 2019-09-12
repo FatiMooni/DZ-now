@@ -9,64 +9,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_article_reading"
         tools:context=".view.activities.ArticleReadingActivity">
-   <androidx.appcompat.widget.AppCompatTextView
-           android:layout_width="wrap_content"
-           app:layout_constraintStart_toStartOf="parent"
+   <com.example.tdm_project.view.activities.ArticleReadingView
+           app:layout_constraintEnd_toEndOf="parent"
+           android:layout_height="wrap_content"
+           android:layout_width="match_parent"
            app:layout_constraintTop_toTopOf="parent"
-           android:layout_marginTop="10dp"
-           android:fontFamily="serif"
-           android:textStyle="bold"
-           android:id="@+id/title_input"
-           android:textColor="?attr/primary_text_color"
-           android:textSize="20sp"
-           android:layout_height="wrap_content"/>
-    <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_input"
-            android:layout_marginTop="5dp"
-            android:id="@+id/second_input"
-            android:textSize="16sp"
-            android:textColor="?attr/secondary_text_color"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/second_input"
-            android:layout_marginTop="5dp"
-            android:id="@+id/date_input"
-            android:textColor="?attr/secondary_text_color"
-            android:layout_height="wrap_content"/>
-    <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date_input"
-            android:layout_marginTop="5dp"
-            android:id="@+id/writer_input"
-            android:textColor="?attr/secondary_text_color"
-            android:layout_height="wrap_content"/>
-
-  <androidx.appcompat.widget.AppCompatImageView
-          android:layout_width="match_parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/writer_input"
-          android:layout_margin="5dp"
-          android:id="@+id/article_image"
-          android:layout_height="wrap_content"/>
-    <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/article_image"
-            android:layout_marginTop="5dp"
-            android:fontFamily="serif"
-            android:id="@+id/article_text"
-            android:textColor="?attr/primary_text_color"
-            android:layout_height="wrap_content"/>
-    <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/article_text"
-              android:id="@+id/webview"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent" />
+           app:layout_constraintStart_toStartOf="parent"
+           android:id="@+id/customwebview"
+           >
+   </com.example.tdm_project.view.activities.ArticleReadingView>
 </androidx.constraintlayout.widget.ConstraintLayout>

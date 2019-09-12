@@ -38,6 +38,11 @@ interface ArticleDao {
     @Query("Update articles set isSavedOffline = 0 where _id is :articleId ")
     fun markArticleAsUnsaved(articleId : String)
 
+    //update to unsaved
+    @SkipQueryVerification
+    @Query("Update articles set mobilizedContent = :content where _id is :articleId ")
+    fun markArticleOffline(articleId : String , content : String)
+
     //insert a Category
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg articleViewModel: Article)

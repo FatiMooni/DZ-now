@@ -144,18 +144,7 @@ class HomeFragment : Fragment() {
             catVModel.getData()
         }
 
-        /** val btnHoriz = rootView.findViewById<ImageButton>(R.id.btn_horizt_display)
-        btnHoriz.setOnClickListener {
-            rvInitializer(LinearLayoutManager.HORIZONTAL)
-            verticallayout = false
-        }
-
-        val btnVert = rootView.findViewById<ImageButton>(R.id.btn_vert_display)
-        btnVert.setOnClickListener {
-            rvInitializer(LinearLayoutManager.VERTICAL)
-            verticallayout = true
-        }**/
-
+        //get all saved articles
         val btnAll = rootView.findViewById<AppCompatButton>(R.id.all_topics_btn)
         btnAll.setOnClickListener {
             categoryId = null
@@ -195,6 +184,10 @@ class HomeFragment : Fragment() {
                         doAsync {
                               if(article.isSavedOffline){
                                   App.db.articleDao().markArticleAsSaved(article._id)
+                                  context?.startService(
+                                      Intent(context, FetchArticlesService::class.java)
+                                          .setAction(FetchArticlesService.ACTION_ARTICLE)
+                                          .putExtra("article",article) )
                               } else {
                                   App.db.articleDao().markArticleAsUnsaved(article._id)
 

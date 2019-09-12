@@ -47,7 +47,8 @@ class ArticleViewModel : ViewModel {
         this.img = article.img
         this.isRead = article.isRead
         this.isSavedOffline = article.isSavedOffline
-        categoryId = article.categoryId
+        this.mobilizedContent = article.mobilizedContent
+        this.categoryId = article.categoryId
     }
 
     constructor() : super()

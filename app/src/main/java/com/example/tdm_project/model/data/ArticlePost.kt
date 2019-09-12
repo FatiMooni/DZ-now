@@ -4,17 +4,21 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class  ArticlePost (
-    @SerializedName("articleId")
+    @SerializedName("articleID")
     @Expose
     var articleId : String ,
-    @SerializedName("userId")
+    @SerializedName("userID")
     @Expose
     var userId : String ,
     @SerializedName("title")
     @Expose
     var title : String ,
-    @SerializedName("image")
+    @SerializedName("uri")
     @Expose
-    var image: String
+    var uri : String ,
+    @SerializedName("categoryID")
+    @Expose
+    var categoryId : String
+
 
 )
