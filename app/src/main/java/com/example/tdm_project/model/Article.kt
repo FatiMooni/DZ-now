@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 import com.example.tdm_project.R
+import com.example.tdm_project.model.data.ArticlePost
 import okio.ByteString
 
 
@@ -50,6 +51,7 @@ data class Article(
     var fetchDate: Date = Date(),
     var publicationDate: Date = fetchDate,
     var img: String? = null,
+    var userId: String ="" ,
     @ColumnInfo(name = "mobilizedContent")
     var mobilizedContent: String = "", //in case i want to save my article
     var isRead: Boolean = false,
@@ -105,6 +107,24 @@ fun SyndEntry.toDbFormat(feed: Feed, category: Category): Article {
     item.publicationDate = if (date?.before(item.publicationDate) == true) date else item.publicationDate
 
     return item
+}
+
+fun ArticlePost.toDbFormat() : Article{
+
+    var a =Article()
+    var au = ""
+    a.userId= userId
+    a._id= articleId
+    a.author= author
+    a.categoryId = categoryId
+    a.publicationDate = Date(publicationDate)
+    a.title = title
+    a.isSavedOffline=true
+    a.uri= uri
+    a.categoryOrigin=categoryOrigin
+
+
+    return a
 }
 
 fun String.sh1(): String = ByteString.of(*this.toByteArray()).sha1().hex()

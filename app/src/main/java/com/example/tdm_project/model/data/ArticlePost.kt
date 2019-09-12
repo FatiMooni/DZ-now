@@ -18,7 +18,16 @@ data class  ArticlePost (
     var uri : String ,
     @SerializedName("categoryID")
     @Expose
-    var categoryId : String
+    var categoryId : String,
+    @SerializedName("categoryOrigin")
+    @Expose
+    var categoryOrigin : String,
+    @SerializedName("publicationDate")
+    @Expose
+    var publicationDate: String ,
+    @SerializedName("author")
+    @Expose
+    var author : String
 
 
 )

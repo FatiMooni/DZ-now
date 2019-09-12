@@ -96,7 +96,7 @@ class SavedFragment : Fragment() {
 
         })
 
-        newsList = LivePagedListBuilder(App.db.articleDao().getSavedArticles(),10).build()
+        newsList = LivePagedListBuilder(App.db.articleDao().getSavedArticles(userId),10).build()
 
         newsList!!.observe(this , Observer {
             savedAdapter.submitList(it)

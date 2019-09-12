@@ -20,8 +20,7 @@ import retrofit2.Response
 
 class SavedMenuItem (private val it: ArticleViewModel, private val cont: Context) : PopupMenu.OnMenuItemClickListener {
     var userId = Profile.getCurrentProfile().id
-    var article = ArticlePost(it._id!!,userId,it.title,it.uri!!,it.categoryId)
-   //var article = ArticlePost("1",userId,"Title","URI","1","test")
+    var article = ArticlePost(it._id!!,userId,it.title,it.uri!!,it.categoryId,it.categoryOrigin,it.publicationDate.toString(),it.author)
     override fun onMenuItemClick(menuItem: MenuItem): Boolean {
 
         when (menuItem.itemId) {
