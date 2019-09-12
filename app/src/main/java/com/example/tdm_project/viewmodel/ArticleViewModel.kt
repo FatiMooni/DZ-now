@@ -5,8 +5,10 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tdm_project.model.Article
+import com.example.tdm_project.model.data.ArticlePost
 import com.example.tdm_project.services.ArticleService
 import com.example.tdm_project.services.ServiceBuilder
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -93,5 +95,65 @@ class ArticleViewModel : ViewModel {
             }
 
         })
+    }
+
+    ///GetSavedArticle from backEnd
+
+    fun getSavedArticle(userId : String) {
+        val service = ServiceBuilder.buildService(ArticleService::class.java)
+        val request = service.getSavedArticles(userId)
+
+        request.enqueue(object : Callback<List<ArticlePost>> {
+            override fun onFailure(call: Call<List<ArticlePost>>, t: Throwable) {
+                Log.e("GETSAVEDFAIL", "couldnt get the articles", t)
+            }
+
+
+            override fun onResponse(call: Call<List<ArticlePost>>, response: Response<List<ArticlePost>>) {
+                if (response.isSuccessful){
+                    response.body()!!.forEach {
+
+                        Log.i("GETSAVED",it.title)
+                        // articleInnerList.add(ArticleViewModel(it))
+                    }
+
+
+                    //articleMList.value = articleInnerList
+                }
+            }
+
+        })
+    }
+
+    //Delete unsave article
+    fun unsaveArticle ( userId :String,uri:String) {
+
+        val service = ServiceBuilder.buildService(ArticleService::class.java)
+        val request = service.unsaveArticle(userId,uri)
+
+        request.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("DELETEFAIL", "couldnt delete", t)
+            }
+
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful){
+
+
+                        Log.i("DELETED","YOUPII")
+                        // articleInnerList.add(ArticleViewModel(it))
+                    }
+
+
+                    //articleMList.value = articleInnerList
+                }
+
+        })
+
+
+
+
+
     }
 }

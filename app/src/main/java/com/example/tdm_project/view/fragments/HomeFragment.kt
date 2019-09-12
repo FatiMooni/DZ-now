@@ -55,6 +55,7 @@ class HomeFragment : Fragment() {
     private lateinit var articleVAdapter: ArticleVAdapter
     private lateinit var rv: RecyclerView
     private lateinit var pref: PreferencesProvider
+    var userId=""
     private var articlesLiveData: LiveData<PagedList<Article>>? = null
 
     //viewmodel
@@ -95,7 +96,7 @@ class HomeFragment : Fragment() {
         rootView = inflater.inflate(R.layout.home_fragment, container, false)
         pref = PreferencesProvider(rootView.context)
 
-
+        userId=Profile.getCurrentProfile().id
         /**first step fetch all existed articles from room**/
         //set list of news
         if (!verticallayout) {
@@ -189,6 +190,7 @@ class HomeFragment : Fragment() {
                                           .setAction(FetchArticlesService.ACTION_ARTICLE)
                                           .putExtra("article",article) )
                               } else {
+                                  vmodel.unsaveArticle(userId,article.uri!!)
                                   App.db.articleDao().markArticleAsUnsaved(article._id)
 
                               }

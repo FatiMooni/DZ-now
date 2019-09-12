@@ -42,4 +42,5 @@
     <string name="international">أخبار عالمية</string>
     <string name="nat">أخبار وطنية</string>
     <string name="signer"> حفظ</string>
+    <string name="sync">تحديث</string>
 </resources>

@@ -22,12 +22,12 @@ interface ArticleService {
     fun saveArticle(@Path( "userID" ) userID: String , @Body article : ArticlePost) : Call<ArticlePost>
 
     //Unsave Article
-    @DELETE("/articles/delete/{userID}")
-    fun unsaveArticle(@Path( "userID" ) userID: String ,@Query("articleId") articleId:String ) : Call<ResponseBody>
+    @DELETE("/users/{userID}/articles/{uri}")
+    fun unsaveArticle(@Path( "userID" ) userID: String ,@Path("uri") uri:String ) : Call<ResponseBody>
 
 
 
     //Get Saved Article
-    @GET ("/articles/{userID}")
+    @GET ("/users/{userID}/articles")
     fun getSavedArticles (@Path( "userID" ) userID: String ): Call<List<ArticlePost>>
 }

@@ -9,13 +9,10 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tdm_project.R
-import com.example.tdm_project.databinding.ArticleBinding
 import com.example.tdm_project.databinding.ArticleVBinding
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.view.interfaces.ItemClicksListener
 import com.example.tdm_project.viewmodel.ArticleViewModel
-import com.squareup.picasso.Picasso
-
 
 
 class ArticleVAdapter(val context: Context) :
