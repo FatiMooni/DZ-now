@@ -190,7 +190,7 @@ class HomeFragment : Fragment() {
                                           .setAction(FetchArticlesService.ACTION_ARTICLE)
                                           .putExtra("article",article) )
                               } else {
-                                  vmodel.unsaveArticle(userId,article.uri!!)
+                                  vmodel.unsaveArticle(userId,article._id)
                                   App.db.articleDao().markArticleAsUnsaved(article._id)
 
                               }

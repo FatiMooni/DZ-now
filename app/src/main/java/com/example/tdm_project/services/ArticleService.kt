@@ -22,8 +22,8 @@ interface ArticleService {
     fun saveArticle(@Path( "userID" ) userID: String , @Body article : ArticlePost) : Call<ArticlePost>
 
     //Unsave Article
-    @DELETE("/users/{userID}/articles/{uri}")
-    fun unsaveArticle(@Path( "userID" ) userID: String ,@Path("uri") uri:String ) : Call<ResponseBody>
+    @DELETE("/users/{userID}/articles/{articleID}")
+    fun unsaveArticle(@Path( "userID" ) userID: String ,@Path("articleID") uri:String ) : Call<ResponseBody>
 
 
 

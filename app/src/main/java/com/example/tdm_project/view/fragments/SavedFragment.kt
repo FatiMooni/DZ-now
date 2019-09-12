@@ -87,7 +87,7 @@ class SavedFragment : Fragment() {
 
             override fun onSaveArticleClick(article: Article, position: Int) {
                 article.isSavedOffline = false
-                vmodel.unsaveArticle(userId,article.uri!!)
+                vmodel.unsaveArticle(userId,article._id)
 
                 doAsync {
                     App.db.articleDao().markArticleAsUnsaved(articleId = article._id)
@@ -96,11 +96,11 @@ class SavedFragment : Fragment() {
 
         })
 
-      /*  newsList = LivePagedListBuilder(App.db.articleDao().getSavedArticles(),10).build()
+        newsList = LivePagedListBuilder(App.db.articleDao().getSavedArticles(),10).build()
 
         newsList!!.observe(this , Observer {
             savedAdapter.submitList(it)
-        })*/
+        })
 
         syncBtn.setOnClickListener {
 
