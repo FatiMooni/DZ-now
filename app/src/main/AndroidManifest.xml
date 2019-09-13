@@ -59,6 +59,11 @@
                android:label="@string/title_activity_article_reading"
                android:theme="@style/AppTheme.NoActionBar">
        </activity>
+        <activity
+                android:name=".view.activities.FavoriteActivity"
+                android:label="Sites Et Themes Préférés"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
        <activity android:name=".view.activities.MainActivity">
            <intent-filter>
                <action android:name="android.intent.action.MAIN"/>

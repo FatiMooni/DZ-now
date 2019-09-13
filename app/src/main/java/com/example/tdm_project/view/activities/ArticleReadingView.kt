@@ -98,11 +98,11 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             loadDataWithBaseURL("", "", TEXT_HTML, UTF8, null)
         } else {
             var contentText =  article.mobilizedContent
-            contentText = contentText!!.replace(HTML_IMG_REGEX.toRegex(), "")
+            contentText = contentText.replace(HTML_IMG_REGEX.toRegex(), "")
             settings.blockNetworkImage = true
 
             val subtitle = StringBuilder(article.getReadablePublicationDate(context))
-            if (article.author?.isNotEmpty()) {
+            if (article.author.isNotEmpty()) {
                 subtitle.append(" &mdash; ").append(article.author)
             }
 

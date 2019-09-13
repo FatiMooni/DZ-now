@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -65,10 +66,11 @@ class SavedFragment : Fragment() {
             override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
 
                 val popup = PopupMenu(view.context, view.menu_button)
-                val inflater = popup.menuInflater
+                @Suppress("NAME_SHADOWING") val inflater: MenuInflater = popup.menuInflater
                 inflater.inflate(R.menu.signet_menu, popup.menu)
                 popup.setOnMenuItemClickListener(
                     SavedMenuItem(article, view.context)
+
                 )
                 popup.show()
             }
@@ -96,7 +98,7 @@ class SavedFragment : Fragment() {
 
         })
 
-        newsList = LivePagedListBuilder(App.db.articleDao().getSavedArticles(),10).build()
+        newsList = LivePagedListBuilder(App.db.articleDao().getSavedArticles(userId),10).build()
 
         newsList!!.observe(this , Observer {
             savedAdapter.submitList(it)

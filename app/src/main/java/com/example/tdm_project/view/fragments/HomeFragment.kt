@@ -96,7 +96,7 @@ class HomeFragment : Fragment() {
         rootView = inflater.inflate(R.layout.home_fragment, container, false)
         pref = PreferencesProvider(rootView.context)
 
-        userId=Profile.getCurrentProfile().id
+
         /**first step fetch all existed articles from room**/
         //set list of news
         if (!verticallayout) {
@@ -106,17 +106,6 @@ class HomeFragment : Fragment() {
         }
         else rvInitializer(LinearLayoutManager.VERTICAL)
 
-
-        vmodel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
-
-        vmodel.getArticles().observe(this, Observer {
-
-            newsList = it
-            if (verticallayout) (articleVAdapter)
-            else (articleAdapter as ArticleRVAdapter)
-        })
-
-        vmodel.getData()
 
 
         val catVModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
@@ -160,6 +149,7 @@ class HomeFragment : Fragment() {
         if (profile != null) {
             var greeting = userGreeting.text.toString()
             userGreeting.text = greeting + "" + profile.name.toString()
+            userId=Profile.getCurrentProfile().id
         }
         return rootView
     }
@@ -186,7 +176,7 @@ class HomeFragment : Fragment() {
                         article.isSavedOffline = !article.isSavedOffline
                         doAsync {
                               if(article.isSavedOffline){
-                                  App.db.articleDao().markArticleAsSaved(article._id)
+                                  App.db.articleDao().markArticleAsSaved(userId,article._id)
                                   val intent =
                                       Intent(context, FetchArticlesService::class.java)
                                           .setAction(FetchArticlesService.ACTION_ARTICLE)

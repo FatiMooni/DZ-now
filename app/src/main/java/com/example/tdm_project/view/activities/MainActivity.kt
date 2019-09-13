@@ -57,8 +57,8 @@ class MainActivity : CustomBaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(HomeFragment.verticallayout) find<RadioButton>(R.id.vert_disp).isChecked = true
-        else find<RadioButton>(R.id.hori_disp).isChecked = true
+       /* if(HomeFragment.verticallayout) find<RadioButton>(R.id.vert_disp).isChecked = true
+        else find<RadioButton>(R.id.hori_disp).isChecked = true*/
         when(item!!.itemId){
             R.id.vert_disp -> HomeFragment.verticallayout = true
             R.id.hori_disp -> HomeFragment.verticallayout = false

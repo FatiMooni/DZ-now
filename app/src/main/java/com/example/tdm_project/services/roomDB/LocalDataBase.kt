@@ -16,7 +16,7 @@ import com.example.tdm_project.services.dao.CategoryDao
 import com.example.tdm_project.services.dao.FeedDao
 
 @TypeConverters(Converters::class)
-@Database(entities = [Feed::class, Article::class, Category::class], version = 2 , exportSchema = false)
+@Database(entities = [Feed::class, Article::class, Category::class], version = 3 , exportSchema = false)
 abstract class LocalDataBase : RoomDatabase() {
 
 

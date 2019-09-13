@@ -166,12 +166,12 @@
                 <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:background="?attr/card_background"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/topics_choice_holder"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:padding="10dp"
                             android:background="?attr/card_background"
                             android:orientation="vertical"/>

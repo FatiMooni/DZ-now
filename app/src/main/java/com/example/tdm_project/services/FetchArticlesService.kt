@@ -378,9 +378,6 @@ class FetchArticlesService : JobIntentService() {
 
     private val handler = Handler()
     public override fun onHandleWork(intent: Intent) {
-       if (intent == null) { // No intent, we quit
-            return
-        }
 
         val isFromAutoRefresh = intent.getBooleanExtra(FROM_AUTO_REFRESH, false)
 

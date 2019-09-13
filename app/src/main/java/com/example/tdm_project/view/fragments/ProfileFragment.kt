@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.data.SharedSavedNews
+import com.example.tdm_project.view.activities.FavoriteActivity
 import com.example.tdm_project.view.activities.ParameterActivity
 import com.example.tdm_project.view.adapters.sharedPostsAdapter
 import com.example.tdm_project.viewmodel.ArticleViewModel
@@ -74,6 +75,14 @@ class ProfileFragment : Fragment() {
         rootView.findViewById<Button>(R.id.param).setOnClickListener {
             // preparé l'activité d'ajout
             val intent = Intent(rootView.context, ParameterActivity::class.java)
+            // lancer l'activité
+            startActivity(intent)
+
+        }
+
+        rootView.findViewById<Button>(R.id.btn_fav).setOnClickListener {
+            // preparé l'activité d'ajout
+            val intent = Intent(rootView.context, FavoriteActivity::class.java)
             // lancer l'activité
             startActivity(intent)
 
