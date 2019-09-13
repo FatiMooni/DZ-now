@@ -43,6 +43,11 @@ interface ArticleDao {
     @Query("Update articles set mobilizedContent = :content where _id is :articleId ")
     fun markArticleOffline(articleId : String , content : String)
 
+
+    //select articles with favorite category
+    @Query("Select * from articles where categoryOrigin is :categoryPref ")
+    fun getFavoriteArticles(categoryPref : String) : List<Article>
+
     //insert a Category
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg articleViewModel: Article)

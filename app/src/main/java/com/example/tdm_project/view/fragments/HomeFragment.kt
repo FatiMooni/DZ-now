@@ -128,10 +128,12 @@ class HomeFragment : Fragment() {
 
                     if(pref.isFirstUse()){
                         Log.i("first use" , "am gonna fetch feeds")
-                        context?.startService(
+                        val intent =
                             Intent(context, FetchArticlesService::class.java)
                                 .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
-                                .putParcelableArrayListExtra(FetchArticlesService.EXTRA_CATEGORIES, it))
+                                .putParcelableArrayListExtra(FetchArticlesService.EXTRA_CATEGORIES, it)
+                        FetchArticlesService.enqueue(App.context, intent)
+
                     }
 
                 //prepare the topics on the top of the fragment
@@ -185,10 +187,11 @@ class HomeFragment : Fragment() {
                         doAsync {
                               if(article.isSavedOffline){
                                   App.db.articleDao().markArticleAsSaved(article._id)
-                                  context?.startService(
+                                  val intent =
                                       Intent(context, FetchArticlesService::class.java)
                                           .setAction(FetchArticlesService.ACTION_ARTICLE)
-                                          .putExtra("article",article) )
+                                          .putExtra("article",article)
+                                  FetchArticlesService.enqueue(App.context, intent)
                               } else {
                                   vmodel.unsaveArticle(userId,article._id)
                                   App.db.articleDao().markArticleAsUnsaved(article._id)
@@ -314,11 +317,12 @@ class HomeFragment : Fragment() {
                 Log.i("the articles of $cat $id", "the category with $id")
                 if (App.hasNetwork()!!)
                     doAsync {
-                        context?.startService(
+                        val intent =
                         Intent(context, FetchArticlesService::class.java)
                             .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
                             .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, id)
-                          )
+                        FetchArticlesService.enqueue(App.context, intent)
+
                     }
                     categoryId = id
                     initDataObservers()

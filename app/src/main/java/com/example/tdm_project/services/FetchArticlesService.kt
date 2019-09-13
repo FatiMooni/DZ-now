@@ -2,7 +2,10 @@ package com.example.tdm_project.services
 
 import android.accounts.NetworkErrorException
 import android.app.IntentService
+import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
@@ -26,7 +29,9 @@ import java.util.concurrent.TimeUnit
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.os.Build
 import android.text.Html
+import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import com.example.tdm_project.R
 import com.example.tdm_project.viewmodel.ArticleViewModel
@@ -39,7 +44,7 @@ import org.jsoup.Jsoup
 ** This class will be an instance of Intent Service cause it helps to hundle the asychrone tasks
 ** while working on other tasks
  */
-class FetchArticlesService : IntentService(FetchArticlesService::class.java.simpleName) {
+class FetchArticlesService : JobIntentService() {
 
     val sharedPref = PreferencesProvider(App.context)
 
@@ -81,6 +86,9 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
                 .addHeader("accept", "*/*")
                 .build()
         )
+        fun enqueue(context : Context, work : Intent){
+            enqueueWork(context, FetchArticlesService::class.java , 5789 , work)
+        }
 
 
     }
@@ -339,8 +347,37 @@ class FetchArticlesService : IntentService(FetchArticlesService::class.java.simp
         App.db.articleDao().deleteAllArticles(getDaysAgo(daysAgo).time)
     }
 
+    override fun onCreate() {
+        showNotification()
+        super.onCreate()
+    }
+    /** show notification if there is new articles preferé **/
+    private fun showNotification(){
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("YOUR_CHANNEL_ID",
+                "YOUR_CHANNEL_NAME",
+                NotificationManager.IMPORTANCE_DEFAULT)
+
+            channel.description = "YOUR_NOTIFICATION_CHANNEL_DISCRIPTION"
+            channel.enableVibration(true)
+            channel.enableLights(true)
+            mNotificationManager.createNotificationChannel(channel)
+        }
+        val mBuilder = NotificationCompat.Builder(applicationContext, "YOUR_CHANNEL_ID")
+            .setContentTitle("haha am running") // title for notification
+            .setContentText("yaw anii jiiiiiiiiiiiiiiiiiiiit")// message for notification
+            .setAutoCancel(true) // clear notification after click
+            .setSmallIcon(R.drawable.ic_assignment_turned_in_black_24dp
+            )
+
+        mNotificationManager.notify(0, mBuilder.build())
+    }
+
+
+
     private val handler = Handler()
-    public override fun onHandleIntent(intent: Intent?) {
+    public override fun onHandleWork(intent: Intent) {
        if (intent == null) { // No intent, we quit
             return
         }
