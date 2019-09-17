@@ -18,7 +18,7 @@ import com.example.tdm_project.services.dao.FeedDao
 import com.example.tdm_project.services.dao.VideoDao
 
 @TypeConverters(Converters::class)
-@Database(entities = [Feed::class, Article::class, Category::class , Video::class] , version =6 , exportSchema = false)
+@Database(entities = [Feed::class, Article::class, Category::class , Video::class] , version = 7 , exportSchema = false)
 abstract class LocalDataBase : RoomDatabase() {
 
 

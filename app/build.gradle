@@ -73,10 +73,6 @@ dependencies {
     def exoPlayerVersion = "2.8.4"
     implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
 
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     //gson Converter
@@ -134,6 +130,9 @@ dependencies {
 
     //VideoLinkExtractor
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+
+
+
 
 
 

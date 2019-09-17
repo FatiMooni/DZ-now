@@ -10,9 +10,9 @@ import okio.ByteString
 @Entity(tableName = "videos")
 
 data class Video (
-    @PrimaryKey //(autoGenerate = true)
+    @PrimaryKey (autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id : Long ,
+    var id : Long = 0L,
     @ColumnInfo(name = "_title")
     var videoTitle : String,
     @ColumnInfo(name = "_uri")

@@ -1,8 +1,7 @@
 package com.example.tdm_project.view.fragments
-
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.AsyncTask
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -51,6 +50,9 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.support.v4.toast
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URL
 import java.net.URLConnection
 import java.util.*
@@ -353,13 +355,10 @@ class HomeFragment : Fragment()  {
 
 
   fun extractVideos ( article : ArticleViewModel)  {
-      // link for test "https://www.ennaharonline.com/%d8%a8%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88-%d8%a7%d9%84%d8%b4%d9%8a%d8%ae-%d8%ac%d9%84%d9%88%d9%84-%d9%88%d9%85%d8%b4%d8%a7%d9%87%d9%8a%d8%b1-%d8%a7%d9%84%d9%81%d9%86-%d9%88%d8%a7%d9%84%d8%b1/"
-
-      val conn = Jsoup.connect( "https://www.ennaharonline.com/%d8%a8%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88-%d8%a7%d9%84%d8%b4%d9%8a%d8%ae-%d8%ac%d9%84%d9%88%d9%84-%d9%88%d9%85%d8%b4%d8%a7%d9%87%d9%8a%d8%b1-%d8%a7%d9%84%d9%81%d9%86-%d9%88%d8%a7%d9%84%d8%b1/"
-      ).method(Connection.Method.GET)
+      // link for test "https://www.ennaharonline.com/%d8%a8%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88-%d9%88%d8%a7%d9%84%d8%b5%d9%88%d8%b1-%d8%a7%d9%84%d8%ac%d8%b2%d8%a7%d8%a6%d8%b1%d9%8a%d9%88%d9%86-%d9%8a%d8%ae%d8%b1%d8%ac%d9%88%d9%86-%d9%84%d9%84/"
+      val conn = Jsoup.connect(article.uri).method(Connection.Method.GET)
       val resp = conn.execute()
-       val html = resp.body()
-      //val videos = ArrayList<Video>()
+        val html = resp.body()
         val doc = Jsoup.parse(html, "UTF-8")
       val hrefs = doc.getElementsByTag("iframe")
       for (el in hrefs) {
@@ -381,10 +380,10 @@ class HomeFragment : Fragment()  {
                               Log.i("VIDEO", "INSIDEfUN1")
                               var itag=22
                               var downloadUrl = ytFiles.get(itag).getUrl()
-                              var img = " "
+                              var img = "https://cdn1.imggmi.com/uploads/2019/9/18/2d42c776e9b5c2f882ee9ee2033402e4-full.png"
                               if (article.img != null)  img= article.img!!
 
-                              var  video =Video (1,article.title,downloadUrl,img)
+                              var  video =Video (videoTitle = article.title, videoUri = downloadUrl,thumbnail = img)
                               Log.i("VIDEOCONVLINK0",video.videoUri)
                               doAsync {
                                   App.db.videoDao().insert(video)
@@ -399,6 +398,26 @@ class HomeFragment : Fragment()  {
                       }
                   }.extract(linkYout, true, true)
 
+
+                   // You probably would want to keep one of these extractors around.
+        /*var extractor : YouTubeExtractor  = YouTubeExtractor.create()
+
+        extractor.extract(id).enqueue(object : Callback<YouTubeExtractionResult> {
+                      override fun onResponse(call: Call<YouTubeExtractionResult>, response: Response<YouTubeExtractionResult>) {
+                          Log.i("EXTRACT", "Saving User : call enqueue")
+                          if (response.isSuccessful) {
+                              var result: YouTubeExtractionResult = response.body()!!
+                              var link = result.getHd1080VideoUri()
+                              bindVideoResult(response.body())
+                              Log.i("EXTRACTlink",link.toString())
+                          }
+
+
+                      }
+                      override fun onFailure(call: Call<YouTubeExtractionResult>, t: Throwable) {
+                          Log.i("EXTRACT", "error CODE:" + t.message)
+                      }
+                  })*/
 
 
               }
