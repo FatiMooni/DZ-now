@@ -3,7 +3,6 @@ package com.example.tdm_project.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuInflater
@@ -22,10 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Article
-import com.example.tdm_project.model.data.ArticlePost
-import com.example.tdm_project.services.App
-import com.example.tdm_project.services.ArticleService
-import com.example.tdm_project.services.ServiceBuilder
+import com.example.tdm_project.services.Helpers.App
 import com.example.tdm_project.view.activities.ArticleReadingActivity
 import com.example.tdm_project.view.adapters.ArticleVAdapter
 import com.example.tdm_project.view.adapters.SavedMenuItem
@@ -34,10 +30,6 @@ import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.facebook.Profile
 import kotlinx.android.synthetic.main.horiz_news_view.view.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.sdk21.listeners.onClick
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class SavedFragment : Fragment() {

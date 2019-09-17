@@ -64,33 +64,24 @@
             app:layout_constraintTop_toBottomOf="@id/scroller"
             app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/ic_view_day_black_24dp"
-            android:id="@+id/btn_vert_display"
+            android:id="@+id/affich_contact"
             android:tint="?attr/icon_color"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    <ImageButton
-            app:layout_constraintTop_toBottomOf="@id/scroller"
-            app:layout_constraintEnd_toStartOf="@id/btn_vert_display"
-            android:src="@drawable/ic_view_week_black_24dp"
-            android:id="@+id/btn_horizt_display"
-            android:layout_width="wrap_content"
-            android:tint="?attr/icon_color"
-            android:visibility="gone"
-            android:layout_height="wrap_content"/>
+
 
             <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
                                                    app:layout_constraintEnd_toEndOf="parent"
                                                    app:layout_constraintStart_toStartOf="parent"
                                                    android:scrollbars="horizontal"
                                                    app:layout_constraintBottom_toBottomOf="parent"
-                                                   app:layout_constraintTop_toBottomOf="@id/btn_horizt_display"
+                                                   app:layout_constraintTop_toBottomOf="@id/affich_contact"
                                                    android:layout_height="0dp">
             <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_vert_display"
+                    app:layout_constraintTop_toBottomOf="@id/affich_contact"
                     android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView

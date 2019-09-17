@@ -1,12 +1,8 @@
-package com.example.tdm_project.services
+package com.example.tdm_project.services.Helpers
 
-import android.content.Intent
 import android.text.TextUtils
-import com.example.tdm_project.model.Article
-import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
-import java.io.File
 import java.util.ArrayList
 import java.util.regex.Pattern
 
@@ -68,7 +64,9 @@ object HtmlOptimizer {
         content = LAZY_LOADING_PATTERN.matcher(content).replaceAll(" src=$2")
 
         // clean by JSoup
-        content = Jsoup.clean(content, baseUri, JSOUP_WHITELIST)
+        content = Jsoup.clean(content, baseUri,
+            JSOUP_WHITELIST
+        )
 
         // remove empty or bad images
         content = PIXEL_IMAGE_PATTERN.matcher(content).replaceAll("")
@@ -97,7 +95,9 @@ object HtmlOptimizer {
 
 
             while (matcher.find()) {
-                images.add(matcher.group(1).replace(" ", URL_SPACE))
+                images.add(matcher.group(1).replace(" ",
+                    URL_SPACE
+                ))
             }
         }
 
@@ -109,7 +109,9 @@ object HtmlOptimizer {
             val matcher = IMG_PATTERN.matcher(content)
 
             while (matcher.find()) {
-                val imgUrl = matcher.group(1).replace(" ", URL_SPACE)
+                val imgUrl = matcher.group(1).replace(" ",
+                    URL_SPACE
+                )
                 if (isCorrectImage(imgUrl)) {
                     return imgUrl
                 }
@@ -120,7 +122,11 @@ object HtmlOptimizer {
     }
 
     fun getMainImageURL(imgUrls: ArrayList<String>): String? {
-        return imgUrls.firstOrNull { isCorrectImage(it) }
+        return imgUrls.firstOrNull {
+            isCorrectImage(
+                it
+            )
+        }
     }
 
     private fun isCorrectImage(imgUrl: String): Boolean {

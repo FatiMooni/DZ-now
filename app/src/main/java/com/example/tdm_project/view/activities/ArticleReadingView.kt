@@ -10,7 +10,6 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Article
-import com.example.tdm_project.services.HtmlOptimizer
 import org.jetbrains.anko.colorAttr
 
 class ArticleReadingView @JvmOverloads

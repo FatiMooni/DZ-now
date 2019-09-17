@@ -1,4 +1,4 @@
-package com.example.tdm_project.services
+package com.example.tdm_project.services.Helpers
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -46,13 +46,16 @@ class App : Application() {
 
             createNotificationChannel()
             context = applicationContext
-            db = LocalDataBase.getInstance(context)!!
+            db = LocalDataBase.getInstance(
+                context
+            )!!
             isOnline = hasNetwork()!!
 
         }
         private fun createNotificationChannel(){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                var notificationChannel = NotificationChannel( NOTIFICATION_CHANNEL_ID ,
+                var notificationChannel = NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
                     "NowDZ NEWS" ,
                     NotificationManager.IMPORTANCE_DEFAULT)
 

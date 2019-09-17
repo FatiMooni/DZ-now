@@ -16,6 +16,8 @@ import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.NewsPaper
 import com.example.tdm_project.model.data.Feed
 import com.example.tdm_project.model.toDbFormat
+import com.example.tdm_project.services.Helpers.App
+import com.example.tdm_project.services.Helpers.HtmlOptimizer
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.rometools.rome.io.SyndFeedInput
 import com.rometools.rome.io.XmlReader

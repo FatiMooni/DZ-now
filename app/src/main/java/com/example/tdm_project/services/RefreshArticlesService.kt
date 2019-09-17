@@ -12,7 +12,8 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import com.example.tdm_project.services.App.Companion.context
+import com.example.tdm_project.services.Helpers.App
+import com.example.tdm_project.services.Helpers.App.Companion.context
 import kotlin.math.max
 
 

@@ -124,5 +124,7 @@ dependencies {
     //to extract data
     implementation 'net.dankito.readability4j:readability4j:1.0.3'
 
+    //for text drawable in contacts
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
 }

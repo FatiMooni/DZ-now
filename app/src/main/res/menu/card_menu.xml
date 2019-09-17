@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@+id/btn_share_profile"
+  <item android:id="@+id/btn_sharesms"
         android:icon="@drawable/ic_person_pin_black_24dp"
-        android:title="@string/share_profile"
+        android:title="@string/partager_via_sms"
   />
+  <item android:id="@+id/btn_sharemail"
+          android:icon="@drawable/ic_person_pin_black_24dp"
+          android:title="@string/partager_via_email"
+          />
     <item android:id="@+id/btn_share"
           android:icon="@drawable/ic_share_black_24dp"
           android:title="@string/share"

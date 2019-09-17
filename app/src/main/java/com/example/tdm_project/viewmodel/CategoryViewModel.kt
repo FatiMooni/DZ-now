@@ -8,7 +8,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tdm_project.model.Category
-import com.example.tdm_project.services.App
+import com.example.tdm_project.services.Helpers.App
 import com.example.tdm_project.services.CategoryService
 import com.example.tdm_project.services.ServiceBuilder
 import com.example.tdm_project.sharedPreferences.PreferencesProvider

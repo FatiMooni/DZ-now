@@ -3,31 +3,21 @@ package com.example.tdm_project.view.activities
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.widget.AbsListView
 import android.widget.CheckBox
-import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.NewsPaper
-import com.example.tdm_project.model.Topic
-import com.example.tdm_project.services.App
-import com.example.tdm_project.services.App.Companion.context
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.adapters.NewsPaperAdapter
 import com.example.tdm_project.viewmodel.CategoryViewModel
 import com.example.tdm_project.viewmodel.NewsPaperViewModel
-import org.jetbrains.anko.colorAttr
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.doAsyncResult
-import org.jetbrains.anko.textColor
 
 class FavoriteActivity : CustomBaseActivity() {
     lateinit var myPreference: PreferencesProvider

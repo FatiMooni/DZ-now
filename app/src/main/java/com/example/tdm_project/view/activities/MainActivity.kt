@@ -2,19 +2,16 @@ package com.example.tdm_project.view.activities
 
 import android.content.Context
 
-import android.os.Build
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.CheckBox
-import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.tdm_project.R
 import com.example.tdm_project.authentication.LogInActivity
-import com.example.tdm_project.services.App
+import com.example.tdm_project.services.Helpers.App
 import com.example.tdm_project.services.RefreshArticlesService
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
@@ -22,7 +19,6 @@ import com.example.tdm_project.view.fragments.HomeFragment
 import com.example.tdm_project.view.fragments.ProfileFragment
 import com.example.tdm_project.view.fragments.SavedFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.find
 import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.HttpMethod

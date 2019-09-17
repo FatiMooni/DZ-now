@@ -1,19 +1,18 @@
 package com.example.tdm_project.viewmodel
 
-import android.content.Intent
 import android.text.Html
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.data.ArticlePost
 import com.example.tdm_project.model.toDbFormat
 import com.example.tdm_project.services.*
+import com.example.tdm_project.services.Helpers.App
+import com.example.tdm_project.services.Helpers.HtmlOptimizer
 import net.dankito.readability4j.extended.Readability4JExtended
 import okhttp3.ResponseBody
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.error
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback

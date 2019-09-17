@@ -19,8 +19,7 @@ class CustomMenuItem(private val it: ArticleViewModel, private val cont: Context
                 return true
             }
 
-            R.id.btn_share_profile -> {
-                SharedSavedNews.shareProfilePost(it, cont)
+            R.id.btn_sharesms -> {
                 return true
             }
             R.id.btn_save -> {
@@ -31,6 +30,7 @@ class CustomMenuItem(private val it: ArticleViewModel, private val cont: Context
         }
         return false
     }
+
 
 
 }

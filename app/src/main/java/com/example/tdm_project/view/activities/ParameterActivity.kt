@@ -26,7 +26,6 @@ import com.example.tdm_project.R
 import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.Topic
 import com.example.tdm_project.model.Topic.Companion.getTopics
-import com.example.tdm_project.services.App
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.viewmodel.CategoryViewModel
