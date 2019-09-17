@@ -12,7 +12,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.tdm_project"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         multiDexEnabled true
         versionCode 1
@@ -69,6 +69,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
+    // ExoPlayer
+    def exoPlayerVersion = "2.8.4"
+    implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
@@ -123,6 +128,13 @@ dependencies {
 
     //to extract data
     implementation 'net.dankito.readability4j:readability4j:1.0.3'
+
+    //Video treating
+    implementation 'commons-io:commons-io:2.4'
+
+    //VideoLinkExtractor
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+
 
 
 }

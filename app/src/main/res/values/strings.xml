@@ -1,6 +1,7 @@
 <resources>
     <string name="server_client_id">135694411826-qvj353ee5232b5jgph44a9flmeetdr5u.apps.googleusercontent.com</string>
-    <string name="facebook_app_id">1395073864007325</string> <string name="fb_login_protocol_scheme">fb1395073864007325</string>
+    <string name="facebook_app_id">1395073864007325</string>
+    <string name="fb_login_protocol_scheme">fb1395073864007325</string>
     <string name="app_name">DZ-NOW</string>
     <string name="welcome">Bienvenue</string>
     <string name="chang_lang">changer la langue</string>
@@ -43,4 +44,5 @@
     <string name="health">Santé</string>
     <string name="signer">Ajouter signet</string>
     <string name="sync">Synchroniser</string>
+    <string name="myvideos">Mesvidéos</string>
 </resources>

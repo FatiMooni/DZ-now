@@ -1,15 +1,15 @@
 package com.example.tdm_project.view.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
@@ -26,10 +26,14 @@ import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import at.huber.youtubeExtractor.VideoMeta
+import at.huber.youtubeExtractor.YouTubeExtractor
+import at.huber.youtubeExtractor.YtFile
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.Topic
+import com.example.tdm_project.model.data.Video
 import com.example.tdm_project.services.App
 import com.example.tdm_project.services.FetchArticlesService
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
@@ -42,13 +46,18 @@ import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.example.tdm_project.viewmodel.CategoryViewModel
 import com.facebook.Profile
 import kotlinx.android.synthetic.main.horiz_news_view.view.*
+import org.apache.commons.io.FilenameUtils
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.support.v4.toast
+import org.jsoup.Connection
+import org.jsoup.Jsoup
+import java.net.URL
+import java.net.URLConnection
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment()  {
 
     private lateinit var rootView: View
     private lateinit var articleAdapter: PagedListAdapter<Article, *>
@@ -110,7 +119,6 @@ class HomeFragment : Fragment() {
         vmodel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
 
         vmodel.getArticles().observe(this, Observer {
-
             newsList = it
             if (verticallayout) (articleVAdapter)
             else (articleAdapter as ArticleRVAdapter)
@@ -215,6 +223,20 @@ class HomeFragment : Fragment() {
                         intent.putExtra(WebBrowserActivity.EXTRA_URI, article.uri)
                         Toast.makeText(context,article.resume,Toast.LENGTH_LONG).show()
                         context!!.startActivity(intent)
+
+                        /*** Extract & Saving Video in  Dao ***/
+                        Log.i("VIDEO","BEFORE")
+
+                         doAsync {
+                             extractVideos(article)
+                         }
+
+                        Log.i("VIDEO","AFTER")
+
+
+
+
+
 
                     }
 
@@ -329,6 +351,100 @@ class HomeFragment : Fragment() {
     }
 
 
+
+  fun extractVideos ( article : ArticleViewModel)  {
+      // link for test "https://www.ennaharonline.com/%d8%a8%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88-%d8%a7%d9%84%d8%b4%d9%8a%d8%ae-%d8%ac%d9%84%d9%88%d9%84-%d9%88%d9%85%d8%b4%d8%a7%d9%87%d9%8a%d8%b1-%d8%a7%d9%84%d9%81%d9%86-%d9%88%d8%a7%d9%84%d8%b1/"
+
+      val conn = Jsoup.connect( "https://www.ennaharonline.com/%d8%a8%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88-%d8%a7%d9%84%d8%b4%d9%8a%d8%ae-%d8%ac%d9%84%d9%88%d9%84-%d9%88%d9%85%d8%b4%d8%a7%d9%87%d9%8a%d8%b1-%d8%a7%d9%84%d9%81%d9%86-%d9%88%d8%a7%d9%84%d8%b1/"
+      ).method(Connection.Method.GET)
+      val resp = conn.execute()
+       val html = resp.body()
+      //val videos = ArrayList<Video>()
+        val doc = Jsoup.parse(html, "UTF-8")
+      val hrefs = doc.getElementsByTag("iframe")
+      for (el in hrefs) {
+          val link = el.attr("src")
+          if (link == "" || link != null) {
+              if ((link!!.contains("http") || link!!.contains("https")) &&  ((link.contains("://youtu.be/") || link.contains("youtube")))  ) {
+                  val basename = FilenameUtils.getBaseName(link)
+                  val extension = FilenameUtils.getExtension(link)
+                  val filename = basename + "." + extension
+                  Log.i("VIDEOLINK",link)
+                  val id = link.substring(30,41)
+                  Log.i("VIDEOID",id)
+                  var linkYout = "https://youtube.com/watch?v="+id
+                  Log.i("VIDEOYOUT",linkYout)
+                  var youTubeExtractor = object : YouTubeExtractor(this@HomeFragment.context!!) {
+
+                      override fun onExtractionComplete(ytFiles: SparseArray<YtFile>, vMeta: VideoMeta) {
+                          if (ytFiles != null) {
+                              Log.i("VIDEO", "INSIDEfUN1")
+                              var itag=22
+                              var downloadUrl = ytFiles.get(itag).getUrl()
+                              var img = " "
+                              if (article.img != null)  img= article.img!!
+
+                              var  video =Video (1,article.title,downloadUrl,img)
+                              Log.i("VIDEOCONVLINK0",video.videoUri)
+                              doAsync {
+                                  App.db.videoDao().insert(video)
+                              }
+
+                              Log.i("VIDEOCONVLINK0","Inserted")
+
+
+                              //videos.add(video)
+
+                          }
+                      }
+                  }.extract(linkYout, true, true)
+
+
+
+              }
+          }
+      }
+
+
+
+   // return videos
+    }
+
+
+    /** Not used in Extract videos **/
+/*
+
+    val elements = doc.getElementsByAttributeValue("type", "video/mp4")
+        for (el in elements) {
+            val link = el.attr("src")
+            if (link == "" || link != null) {
+                if (link!!.contains("http") || link!!.contains("https")) {
+                    val basename = FilenameUtils.getBaseName(link)
+                    val extension = FilenameUtils.getExtension(link)
+                    val filename = basename + "." + extension
+                    Log.i("VIDEOTYPE",link)
+                    //videos.add(Video(filename,,,))
+                }
+            }
+        }
+        val tags = doc.getElementsByTag("video")
+        for (el in tags) {
+            val link = el.attr("src")
+            if (link == "" || link != null) {
+                if (link!!.contains("http") || link!!.contains("https")) {
+                    val basename = FilenameUtils.getBaseName(link)
+                    val extension = FilenameUtils.getExtension(link)
+                    val filename = basename + "." + extension
+                    Log.i("VIDEOTAG",link)
+                    //videos.add(Video(link, filename))
+                }
+            }
+        }
+
+  */
 }
+
+
+
 
 

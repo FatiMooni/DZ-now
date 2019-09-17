@@ -11,19 +11,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
-import com.bumptech.glide.request.RequestOptions
 import com.example.tdm_project.R
-import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.data.SharedSavedNews
 import com.example.tdm_project.view.activities.ParameterActivity
+import com.example.tdm_project.view.activities.VideosActivity
 import com.example.tdm_project.view.adapters.sharedPostsAdapter
 import com.example.tdm_project.viewmodel.ArticleViewModel
 import com.facebook.Profile
-import com.facebook.login.LoginManager
 
 
 class ProfileFragment : Fragment() {
@@ -72,12 +69,23 @@ class ProfileFragment : Fragment() {
         // not used for now intialiserVertically()
 
         rootView.findViewById<Button>(R.id.param).setOnClickListener {
-            // preparé l'activité d'ajout
+            // preparé l'activité de parametre
             val intent = Intent(rootView.context, ParameterActivity::class.java)
             // lancer l'activité
             startActivity(intent)
 
         }
+
+        //My videos
+        rootView.findViewById<Button>(R.id.btn_video).setOnClickListener {
+            // preparé l'activité de videos
+            val intent = Intent(rootView.context, VideosActivity::class.java)
+            // lancer l'activité
+            startActivity(intent)
+
+        }
+
+
 
         val newPseudo = arguments?.getString("PSEUDO")
         val stringImageUri = arguments?.getString("PHOTO")

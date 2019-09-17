@@ -10,13 +10,15 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.data.Feed
+import com.example.tdm_project.model.data.Video
 import com.example.tdm_project.services.converters.Converters
 import com.example.tdm_project.services.dao.ArticleDao
 import com.example.tdm_project.services.dao.CategoryDao
 import com.example.tdm_project.services.dao.FeedDao
+import com.example.tdm_project.services.dao.VideoDao
 
 @TypeConverters(Converters::class)
-@Database(entities = [Feed::class, Article::class, Category::class], version = 3 , exportSchema = false)
+@Database(entities = [Feed::class, Article::class, Category::class , Video::class] , version =6 , exportSchema = false)
 abstract class LocalDataBase : RoomDatabase() {
 
 
@@ -46,4 +48,5 @@ abstract class LocalDataBase : RoomDatabase() {
     abstract fun feedDao(): FeedDao
     abstract fun articleDao(): ArticleDao
     abstract fun categoryDao(): CategoryDao
+    abstract fun videoDao() : VideoDao
 }

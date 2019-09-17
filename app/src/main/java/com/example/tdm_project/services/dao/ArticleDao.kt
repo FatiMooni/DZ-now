@@ -3,8 +3,6 @@ package com.example.tdm_project.services.dao
 import androidx.paging.DataSource
 import androidx.room.*
 import com.example.tdm_project.model.Article
-import com.example.tdm_project.model.Category
-import com.example.tdm_project.viewmodel.ArticleViewModel
 
 @Dao
 interface ArticleDao {
