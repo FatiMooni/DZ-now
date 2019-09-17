@@ -11,7 +11,10 @@
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
             android:padding="10dp"
             app:contentPaddingTop="10dp"
             app:contentPaddingLeft="4dp"
@@ -38,9 +41,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/news_title"
-                    android:layout_below="@id/news_writer"
+                    android:layout_below="@id/news_category"
                     android:textColor="?attr/primary_text_color"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     app:fontFamily="serif"
                     android:textStyle="bold"
                     android:maxLines="2"
@@ -55,7 +58,7 @@
                     android:id="@+id/news_descrp"
                     android:layout_below="@id/news_title"
                     android:textColor="?attr/secondary_text_color"
-                    android:maxLines="5"
+                    android:maxLines="3"
                     android:ellipsize="end"
                     android:textSize="14sp"
                     android:text="@{item.resume}"
@@ -64,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/news_date"
-                    android:textColor="?attr/secondary_text_color"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="12sp"
                     android:layout_marginTop="5dp"
                     android:text="@{item.publicationDate.toString()}"
@@ -77,11 +80,21 @@
                     android:text="@{item.author}"
                     app:fontFamily="serif"
                     android:textSize="12sp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="7dp"
                     android:textColor="?attr/secondary_text_color"
                     android:textStyle="italic|bold"
             />
-
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/news_category"
+                    android:layout_below="@+id/news_writer"
+                    android:text="@{item.categoryOrigin}"
+                    android:layout_marginBottom="7dp"
+                    android:textSize="13sp"
+                    app:fontFamily="serif"
+                    android:textColor="?attr/colorAccent"
+                    android:textStyle="italic|bold" />
 
         </RelativeLayout>
         <RelativeLayout
@@ -92,12 +105,13 @@
         >
             <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:maxHeight="180dp"
                     android:id="@+id/news_image"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:src="@drawable/chicanery"
+                    app:imageUrl="@{item.img}"
                     android:layout_below="@+id/menu_button"
                     android:elevation="@dimen/cardview_default_elevation"
             />

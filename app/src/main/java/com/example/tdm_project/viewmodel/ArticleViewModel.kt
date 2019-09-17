@@ -39,7 +39,7 @@ class ArticleViewModel : ViewModel {
     var fetchDate: Date = Date()
     var publicationDate: Date = fetchDate
     var mobilizedContent: String? = null //in case i want to save my article
-    var isRead: Boolean = false //TODO(do i need to handle this)
+    var isFav: Boolean = false //TODO(do i need to handle this)
     var isSavedOffline: Boolean = false
 
     constructor(
@@ -53,7 +53,7 @@ class ArticleViewModel : ViewModel {
         this.fetchDate = article.fetchDate
         this.uri = article.uri
         this.img = article.img
-        this.isRead = article.isRead
+        this.isFav = article.isFav
         this.isSavedOffline = article.isSavedOffline
         this.mobilizedContent = article.mobilizedContent
         this.categoryId = article.categoryId

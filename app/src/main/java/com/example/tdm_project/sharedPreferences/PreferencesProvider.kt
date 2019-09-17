@@ -87,6 +87,28 @@ class PreferencesProvider(context: Context) {
         editor.apply()
     }
 
+    fun loadFavTopicsList(): ArrayList<Category> {
+        val gson = Gson()
+        val json = mySharedPref.getString("fav_topics", null)
+        val type = object : TypeToken<ArrayList<Category>>() {
+        }.type
+
+
+        return if (json != null) {
+            gson.fromJson(json, type)
+        } else ArrayList()
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun setFavTopicsList(topics: ArrayList<Category>) {
+        gson = Gson()
+        val list = gson.toJson(topics)
+        editor = mySharedPref.edit()
+        editor.putString("fav_topics", list)
+        editor.apply()
+    }
+
+
     //get the list of topics
     fun loadNewsPaperList(): ArrayList<NewsPaper> {
         val gson = Gson()

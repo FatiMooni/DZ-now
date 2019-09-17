@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
             android:allowBackup="true"
@@ -94,6 +95,11 @@
         </provider>
         <service android:name=".services.FetchArticlesService"
                 android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <service android:name=".services.RefreshArticlesService"
+                android:permission="android.permission.BIND_JOB_SERVICE"
+                android:exported="true"
+                />
 
        <provider
                android:name="androidx.core.content.FileProvider"

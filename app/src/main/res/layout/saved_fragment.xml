@@ -32,6 +32,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
+            tools:listitem="@layout/vert_news_view"
+            tools:itemCount="3"
             android:layout_height="wrap_content"
             android:id="@+id/recyler_view_saved_post"
             >

@@ -1,5 +1,6 @@
 package com.example.tdm_project.view.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.AbsListView
@@ -18,6 +19,7 @@ import com.example.tdm_project.model.NewsPaper
 import com.example.tdm_project.model.Topic
 import com.example.tdm_project.services.App
 import com.example.tdm_project.services.App.Companion.context
+import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.adapters.NewsPaperAdapter
 import com.example.tdm_project.viewmodel.CategoryViewModel
@@ -30,7 +32,7 @@ import org.jetbrains.anko.textColor
 class FavoriteActivity : CustomBaseActivity() {
     lateinit var myPreference: PreferencesProvider
     lateinit var pref: PreferencesProvider
-    var topics : ArrayList<Topic>? = null
+    var topics : ArrayList<Category>? = null
     var newsList = ArrayList<NewsPaper>()
     val newstoinsert = ArrayList<NewsPaperViewModel>()
 
@@ -104,7 +106,7 @@ class FavoriteActivity : CustomBaseActivity() {
             if (it != null && it.isNotEmpty()){
                 categoryList = it
                 //set topics list
-                topics = pref.loadTopicsList(categoryList!!)
+                topics = pref.loadFavTopicsList()
                 initializeTopicsList(categoryList)
 
             }
@@ -121,11 +123,10 @@ class FavoriteActivity : CustomBaseActivity() {
 
     private fun initializeTopicsList(categoryList : List<Category>?) {
         if (categoryList != null && categoryList!!.isNotEmpty()) {
-            val list = Topic.getTopics(categoryList!!)
             var layout = findViewById<LinearLayoutCompat>(R.id.topics_choice_holder)
-            list.forEach {
+            categoryList.forEach {
                 val check = CheckBox(this)
-                check.text = this.getString(it.displayedTitle)
+                check.text = it.title
 
                 if (topics!!.contains(it)) {
                     check.isChecked = true
@@ -134,10 +135,10 @@ class FavoriteActivity : CustomBaseActivity() {
                     val checked = (v as CheckBox).isChecked
                     if (checked) {
                         topics!!.add(it)
-                        pref.setTopicsList(topics!!)
+                        pref.setFavTopicsList(topics!!)
                     } else {
                         topics!!.remove(it)
-                        pref.setTopicsList(topics!!)
+                        pref.setFavTopicsList(topics!!)
 
                     }
                 }
@@ -145,4 +146,12 @@ class FavoriteActivity : CustomBaseActivity() {
             }
         }
     }
+
+    override fun attachBaseContext(newBase: Context?) {
+        myPreference = PreferencesProvider(newBase!!)
+        val lang = myPreference.getLoginCount()
+        super.attachBaseContext(MyContextWrapper.wrap(newBase,lang))
+    }
+
+
 }

@@ -1,7 +1,6 @@
 package com.example.tdm_project.view.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
@@ -55,13 +53,12 @@ class HomeFragment : Fragment() {
     private lateinit var articleVAdapter: ArticleVAdapter
     private lateinit var rv: RecyclerView
     private lateinit var pref: PreferencesProvider
-    var userId=""
+    var userId = ""
     private var articlesLiveData: LiveData<PagedList<Article>>? = null
 
     //viewmodel
     private lateinit var vmodel: ArticleViewModel
 
-    private var newsList = ArrayList<ArticleViewModel>()
     private var topicsList = ArrayList<Topic>()
 
 
@@ -90,7 +87,11 @@ class HomeFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         //set the view
         rootView = inflater.inflate(R.layout.home_fragment, container, false)
@@ -103,9 +104,7 @@ class HomeFragment : Fragment() {
             rvInitializer(LinearLayoutManager.HORIZONTAL)
             categoryId = null
             initDataObservers()
-        }
-        else rvInitializer(LinearLayoutManager.VERTICAL)
-
+        } else rvInitializer(LinearLayoutManager.VERTICAL)
 
 
         val catVModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
@@ -113,17 +112,18 @@ class HomeFragment : Fragment() {
         catVModel.getCategories().observe(this, Observer {
             if (it.isNotEmpty() && it != null) {
                 it.forEach { category ->
-                    Log.i("link", category.feeds.toString())}
+                    Log.i("link", category.feeds.toString())
+                }
 
-                    if(pref.isFirstUse()){
-                        Log.i("first use" , "am gonna fetch feeds")
-                        val intent =
-                            Intent(context, FetchArticlesService::class.java)
-                                .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
-                                .putParcelableArrayListExtra(FetchArticlesService.EXTRA_CATEGORIES, it)
-                        FetchArticlesService.enqueue(App.context, intent)
+                if (pref.isFirstUse()) {
+                    Log.i("first use", "am gonna fetch feeds")
+                    val intent =
+                        Intent(context, FetchArticlesService::class.java)
+                            .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
+                            .putParcelableArrayListExtra(FetchArticlesService.EXTRA_CATEGORIES, it)
+                    FetchArticlesService.enqueue(App.context, intent)
 
-                    }
+                }
 
                 //prepare the topics on the top of the fragment
                 getTopics(it)
@@ -144,12 +144,12 @@ class HomeFragment : Fragment() {
         }
 
         //Set the current User
-        val userGreeting =  rootView.findViewById<AppCompatTextView>(R.id.user_greeting)
-        val profile= Profile.getCurrentProfile()
+        val userGreeting = rootView.findViewById<AppCompatTextView>(R.id.user_greeting)
+        val profile = Profile.getCurrentProfile()
         if (profile != null) {
-            var greeting = userGreeting.text.toString()
-            userGreeting.text = greeting + "" + profile.name.toString()
-            userId=Profile.getCurrentProfile().id
+            val greeting = userGreeting.text.toString()
+            userGreeting.text = greeting.plus(" "+ profile.name.toString())
+            userId = Profile.getCurrentProfile().id
         }
         return rootView
     }
@@ -157,10 +157,11 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             toast("i have been saved")
         }
     }
+
     /** to initialize the recyclerview **/
     private fun rvInitializer(orientation: Int) {
         rv = rootView.findViewById(R.id.recyler_view_news)
@@ -175,23 +176,27 @@ class HomeFragment : Fragment() {
                     override fun onSaveArticleClick(article: Article, position: Int) {
                         article.isSavedOffline = !article.isSavedOffline
                         doAsync {
-                              if(article.isSavedOffline){
-                                  App.db.articleDao().markArticleAsSaved(userId,article._id)
-                                  val intent =
-                                      Intent(context, FetchArticlesService::class.java)
-                                          .setAction(FetchArticlesService.ACTION_ARTICLE)
-                                          .putExtra("article",article)
-                                  FetchArticlesService.enqueue(App.context, intent)
-                              } else {
-                                  vmodel.unsaveArticle(userId,article._id)
-                                  App.db.articleDao().markArticleAsUnsaved(article._id)
+                            if (article.isSavedOffline) {
+                                App.db.articleDao().markArticleAsSaved(userId, article._id)
+                                val intent =
+                                    Intent(context, FetchArticlesService::class.java)
+                                        .setAction(FetchArticlesService.ACTION_ARTICLE)
+                                        .putExtra("article", article)
+                                FetchArticlesService.enqueue(App.context, intent)
+                            } else {
+                                vmodel.unsaveArticle(userId, article._id)
+                                App.db.articleDao().markArticleAsUnsaved(article._id)
 
-                              }
+                            }
 
                         }
                     }
 
-                    override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
+                    override fun onPopupRequested(
+                        view: View,
+                        article: ArticleViewModel,
+                        position: Int
+                    ) {
 
                         val popup = PopupMenu(view.context, view.menu_button)
                         val inflater = popup.menuInflater
@@ -205,7 +210,7 @@ class HomeFragment : Fragment() {
                     override fun onItemClick(article: ArticleViewModel, position: Int) {
                         val intent = Intent(context, WebBrowserActivity::class.java)
                         intent.putExtra(WebBrowserActivity.EXTRA_URI, article.uri)
-                        Toast.makeText(context,article.resume,Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, article.resume, Toast.LENGTH_LONG).show()
                         context!!.startActivity(intent)
 
                     }
@@ -220,7 +225,11 @@ class HomeFragment : Fragment() {
                         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
 
-                    override fun onPopupRequested(view: View, article: ArticleViewModel, position: Int) {
+                    override fun onPopupRequested(
+                        view: View,
+                        article: ArticleViewModel,
+                        position: Int
+                    ) {
 
                         val popup = PopupMenu(view.context, view.menu_button)
                         val inflater = popup.menuInflater
@@ -257,7 +266,7 @@ class HomeFragment : Fragment() {
                 else -> App.db.articleDao().getAllArticles(Date().time)
             }, 20
         ).build()
-
+        if (articlesLiveData!!.hasObservers()) articlesLiveData!!.removeObservers(this)
         articlesLiveData!!.observe(this, Observer { pagedList ->
             articleAdapter.submitList(pagedList)
             Log.i("articles in main ", "ma list ${pagedList.size}")
@@ -286,6 +295,7 @@ class HomeFragment : Fragment() {
             btn.maxWidth = 700
             btn.minWidth = 350
             btn.minHeight = 200
+            btn.maxHeight = 200
             val cat = it.title
             val id = it.categoryId
             val titre = rootView.context.resources.getString(it.displayedTitle)
@@ -308,14 +318,14 @@ class HomeFragment : Fragment() {
                 if (App.hasNetwork()!!)
                     doAsync {
                         val intent =
-                        Intent(context, FetchArticlesService::class.java)
-                            .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
-                            .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, id)
+                            Intent(context, FetchArticlesService::class.java)
+                                .setAction(FetchArticlesService.ACTION_REFRESH_FEEDS)
+                                .putExtra(FetchArticlesService.EXTRA_CATEGORY_ID, id)
                         FetchArticlesService.enqueue(App.context, intent)
 
                     }
-                    categoryId = id
-                    initDataObservers()
+                categoryId = id
+                initDataObservers()
             }
             layout.addView(btn)
         }

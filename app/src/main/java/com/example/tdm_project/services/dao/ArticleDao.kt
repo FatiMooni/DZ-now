@@ -22,8 +22,8 @@ interface ArticleDao {
     fun getIdsOfArticles(idcat : String , idFeed : Long) : List<String>
 
 
-    //delete all articles that have been fetched 24hr ago
-    @Query("Delete from articles where fetchDate <= :maxDate")
+    //delete all articles that have been fetched 24hr ago and that are not saved offline
+    @Query("Delete from articles where fetchDate <= :maxDate and isSavedOffline = 0")
     fun deleteAllArticles(maxDate: Long)
 
     //get the articles that have been saved offline
@@ -37,6 +37,10 @@ interface ArticleDao {
     //update to unsaved
     @Query("Update articles set isSavedOffline = 0 where _id is :articleId ")
     fun markArticleAsUnsaved(articleId : String)
+
+    //select for notification
+    @Query("Select * from articles where isFav = 1 order by publicationDate DESC")
+    fun getFavArticles() : List<Article>
 
     //update to unsaved
     @SkipQueryVerification

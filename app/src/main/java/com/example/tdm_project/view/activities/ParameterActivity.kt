@@ -234,7 +234,6 @@ class ParameterActivity : CustomBaseActivity() {
                 //set topics list
                 topics = pref.loadTopicsList(categoryList!!)
                 initializeTopicsList(categoryList)
-
             }
         })
         doAsync {
