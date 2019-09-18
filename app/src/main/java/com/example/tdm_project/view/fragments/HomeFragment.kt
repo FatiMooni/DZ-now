@@ -494,7 +494,7 @@ class HomeFragment : Fragment() {
 
     fun extractVideos(article: ArticleViewModel) {
         // link for test "https://www.ennaharonline.com/%d8%a8%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88-%d9%88%d8%a7%d9%84%d8%b5%d9%88%d8%b1-%d8%a7%d9%84%d8%ac%d8%b2%d8%a7%d8%a6%d8%b1%d9%8a%d9%88%d9%86-%d9%8a%d8%ae%d8%b1%d8%ac%d9%88%d9%86-%d9%84%d9%84/"
-        val conn = Jsoup.connect(article.uri).method(Connection.Method.GET)
+        val conn = Jsoup.connect("https://www.ennaharonline.com/%d8%a8%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88-%d9%88%d8%a7%d9%84%d8%b5%d9%88%d8%b1-%d9%81%d8%b1%d8%ad%d8%a9-%d9%87%d8%b3%d8%aa%d9%8a%d8%b1%d9%8a%d8%a9-%d8%a8%d8%a7%d9%84%d8%aa%d8%aa%d9%88%d9%8a/").method(Connection.Method.GET)
         val resp = conn.execute()
         val html = resp.body()
         val doc = Jsoup.parse(html, "UTF-8")
@@ -525,7 +525,7 @@ class HomeFragment : Fragment() {
                                     "https://cdn1.imggmi.com/uploads/2019/9/18/2d42c776e9b5c2f882ee9ee2033402e4-full.png"
                                 if (article.img != null) img = article.img!!
 
-                                var video = Video(videoTitle = article.title, videoUri = downloadUrl, thumbnail = img)
+                                var video = Video(videoTitle = "بالفيديو والصور.. فرحة هستيرية بالتتويج في شوارع الجزائر", videoUri = downloadUrl, thumbnail = img)
                                 Log.i("VIDEOCONVLINK0", video.videoUri)
                                 doAsync {
                                     App.db.videoDao().insert(video)

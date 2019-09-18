@@ -64,7 +64,7 @@ class VideosActivity : CustomBaseActivity() {
         var video2= Video (0,"test","https://r4---sn-hpa7znsd.googlevideo.com/videoplayback?expire=1568750916&ei=4-iAXcSIObWXmLAP5o-XiAo&ip=129.45.44.198&id=o-APYKGa8Tyj1bzo9yTvM5YZ11CyfhWBEe9KH3pzxo5_lS&itag=22&source=youtube&requiressl=yes&mime=video%2Fmp4&ratebypass=yes&dur=245.783&lmt=1564951563624559&fvip=4&fexp=23842630&c=WEB&txp=2316222&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cmime%2Cratebypass%2Cdur%2Clmt&sig=ALgxI2wwRQIhAK9V8UngmU4swzb3xBhzMHqq-sqCabv7S5QeNdsA04DlAiAkg3L8BrDYP-_4tpaq15sq5u9hPXg3baSBPOJ8oKCTag%3D%3D&redirect_counter=1&cm2rm=sn-qwx11t-j1al7e&req_id=54d960d72bdba3ee&cms_redirect=yes&mm=29&mn=sn-hpa7znsd&ms=rdu&mt=1568729216&mv=m&mvi=3&pl=24&lsparams=mm,mn,ms,mv,mvi,pl&lsig=AHylml4wRAIgbYBSbjQLUIph5wDRr1-j6EAWc8UYGZQ7HFzhxAOUiy8CIG64_ZR0BXdrx7H5UNv307Iyg7Ndbmr4SB_8MSwy-17d","https://s3.ca-central-1.amazonaws.com/codingwithmitch/media/VideoPlayerRecyclerView/mvvm+and+livedata.png")
        /* mediaObjects.add(video1)
         mediaObjects.add(video)*/
-        mediaObjects.add(video2)
+        //mediaObjects.add(video2)
         doAsync {
             dataList= App.db.videoDao().getVideos()
             for (l in dataList )
