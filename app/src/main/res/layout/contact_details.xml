@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/contactimg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:contentDescription="something"
+            android:layout_alignParentEnd="true"
+            android:padding="5dp"
+            android:src="@drawable/not_fav" />
+    <TextView
+            android:id="@+id/contactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:drawableStart="@drawable/ic_person_black_24dp"
+            android:drawableTint="?attr/primary_text_color"
+            android:drawablePadding="10dp"
+            android:lineSpacingExtra="3dp"
+            android:padding="5dp"
+            android:text="name"
+            android:textColor="?attr/primary_text_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    <TextView
+            android:id="@+id/contactNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contactName"
+            android:lineSpacingExtra="3dp"
+            android:text="0578"
+            android:layout_marginStart="10dp"
+            android:textColor="?attr/primary_text_color"
+            android:padding="5dp"
+            android:textSize="15sp" />
+
+    <TextView
+            android:id="@+id/contactEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contactNumber"
+            android:lineSpacingExtra="3dp"
+            android:text="mail@esi.dz"
+            android:layout_marginStart="10dp"
+            android:textColor="?attr/primary_text_color"
+            android:padding="5dp"
+            android:textSize="15sp" />
+
+
+</RelativeLayout>

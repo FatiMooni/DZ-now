@@ -16,6 +16,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.example.tdm_project.R
 import com.example.tdm_project.model.data.SharedSavedNews
+import com.example.tdm_project.view.activities.FavoriteActivity
 import com.example.tdm_project.view.activities.ParameterActivity
 import com.example.tdm_project.view.activities.VideosActivity
 import com.example.tdm_project.view.adapters.sharedPostsAdapter
@@ -80,12 +81,15 @@ class ProfileFragment : Fragment() {
         rootView.findViewById<Button>(R.id.btn_video).setOnClickListener {
             // preparé l'activité de videos
             val intent = Intent(rootView.context, VideosActivity::class.java)
+            startActivity(intent)
+        }
+        rootView.findViewById<Button>(R.id.btn_fav).setOnClickListener {
+            // preparé l'activité d'ajout
+            val intent = Intent(rootView.context, FavoriteActivity::class.java)
             // lancer l'activité
             startActivity(intent)
 
         }
-
-
 
         val newPseudo = arguments?.getString("PSEUDO")
         val stringImageUri = arguments?.getString("PHOTO")

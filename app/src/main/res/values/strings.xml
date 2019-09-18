@@ -45,4 +45,7 @@
     <string name="signer">Ajouter signet</string>
     <string name="sync">Synchroniser</string>
     <string name="myvideos">Mesvidéos</string>
+    <string name="news_papers">News Papers</string>
+    <string name="partager_via_sms">partager via SMS</string>
+    <string name="partager_via_email">partager via Email</string>
 </resources>

@@ -130,10 +130,9 @@ dependencies {
 
     //VideoLinkExtractor
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
-
-
-
-
+    
+    //for text drawable in contacts
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
 
 }

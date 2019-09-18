@@ -54,7 +54,7 @@ data class Article(
     var userId: String ="" ,
     @ColumnInfo(name = "mobilizedContent")
     var mobilizedContent: String = "", //in case i want to save my article
-    var isRead: Boolean = false,
+    var isFav: Boolean = false,
     var isSavedOffline: Boolean = false //in case i wanted it to be readible offline
 ) : Parcelable, Comparable<Article>, ViewModel() {
     override fun compareTo(other: Article): Int {
@@ -63,12 +63,10 @@ data class Article(
     }
 
     fun getReadablePublicationDate(context: Context): String =
-        if (DateUtils.isToday(publicationDate.time)) {
-            DateFormat.getTimeFormat(context).format(publicationDate)
-        } else {
+
             DateFormat.getMediumDateFormat(context).format(publicationDate) + ' ' +
                     DateFormat.getTimeFormat(context).format(publicationDate)
-        }
+
      companion object {
          @JvmStatic
          @BindingAdapter("app:imageUrl")
@@ -112,7 +110,6 @@ fun SyndEntry.toDbFormat(feed: Feed, category: Category): Article {
 fun ArticlePost.toDbFormat() : Article{
 
     var a =Article()
-    var au = ""
     a.userId= userId
     a._id= articleId
     a.author= author

@@ -38,7 +38,7 @@ data class Topic(
                 "international" -> R.string.international
                 "national" -> R.string.nat
                 "santé" -> R.string.health
-                else -> R.string.all
+                else -> R.string.economics
             }
         }
 

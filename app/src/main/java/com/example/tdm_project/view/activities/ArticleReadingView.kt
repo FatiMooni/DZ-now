@@ -12,8 +12,10 @@ import com.example.tdm_project.R
 import com.example.tdm_project.model.Article
 import org.jetbrains.anko.colorAttr
 
-class ArticleReadingView  @JvmOverloads
-constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : WebView(context,attrs,defStyleAttr){
+class ArticleReadingView @JvmOverloads
+constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    WebView(context, attrs, defStyleAttr) {
+
     private val UTF8 = "UTF-8"
     private val TEXT_HTML = "text/html"
     private val HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>"
@@ -97,18 +99,21 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         if (article == null) {
             loadDataWithBaseURL("", "", TEXT_HTML, UTF8, null)
         } else {
-            var contentText =  article.mobilizedContent
-            contentText = contentText!!.replace(HTML_IMG_REGEX.toRegex(), "")
+            var contentText =
+                if (article.mobilizedContent.isNotBlank() && article.mobilizedContent.isNotEmpty()) article.mobilizedContent else article.resume!!
+            contentText = contentText.replace(HTML_IMG_REGEX.toRegex(), "")
+            Log.i("text" , contentText)
             settings.blockNetworkImage = true
 
             val subtitle = StringBuilder(article.getReadablePublicationDate(context))
-            if (article.author?.isNotEmpty()) {
+            if (article.author.isNotEmpty()) {
                 subtitle.append(" &mdash; ").append(article.author)
             }
 
             val html = StringBuilder(CSS)
                 .append(BODY_START)
-                .append(TITLE_START).append(article.uri).append(TITLE_MIDDLE).append(article.title).append(TITLE_END)
+                .append(TITLE_START).append(article.uri).append(TITLE_MIDDLE).append(article.title)
+                .append(TITLE_END)
                 .append(SUBTITLE_START).append(subtitle).append(SUBTITLE_END)
                 .append(contentText)
                 .append(BODY_END)
@@ -118,7 +123,8 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             loadDataWithBaseURL("", html, TEXT_HTML, UTF8, null)
 
             // display top of article
-            ObjectAnimator.ofInt(this@ArticleReadingView, "scrollY", scrollY, 0).setDuration(500).start()
+            ObjectAnimator.ofInt(this@ArticleReadingView, "scrollY", scrollY, 0).setDuration(500)
+                .start()
         }
     }
 

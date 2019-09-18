@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                           xmlns:tools="http://schemas.android.com/tools"
-                                                           xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                           android:layout_width="match_parent"
-                                                           android:layout_height="match_parent"
-                                                           android:background="?attr/background_color">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+               xmlns:android="http://schemas.android.com/apk/res/android"
+               xmlns:tools="http://schemas.android.com/tools"
+               xmlns:app="http://schemas.android.com/apk/res-auto"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:background="?attr/background_color">
 
 
 
@@ -43,54 +41,45 @@
                     app:layout_constraintTop_toBottomOf="@id/topics_title"
                     android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-            android:minWidth="450dp"
-            android:layout_width="wrap_content"
-            android:id="@+id/Topics_buttom_holder"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-       <androidx.appcompat.widget.AppCompatButton
-               android:layout_width="wrap_content"
-               android:backgroundTint="?attr/primary_text_color"
-               android:text="@string/all"
-               android:textStyle="bold"
-               android:id="@+id/all_topics_btn"
-               android:textColor="?attr/background_color"
-               android:layout_height="match_parent"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</HorizontalScrollView>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:minWidth="450dp"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/Topics_buttom_holder"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                       android:layout_width="wrap_content"
+                       android:backgroundTint="?attr/primary_text_color"
+                       android:text="@string/all"
+                       android:textStyle="bold"
+                       android:id="@+id/all_topics_btn"
+                       android:textColor="?attr/background_color"
+                       android:layout_height="match_parent"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </HorizontalScrollView>
     <ImageButton
             app:layout_constraintTop_toBottomOf="@id/scroller"
             app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/ic_view_day_black_24dp"
-            android:id="@+id/btn_vert_display"
+            android:id="@+id/affich_contact"
             android:tint="?attr/icon_color"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    <ImageButton
-            app:layout_constraintTop_toBottomOf="@id/scroller"
-            app:layout_constraintEnd_toStartOf="@id/btn_vert_display"
-            android:src="@drawable/ic_view_week_black_24dp"
-            android:id="@+id/btn_horizt_display"
-            android:layout_width="wrap_content"
-            android:tint="?attr/icon_color"
-            android:visibility="gone"
-            android:layout_height="wrap_content"/>
+
 
             <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
                                                    app:layout_constraintEnd_toEndOf="parent"
                                                    app:layout_constraintStart_toStartOf="parent"
                                                    android:scrollbars="horizontal"
                                                    app:layout_constraintBottom_toBottomOf="parent"
-                                                   app:layout_constraintTop_toBottomOf="@id/btn_horizt_display"
+                                                   app:layout_constraintTop_toBottomOf="@id/affich_contact"
                                                    android:layout_height="0dp">
             <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_vert_display"
+                    app:layout_constraintTop_toBottomOf="@id/affich_contact"
                     android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -107,4 +96,3 @@
             </androidx.core.widget.NestedScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>

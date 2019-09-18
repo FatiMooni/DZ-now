@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.example.tdm_project.model.Category
+import com.example.tdm_project.model.NewsPaper
 import com.example.tdm_project.model.Topic
+import com.example.tdm_project.view.adapters.NewsPaperAdapter
+import com.example.tdm_project.viewmodel.NewsPaperViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -72,6 +75,50 @@ class PreferencesProvider(context: Context) {
         return if (json != null) {
             gson.fromJson(json, type)
         } else Topic.getTopics(categories = categories)
+    }
+
+    //save the list of topics
+    @SuppressLint("CommitPrefEdits")
+    fun setNewsList(news: ArrayList<NewsPaper>) {
+        gson = Gson()
+        val list = gson.toJson(news)
+        editor = mySharedPref.edit()
+        editor.putString("current_news_paper", list)
+        editor.apply()
+    }
+
+    fun loadFavTopicsList(): ArrayList<Category> {
+        val gson = Gson()
+        val json = mySharedPref.getString("fav_topics", null)
+        val type = object : TypeToken<ArrayList<Category>>() {
+        }.type
+
+
+        return if (json != null) {
+            gson.fromJson(json, type)
+        } else ArrayList()
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun setFavTopicsList(topics: ArrayList<Category>) {
+        gson = Gson()
+        val list = gson.toJson(topics)
+        editor = mySharedPref.edit()
+        editor.putString("fav_topics", list)
+        editor.apply()
+    }
+
+
+    //get the list of topics
+    fun loadNewsPaperList(): ArrayList<NewsPaper> {
+        val gson = Gson()
+        val json = mySharedPref.getString("current_news_paper", null)
+        val type = object : TypeToken<ArrayList<NewsPaper>>() {
+        }.type
+
+        return if (json != null) {
+            gson.fromJson(json, type)
+        } else ArrayList()
     }
 
     //first time to use

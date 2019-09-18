@@ -20,13 +20,15 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.tdm_project.R
 import com.example.tdm_project.model.Category
 import com.example.tdm_project.model.Topic
 import com.example.tdm_project.model.Topic.Companion.getTopics
-import com.example.tdm_project.services.App
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
+import com.example.tdm_project.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.parameters.*
 import org.jetbrains.anko.doAsync
 import java.io.File
@@ -59,7 +61,6 @@ class ParameterActivity : CustomBaseActivity() {
 
         //for the shared preferences
         pref = PreferencesProvider(this)
-        setContentView(R.layout.parameters)
         btnEditPhoto = this.findViewById<View>(R.id.btn_edit_pic) as Button
         modeSwitch = this.findViewById(R.id.mode_switcher)
         btnEditPseudo = this.findViewById(R.id.btn_edit_pseudo)
@@ -220,14 +221,23 @@ class ParameterActivity : CustomBaseActivity() {
             )
         }
 
+        //load topics
         var categoryList : List<Category>? = null
-        doAsync {
-            categoryList = App.db.categoryDao().getAllCategories()
-            //set topics list
-            topics = pref.loadTopicsList(categoryList!!)
-            initializeTopicsList(categoryList!!)
-        }
 
+
+        val catVModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
+
+        catVModel.getCategories().observe(this, Observer {
+            if (it != null && it.isNotEmpty()){
+                categoryList = it
+                //set topics list
+                topics = pref.loadTopicsList(categoryList!!)
+                initializeTopicsList(categoryList)
+            }
+        })
+        doAsync {
+            catVModel.getData()
+        }
 
 
     }

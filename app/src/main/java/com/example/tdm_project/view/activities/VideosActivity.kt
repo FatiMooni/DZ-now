@@ -16,7 +16,7 @@ import com.example.tdm_project.view.CustomComponent.VerticalSpacingItemDecorator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tdm_project.R
 import com.example.tdm_project.model.data.Video
-import com.example.tdm_project.services.App
+import com.example.tdm_project.services.Helpers.App
 import com.example.tdm_project.view.CustomComponent.VideoPlayerRecyclerView
 import org.jetbrains.anko.doAsync
 import java.util.*
@@ -64,7 +64,7 @@ class VideosActivity : AppCompatActivity() {
         mediaObjects.add(video)*/
         mediaObjects.add(video2)
         doAsync {
-            dataList=App.db.videoDao().getVideos()
+            dataList= App.db.videoDao().getVideos()
             for (l in dataList )
             {
                 Log.i("HEERE",dataList.size.toString())

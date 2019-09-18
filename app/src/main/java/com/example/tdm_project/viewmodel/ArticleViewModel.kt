@@ -1,19 +1,18 @@
 package com.example.tdm_project.viewmodel
 
-import android.content.Intent
 import android.text.Html
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tdm_project.model.Article
 import com.example.tdm_project.model.data.ArticlePost
 import com.example.tdm_project.model.toDbFormat
 import com.example.tdm_project.services.*
+import com.example.tdm_project.services.Helpers.App
+import com.example.tdm_project.services.Helpers.HtmlOptimizer
 import net.dankito.readability4j.extended.Readability4JExtended
 import okhttp3.ResponseBody
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.error
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,7 +38,7 @@ class ArticleViewModel : ViewModel {
     var fetchDate: Date = Date()
     var publicationDate: Date = fetchDate
     var mobilizedContent: String? = null //in case i want to save my article
-    var isRead: Boolean = false //TODO(do i need to handle this)
+    var isFav: Boolean = false //TODO(do i need to handle this)
     var isSavedOffline: Boolean = false
 
     constructor(
@@ -53,7 +52,7 @@ class ArticleViewModel : ViewModel {
         this.fetchDate = article.fetchDate
         this.uri = article.uri
         this.img = article.img
-        this.isRead = article.isRead
+        this.isFav = article.isFav
         this.isSavedOffline = article.isSavedOffline
         this.mobilizedContent = article.mobilizedContent
         this.categoryId = article.categoryId
@@ -108,7 +107,7 @@ class ArticleViewModel : ViewModel {
     fun getSavedArticle(userId: String) {
         val service = ServiceBuilder.buildService(ArticleService::class.java)
         val request = service.getSavedArticles(userId)
-        var a = Article()
+        var a : Article
 
         request.enqueue(object : Callback<List<ArticlePost>> {
             override fun onFailure(call: Call<List<ArticlePost>>, t: Throwable) {

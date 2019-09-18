@@ -2,30 +2,30 @@ package com.example.tdm_project.view.activities
 
 import android.content.Context
 
-import android.os.Build
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.CheckBox
-import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.tdm_project.R
 import com.example.tdm_project.authentication.LogInActivity
+import com.example.tdm_project.services.Helpers.App
+import com.example.tdm_project.services.RefreshArticlesService
 import com.example.tdm_project.sharedPreferences.MyContextWrapper
 import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.fragments.HomeFragment
 import com.example.tdm_project.view.fragments.ProfileFragment
 import com.example.tdm_project.view.fragments.SavedFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.find
 import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.HttpMethod
 import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.jetbrains.anko.doAsync
+import java.util.*
 
 
 class MainActivity : CustomBaseActivity() {
@@ -40,6 +40,8 @@ class MainActivity : CustomBaseActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setUpBottomNavigationBar()
+        //pour lancer le jobservice
+        RefreshArticlesService.initAutoRefresh(App.context)
         val intent = intent
         newPseudo = intent.getStringExtra("PSEUDO")
         stringImageUri = intent.getStringExtra("PHOTO")
@@ -47,7 +49,19 @@ class MainActivity : CustomBaseActivity() {
         else Log.i("URI_MAIN","NULLLL")
         fragProfile = ProfileFragment.newInstance(newPseudo, stringImageUri)
 
+        doAsync{
+            App.db.articleDao().deleteAllArticles(getDaysAgo(1).time)
+        }
 
+
+    }
+
+    /** to get previous day **/
+    fun getDaysAgo(daysAgo: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -daysAgo)
+
+        return calendar.time
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // ajouter le menu au top de l'activité
