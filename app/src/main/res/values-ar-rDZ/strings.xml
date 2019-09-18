@@ -27,7 +27,7 @@
     <string name="save">حفظ </string>
     <string name="share_social">مشاركة</string>
     <string name="share_profile">مشاركة على البروفيل</string>
-    <string name="param">اعدادات</string>
+    <string name="param">  اعدادات</string>
     <string name="prendre_photo">  أخذ صورة  </string>
     <string name="confirmer">تأكيد</string>
     <string name="choisir_photo">اختيار صورة</string>
@@ -43,8 +43,9 @@
     <string name="nat">أخبار وطنية</string>
     <string name="signer"> حفظ</string>
     <string name="sync">تحديث</string>
-    <string name="myvideos">فيديوهاتي</string>
+    <string name="myvideos">  فيديوهاتي</string>
     <string name="news_papers">الجرائد</string>
     <string name="partager_via_sms">partager via SMS</string>
     <string name="partager_via_email">partager via Email</string>
+    <string name="myfav">mes favoris  </string>
 </resources>

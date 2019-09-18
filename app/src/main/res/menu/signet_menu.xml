@@ -3,7 +3,7 @@
 
     <item android:id="@+id/btn_shareSaved"
             android:icon="@drawable/ic_share_black_24dp"
-            android:title="@string/share"
+            android:title="@string/partager_via_sms"
             />
     <item android:id="@+id/btn_signet"
             android:icon="@drawable/ic_saved"

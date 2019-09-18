@@ -134,5 +134,8 @@ dependencies {
     //for text drawable in contacts
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
+    //Profile picture
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
 
 }

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/read_article"
-            android:title="Lire Ce Article"
+            android:title="Lire Cet Article"
             android:icon="@drawable/read_art"
             app:showAsAction="always"
             />

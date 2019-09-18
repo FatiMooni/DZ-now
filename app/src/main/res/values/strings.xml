@@ -28,7 +28,7 @@
     <string name="share_social">Partager sur</string>
     <string name="share_profile">Partager</string>
     <string name="publish_date" translatable="false">Partagé le</string>
-    <string name="param">paramètres</string>
+    <string name="param">  paramètres</string>
     <string name="confirmer">Confirmer</string>
     <string name="prendre_photo">Prendre photo</string>
     <string name="choisir_photo">Choisir photo</string>
@@ -44,8 +44,9 @@
     <string name="health">Santé</string>
     <string name="signer">Ajouter signet</string>
     <string name="sync">Synchroniser</string>
-    <string name="myvideos">Mesvidéos</string>
+    <string name="myvideos">  Mes vidéos</string>
     <string name="news_papers">News Papers</string>
     <string name="partager_via_sms">partager via SMS</string>
     <string name="partager_via_email">partager via Email</string>
+    <string name="myfav">  Mes favoris</string>
 </resources>

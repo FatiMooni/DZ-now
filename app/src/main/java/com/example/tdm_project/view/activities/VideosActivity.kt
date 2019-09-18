@@ -1,5 +1,6 @@
 package com.example.tdm_project.view.activities
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,17 +18,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tdm_project.R
 import com.example.tdm_project.model.data.Video
 import com.example.tdm_project.services.Helpers.App
+import com.example.tdm_project.sharedPreferences.MyContextWrapper
+import com.example.tdm_project.sharedPreferences.PreferencesProvider
 import com.example.tdm_project.view.CustomComponent.VideoPlayerRecyclerView
 import org.jetbrains.anko.doAsync
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class VideosActivity : AppCompatActivity() {
+class VideosActivity : CustomBaseActivity() {
 
     lateinit var mRecyclerView : VideoPlayerRecyclerView
-   // var videosLiveData : LiveData<PagedList<Video>>?= null
-   // var data : DataSource.Factory<Int,Video>?=null
+    lateinit var myPreference: PreferencesProvider
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,5 +113,12 @@ class VideosActivity : AppCompatActivity() {
         if (mRecyclerView != null)
             mRecyclerView.releasePlayer()
         super.onDestroy()
+    }
+
+
+    override fun attachBaseContext(newBase: Context?) {
+        myPreference = PreferencesProvider(newBase!!)
+        val lang = myPreference.getLoginCount()
+        super.attachBaseContext(MyContextWrapper.wrap(newBase,lang))
     }
 }

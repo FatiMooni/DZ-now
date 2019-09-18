@@ -51,7 +51,7 @@ class ArticleReadingActivity : CustomBaseActivity() {
             }
 
         initArticleReader()
-        fabSettings = this.findViewById(R.id.fabSettings) as FloatingActionButton
+        /*fabSettings = this.findViewById(R.id.fabSettings) as FloatingActionButton
 
         layoutFabSave = this.findViewById(R.id.layoutFabSave) as LinearLayout
         layoutFabShare = this.findViewById(R.id.layoutFabShare) as LinearLayout
@@ -82,7 +82,7 @@ class ArticleReadingActivity : CustomBaseActivity() {
 
         //Only main FAB is visible in the beginning
         closeSubMenusFab()
-
+*/
 
     }
 
